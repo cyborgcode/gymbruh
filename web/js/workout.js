@@ -5,8 +5,8 @@ import {
   dateStr, sameDay, daysBetween,
 } from './util.js';
 import { startTimer, clearTimer } from './timer.js';
-import { weekStrip } from './stats.js';
-import { openSettings } from './settings.js';
+import { weekStrip, openWorkout } from './stats.js';
+import { openSettings, sampleBanner } from './settings.js';
 
 const KIND = { deload: 'Deload', test: 'Test week', final: 'Final assessment', flex: 'Flex week' };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
@@ -27,6 +27,7 @@ export function renderToday(root) {
       <div class="grow"><div class="eyebrow">${dateStr(now)}</div><h1>Today</h1></div>
       <button class="icon-btn" data-act="settings" aria-label="Settings">${ICON.sliders}</button>
     </header>
+    ${sampleBanner()}
     ${installBanner()}
     ${weekStrip()}
     ${todays.map(doneCard).join('')}
@@ -40,6 +41,7 @@ export function renderToday(root) {
     if (act === 'start') startSession(next.id);
     if (act === 'skip') skipSession(next.id);
     if (act === 'hide-install') { state.hideInstall = true; save(); rerender(); }
+    if (act === 'open-workout') openWorkout(b.dataset.wid);
   };
 }
 
@@ -74,10 +76,11 @@ function previewList(s) {
 
 function doneCard(w) {
   return `
-    <section class="card done-card">
+    <button class="card done-card" data-act="open-workout" data-wid="${w.id}">
       <div class="done-icon">${ICON.check}</div>
-      <div><b>Done today · ${esc(w.title)}</b><small>${dur(w.dur)} · ${w.ex.length} exercises${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
-    </section>`;
+      <div class="grow"><b>Done today · ${esc(w.title)}</b><small>${dur(w.dur)} · ${w.ex.length} exercises${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
+      ${ICON.chevR}
+    </button>`;
 }
 
 function planDoneCard() {
@@ -139,7 +142,7 @@ function renderWorkout(root) {
 
   root.innerHTML = `
     <header class="top sticky">
-      <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2">${esc(s.dayName)}</h1></div>
+      <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2 one-line">${esc(s.dayName)}</h1></div>
       <div class="elapsed" id="elapsed">${clock((Date.now() - a.start) / 1000)}</div>
     </header>
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
@@ -320,9 +323,9 @@ function finishSheet(root, s) {
   const sum = summarize(s);
   const sh = sheet(`
     <h3>Finish workout?</h3>
-    <p class="muted">All ${s.ex.length} exercises and the cardio will be marked done.</p>
+    <p class="muted">All ${s.ex.length} exercises and the 30 min cardio will be marked done.</p>
     <div class="stat-grid">
-      ${statBox('Duration', dur(sum.dur))}${statBox('Exercises', s.ex.length + 1)}
+      ${statBox('Duration', dur(sum.dur))}${statBox('Exercises', s.ex.length)}
       ${statBox('Sets', sum.sets)}${statBox('Volume', sum.vol ? `${kg(sum.vol)} kg` : '–')}
     </div>
     <button class="btn primary big" data-act="save">${ICON.check}<span>Finish &amp; save</span></button>
@@ -355,7 +358,7 @@ function saveWorkout(root, s, sum) {
       <h1>Workout complete</h1>
       <p class="muted">${esc(s.title)} · ${esc(s.dayName)}</p>
       <div class="stat-grid">
-        ${statBox('Duration', dur(w.dur))}${statBox('Exercises', s.ex.length + 1)}
+        ${statBox('Duration', dur(w.dur))}${statBox('Exercises', s.ex.length)}
         ${statBox('Sets', w.sets)}${statBox('Volume', w.vol ? `${kg(w.vol)} kg` : '–')}
       </div>
       ${next ? `<p class="muted">Next up: <b>${esc(next.title)}</b> · ${esc(next.dayName)}</p>` : ''}
@@ -369,12 +372,15 @@ function saveWorkout(root, s, sum) {
 }
 
 // ------------------------------------------------------------------ Plan
+const openMonths = new Set(); // remembered while the app is open
+
 export function renderPlan(root) {
   const next = nextSession();
   const total = plan.sessions.length;
   const done = plan.sessions.filter((s) => state.status[s.id] === 'done').length;
   const handled = plan.sessions.filter((s) => state.status[s.id]).length;
   const cur = next ? next.month : 12;
+  if (!openMonths.size) openMonths.add(cur);
   root.innerHTML = `
     <header class="top"><div class="grow"><div class="eyebrow">52 weeks · 3 sessions a week</div><h1>Plan</h1></div></header>
     <section class="card">
@@ -382,11 +388,14 @@ export function renderPlan(root) {
       <div class="progress"><i style="width:${(handled / total) * 100}%"></i></div>
       <div class="legend-row"><span class="dchip mini done"></span>Done <span class="dchip mini skipped"></span>Skipped <span class="dchip mini next"></span>Next</div>
     </section>
-    ${plan.months.map((m) => monthBlock(m, m.n === cur, next)).join('')}`;
+    ${plan.months.map((m) => monthBlock(m, openMonths.has(m.n), next)).join('')}`;
   root.onclick = (ev) => {
     const b = ev.target.closest('[data-sid]');
     if (b) location.hash = `#/session/${b.dataset.sid}`;
   };
+  root.querySelectorAll('details.month').forEach((d) => d.addEventListener('toggle', () => {
+    if (d.open) openMonths.add(+d.dataset.m); else openMonths.delete(+d.dataset.m);
+  }));
 }
 
 function monthBlock(m, open, next) {
@@ -394,7 +403,7 @@ function monthBlock(m, open, next) {
   const weeks = [...new Set(sess.map((s) => s.week))];
   const doneN = sess.filter((s) => state.status[s.id] === 'done').length;
   return `
-    <details class="card month" ${open ? 'open' : ''}>
+    <details class="card month" data-m="${m.n}" ${open ? 'open' : ''}>
       <summary>
         <div class="grow"><div class="eyebrow">Month ${m.n} · Weeks ${m.weeks[0]}-${m.weeks[1]}</div><div class="m-title">${esc(m.title)}</div></div>
         <span class="m-count">${doneN}/${sess.length}</span>${ICON.chevR}

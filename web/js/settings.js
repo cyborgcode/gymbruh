@@ -62,9 +62,9 @@ function body() {
 }
 
 function refresh(sh) {
-  const top = sh.el.scrollTop;
-  sh.el.innerHTML = `<div class="grab"></div>${body()}`;
-  sh.el.scrollTop = top;
+  const top = sh.panel.scrollTop;
+  sh.el.innerHTML = body();
+  sh.panel.scrollTop = top;
   wire(sh);
 }
 
@@ -122,7 +122,7 @@ function wire(sh) {
   };
 }
 
-function loadSample(sh) {
+export function loadSample(sh) {
   if (state.active && !confirm('A workout is in progress. It will be set aside with your data. Continue?')) return;
   try {
     localStorage.setItem(BACKUP_KEY, JSON.stringify(state));
@@ -132,13 +132,13 @@ function loadSample(sh) {
   }
   const { workouts, status } = makeSample();
   replaceState({ workouts, status, sample: true, hideInstall: state.hideInstall });
-  sh.close();
+  if (sh) sh.close();
   toast(`Loaded ${workouts.length} sample workouts`);
   location.hash = '#/stats';
   rerender();
 }
 
-function removeSample(sh) {
+export function removeSample(sh) {
   let saved = null;
   try { saved = JSON.parse(localStorage.getItem(BACKUP_KEY) || 'null'); } catch (e) { /* ignore */ }
   // Keep anything you really logged while the sample was loaded.
@@ -149,9 +149,16 @@ function removeSample(sh) {
   real.forEach((w) => { status[w.sid] = 'done'; });
   replaceState({ ...base, workouts, status, sample: false, active: state.active || base.active || null });
   localStorage.removeItem(BACKUP_KEY);
-  sh.close();
+  if (sh) sh.close();
   toast('Sample data removed');
   rerender();
+}
+
+// Slim banner shown on the main screens while sample data is loaded.
+export function sampleBanner() {
+  if (!state.sample) return '';
+  return `<div class="sample-banner">${ICON.info}<span>You're looking at <b>sample data</b></span>
+    <button class="link" data-act="remove-sample">Remove</button></div>`;
 }
 
 async function exportData() {

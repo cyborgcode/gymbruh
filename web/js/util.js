@@ -19,11 +19,12 @@ export function dur(sec) {
   const m = Math.round((sec || 0) / 60);
   return m < 60 ? `${m}m` : `${Math.floor(m / 60)}h ${pad(m % 60)}m`;
 }
+// One consistent volume format: 850 · 7.9k · 1.25M
 export function kg(n) {
   n = n || 0;
   if (n >= 1e6) return `${(n / 1e6).toFixed(2)}M`;
-  if (n >= 1e4) return `${(n / 1e3).toFixed(1)}k`;
-  return Math.round(n).toLocaleString('en-US');
+  if (n >= 1e3) return `${(n / 1e3).toFixed(1)}k`;
+  return String(Math.round(n));
 }
 export const num = (v) => {
   if (v === '' || v == null) return null;
@@ -85,18 +86,55 @@ export function toast(msg, ms = 2200) {
   toast.t = setTimeout(() => el.classList.remove('show'), ms);
 }
 
+// Bottom sheet. Close with the × button, a tap on the dimmed area, a swipe
+// down, or Escape. Returns { el: content, panel: scroll container, close }.
 export function sheet(html) {
   const wrap = document.createElement('div');
   wrap.className = 'sheet-wrap';
-  wrap.innerHTML = `<div class="sheet-bg"></div><div class="sheet" role="dialog" aria-modal="true"><div class="grab"></div>${html}</div>`;
+  wrap.innerHTML = `<div class="sheet-bg"></div>
+    <div class="sheet" role="dialog" aria-modal="true">
+      <div class="grab"></div>
+      <button class="icon-btn sm sheet-x" aria-label="Close">${ICON.x}</button>
+      <div class="sheet-body">${html}</div>
+    </div>`;
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add('open'));
-  const close = () => {
+  const panel = wrap.querySelector('.sheet');
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
+  function close() {
+    document.removeEventListener('keydown', onKey);
     wrap.classList.remove('open');
+    panel.style.transform = '';
     setTimeout(() => wrap.remove(), 260);
-  };
+  }
   wrap.querySelector('.sheet-bg').addEventListener('click', close);
-  return { el: wrap.querySelector('.sheet'), close };
+  wrap.querySelector('.sheet-x').addEventListener('click', close);
+  document.addEventListener('keydown', onKey);
+
+  // Swipe down (from the top of the sheet's scroll) to dismiss.
+  let startY = null, dy = 0;
+  panel.addEventListener('touchstart', (e) => {
+    if (panel.scrollTop > 0 || e.target.closest('input, select')) return;
+    startY = e.touches[0].clientY;
+    dy = 0;
+  }, { passive: true });
+  panel.addEventListener('touchmove', (e) => {
+    if (startY == null) return;
+    dy = e.touches[0].clientY - startY;
+    if (dy > 0) {
+      e.preventDefault();
+      panel.style.transition = 'none';
+      panel.style.transform = `translateY(${dy}px)`;
+    }
+  }, { passive: false });
+  panel.addEventListener('touchend', () => {
+    if (startY == null) return;
+    panel.style.transition = '';
+    if (dy > 90) close();
+    else panel.style.transform = '';
+    startY = null;
+  });
+  return { el: wrap.querySelector('.sheet-body'), panel, close };
 }
 
 export const seg = (name, opts, val) =>

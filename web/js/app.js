@@ -3,8 +3,9 @@ import { state, loadPlan } from './store.js';
 import { renderToday, renderPlan, renderSession, updateElapsed } from './workout.js';
 import { renderHistory, renderStats } from './stats.js';
 import { tick } from './timer.js';
-import { ICON } from './util.js';
+import { ICON, dkey } from './util.js';
 import { applyTheme } from './theme.js';
+import { removeSample } from './settings.js';
 
 applyTheme(state.theme);
 
@@ -28,7 +29,27 @@ function route() {
   if (name === 'session') renderSession(view, decodeURIComponent(arg || ''));
   else ROUTES[tab](view);
   document.body.classList.toggle('in-workout', tab === 'today' && !!state.active);
+  // Dot on the Today tab while a workout is in progress.
+  tabbar.querySelector('[data-tab="today"]').classList.toggle('live', !!state.active);
+  renderedDay = dkey(new Date());
 }
+let renderedDay = '';
+
+// Tapping the tab you're already on reloads it and scrolls to the top
+// (otherwise e.g. the "Workout complete" screen could never be left via the tab).
+tabbar.addEventListener('click', (ev) => {
+  const a = ev.target.closest('a[data-tab]');
+  if (!a || a.getAttribute('href') !== location.hash) return;
+  ev.preventDefault();
+  route();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// The sample-data banner's "Remove" button works on every screen.
+document.addEventListener('click', (ev) => {
+  if (!ev.target.closest('[data-act="remove-sample"]')) return;
+  if (confirm('Remove the sample data and bring back your own?')) removeSample();
+});
 
 window.addEventListener('hashchange', () => {
   document.querySelectorAll('.sheet-wrap').forEach((el) => el.remove());
@@ -63,7 +84,13 @@ document.addEventListener('focusout', (ev) => {
   if (!ev.target.matches('input, select')) return;
   setTimeout(() => { window.scrollTo(window.scrollX, window.scrollY); fixViewportGap(); }, 80);
 });
-document.addEventListener('visibilitychange', () => { if (!document.hidden) { tick(); updateElapsed(); } });
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) return;
+  tick();
+  updateElapsed();
+  // Back after midnight: refresh dates and "today" (but never mid-workout).
+  if (dkey(new Date()) !== renderedDay && !(state.active && location.hash.startsWith('#/today'))) route();
+});
 
 async function boot() {
   try {

@@ -1,5 +1,6 @@
 // History (calendar + workout list) and Stats (reports & charts).
 import { state, save, plan, workouts, nextSession } from './store.js';
+import { sampleBanner, loadSample } from './settings.js';
 import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
   timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1,
@@ -66,6 +67,7 @@ export function renderHistory(root) {
 
   root.innerHTML = `
     <header class="top"><div class="grow"><div class="eyebrow">${list.length} workouts logged</div><h1>History</h1></div></header>
+    ${sampleBanner()}
     <section class="card cal">
       <div class="cal-head">
         <button class="icon-btn sm" data-act="prev" aria-label="Previous month">${ICON.chevL}</button>
@@ -104,7 +106,7 @@ const workoutCard = (w) => `
     </div>
   </button>`;
 
-function openWorkout(id) {
+export function openWorkout(id) {
   const w = state.workouts.find((x) => x.id === id);
   if (!w) return;
   const sh = sheet(`
@@ -154,8 +156,27 @@ export function renderStats(root) {
   const avgMin = Math.round(total(inRange(list, addDays(wk0, -7 * (nWeeks - 1)), addDays(wk0, 7)), 'dur') / 60 / nWeeks);
   const hours = total(list, 'dur') / 3600;
 
+  if (!list.length) {
+    root.innerHTML = `
+      <header class="top"><div class="grow"><div class="eyebrow">Your progress</div><h1>Stats</h1></div></header>
+      <section class="card empty-card">
+        <div class="empty-icon">${ICON.stats}</div>
+        <h3>No workouts yet</h3>
+        <p class="muted">Finish your first workout and your totals, streak, charts and muscle balance show up here.</p>
+        <a class="btn primary" href="#/today">${ICON.play}<span>Go to today's workout</span></a>
+        <button class="btn ghost" data-act="sample">Or explore with sample data</button>
+      </section>
+      <section class="card">
+        <div class="card-title">Weekly muscle volume</div>
+        ${plannedVolume(list)}
+      </section>`;
+    root.onclick = (ev) => { if (ev.target.closest('[data-act="sample"]')) loadSample(); };
+    return;
+  }
+
   root.innerHTML = `
     <header class="top"><div class="grow"><div class="eyebrow">Your progress</div><h1>Stats</h1></div></header>
+    ${sampleBanner()}
     <section class="card">
       <div class="card-title">Total</div>
       <div class="totals">
@@ -164,8 +185,8 @@ export function renderStats(root) {
         <div><span>Volume</span><b>${kg(total(list, 'vol'))} kg</b></div>
       </div>
       <div class="duo">
-        <div class="flame">${ICON.flame}<span><b>${streak}</b> week streak</span></div>
-        <div class="moon">${ICON.moon}<span><b>${restDays ?? '–'}</b> rest day${restDays === 1 ? '' : 's'}</span></div>
+        <div class="flame">${ICON.flame}<span><b>${streak}</b><small>week streak</small></span></div>
+        <div class="moon">${ICON.moon}<span><b>${restDays}</b><small>${restDays === 0 ? 'trained today' : `rest day${restDays === 1 ? '' : 's'}`}</small></span></div>
       </div>
     </section>
     <section class="card">
@@ -186,7 +207,7 @@ export function renderStats(root) {
       ${weekBars(list, ui.metric)}
     </section>
     <section class="card">
-      ${seg('tab', [['balance', 'Muscle balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
+      ${seg('tab', [['balance', 'Balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
       ${ui.tab === 'balance' ? balance(list) : ui.tab === 'fatigue' ? fatigue(list) : strength(list)}
     </section>
     <section class="card">
@@ -296,6 +317,7 @@ function radar(curG, prevG) {
 function delta(cur, prev, f) {
   if (prev == null) return '';
   const d = cur - prev;
+  if (!cur && !prev) return '';
   if (Math.abs(d) < 1e-9) return '<small class="delta">same as before</small>';
   return `<small class="delta ${d > 0 ? 'up' : 'down'}">${d > 0 ? '↑' : '↓'} ${f(Math.abs(d))}</small>`;
 }
