@@ -4,6 +4,9 @@ import { renderToday, renderPlan, renderSession, updateElapsed } from './workout
 import { renderHistory, renderStats } from './stats.js';
 import { tick } from './timer.js';
 import { ICON } from './util.js';
+import { applyTheme } from './theme.js';
+
+applyTheme(state.theme);
 
 const view = document.getElementById('view');
 const tabbar = document.getElementById('tabbar');
@@ -33,6 +36,33 @@ window.addEventListener('hashchange', () => {
   window.scrollTo(0, 0);
 });
 window.addEventListener('rerender', route);
+// iOS home-screen bug: with a see-through status bar the layout viewport can
+// come out shorter than the screen by exactly the top safe area, leaving a
+// gap under the tab bar. Detect that and push bottom-pinned UI down by it.
+function fixViewportGap() {
+  let gap = 0;
+  if (navigator.standalone || matchMedia('(display-mode: standalone)').matches) {
+    const probe = document.createElement('div');
+    probe.style.cssText = 'position:fixed;top:0;left:0;height:0;padding-top:env(safe-area-inset-top);visibility:hidden';
+    document.body.appendChild(probe);
+    const safeTop = probe.offsetHeight;
+    probe.remove();
+    const portrait = matchMedia('(orientation: portrait)').matches;
+    const full = portrait ? Math.max(screen.width, screen.height) : Math.min(screen.width, screen.height);
+    const diff = full - window.innerHeight;
+    if (safeTop > 0 && diff > 20 && Math.abs(diff - safeTop) < 10) gap = diff;
+  }
+  document.documentElement.style.setProperty('--gap', `${gap}px`);
+}
+fixViewportGap();
+window.addEventListener('resize', fixViewportGap);
+window.addEventListener('orientationchange', () => setTimeout(fixViewportGap, 300));
+
+// iOS can leave the page shifted after the keyboard closes; nudge it back.
+document.addEventListener('focusout', (ev) => {
+  if (!ev.target.matches('input, select')) return;
+  setTimeout(() => { window.scrollTo(window.scrollX, window.scrollY); fixViewportGap(); }, 80);
+});
 document.addEventListener('visibilitychange', () => { if (!document.hidden) { tick(); updateElapsed(); } });
 
 async function boot() {

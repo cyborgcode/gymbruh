@@ -2,6 +2,7 @@
 import { e1rm } from './util.js';
 
 const KEY = 'gymbruh:v1';
+export const BACKUP_KEY = 'gymbruh:before-sample';
 const blank = () => ({
   v: 1,
   status: {},    // sessionId -> 'done' | 'skipped'
@@ -9,6 +10,8 @@ const blank = () => ({
   active: null,  // workout in progress
   timer: null,   // running rest timer
   hideInstall: false,
+  sample: false, // true while sample data is loaded
+  theme: { accent: 'blue', bg: 'dark' },
 });
 
 export const state = (() => {
@@ -27,9 +30,11 @@ export function save() {
   }
 }
 
+// Replace all data; the colour theme is a preference and is kept.
 export function replaceState(next) {
+  const theme = state.theme;
   Object.keys(state).forEach((k) => delete state[k]);
-  Object.assign(state, blank(), next);
+  Object.assign(state, blank(), next, { theme });
   save();
 }
 
