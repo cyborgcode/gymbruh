@@ -166,6 +166,9 @@ function renderWorkout(root) {
       startTimer(+b.dataset.sec, b.dataset.label);
     } else if (act === 'toggle') toggleRow(root, row);
     else if (act === 'collapse') collapseRow(row);
+    else if (act === 'step') stepWeight(s, row, b.dataset.k, +b.dataset.d);
+    else if (act === 'use') writeWeight(s, row, 'all', fmtW(+b.dataset.w), null);
+    else if (act === 'per' || act === 'same') switchMode(s, row, act === 'per');
     else if (act === 'finish') finishSheet(root, s);
     else if (act === 'discard') {
       if (!confirm('Discard this workout? Nothing will be saved.')) return;
@@ -179,23 +182,21 @@ function renderWorkout(root) {
   root.oninput = (ev) => {
     const inp = ev.target.closest('.in');
     if (!inp) return;
-    const i = +inp.closest('.xrow').dataset.ex, k = +inp.dataset.k;
-    a.log[i][k].w = inp.value;
-    save();
-    // A typed weight becomes the suggestion for the sets below it.
-    inp.closest('.xbody').querySelectorAll('.in').forEach((el) => {
-      if (+el.dataset.k > k) el.placeholder = inp.value || el.dataset.ph;
-    });
+    // Digits and one decimal separator only, up to 999 kg.
+    let v = inp.value.replace(/[^\d.,]/g, '').replace(/([.,]\d*)[.,]/g, '$1').slice(0, 5);
+    if (num(v) > 999) v = '999';
+    if (v !== inp.value) inp.value = v;
+    writeWeight(s, inp.closest('.xrow'), inp.dataset.k, v, inp);
   };
 
-  // Keyboard "next"/"done": jump to the next set, or close the exercise.
+  // Keyboard "next"/"done": jump to the next set's box, or close the keyboard.
   root.onkeydown = (ev) => {
     const inp = ev.target.closest('.in');
     if (!inp || ev.key !== 'Enter') return;
     ev.preventDefault();
-    const next = inp.closest('.xbody').querySelector(`.in[data-k="${+inp.dataset.k + 1}"]`);
+    const next = inp.dataset.k === 'all' ? null : inp.closest('.xbody').querySelector(`.in[data-k="${+inp.dataset.k + 1}"]`);
     if (next) next.focus();
-    else collapseRow(inp.closest('.xrow'));
+    else inp.blur();
   };
 }
 
@@ -214,44 +215,89 @@ function cardioRow(s) {
     </div>`;
 }
 
-function exRow(x, i) {
+const STEP = 2.5;
+const fmtW = (v) => fmt1(Math.round(v * 10) / 10);
+
+// Per-set mode: on when the sets have different targets (top set + back-offs)
+// or different weights were logged; otherwise one weight covers all sets.
+function perMode(x, i) {
+  const a = state.active;
+  if (a.per && a.per[i] != null) return a.per[i];
+  const pcts = new Set(x.sets.map((t) => t.pct ?? 0));
+  const typed = new Set(a.log[i].map((e) => e.w).filter((w) => w !== ''));
+  return pcts.size > 1 || typed.size > 1;
+}
+
+function suggestions(x, inf) {
+  const last = lastSet(inf.name);
+  const best = x.slot === 'M' && inf.lift !== 'pullup' ? bestE1rm(inf.lift) : null;
+  return { last: last ? last.w : null, best, perSet: x.sets.map((t) => (t.pct && best ? roundDown(t.pct * best) : null)) };
+}
+
+function stepper(k, value, ph, small, label) {
+  return `
+    <div class="stepper ${small ? 'sm' : ''}">
+      <button class="stp" data-act="step" data-k="${k}" data-d="-${STEP}" aria-label="Minus ${STEP} kg">−</button>
+      <label class="kgbox"><input class="in" data-k="${k}" inputmode="decimal" autocomplete="off" enterkeyhint="done"
+        placeholder="${esc(ph || '–')}" value="${esc(value)}" aria-label="${esc(label)}">${small ? '' : '<span>kg</span>'}</label>
+      <button class="stp" data-act="step" data-k="${k}" data-d="${STEP}" aria-label="Plus ${STEP} kg">+</button>
+    </div>`;
+}
+
+// Grey numbers are suggestions only; white numbers are what gets saved.
+function weightLogger(x, i, inf) {
+  const log = state.active.log[i];
+  const sg = suggestions(x, inf);
+  const n = x.sets.length;
+  const added = inf.lift === 'pullup' ? ' · added weight' : '';
+  if (perMode(x, i)) {
+    const rows = x.sets.map((t, k) => {
+      const ph = sg.perSet[k] != null ? fmtW(sg.perSet[k]) : sg.last != null ? fmtW(sg.last) : '';
+      return `
+        <div class="wrow">
+          <span class="set-n">${k + 1}</span>
+          <span class="set-t"><b>${esc(t.reps)}${t.pct ? ` · ${Math.round(t.pct * 1000) / 10}%` : ''}</b><small>${esc(t.eff)}</small></span>
+          ${stepper(k, log[k].w, ph, true, `Set ${k + 1} weight in kg`)}
+        </div>`;
+    }).join('');
+    return `
+      <div class="wlog">
+        <div class="wl-head"><span>Weight per set <small>kg${added}</small></span>${n > 1 ? '<button class="link sm" data-act="same">Same for all</button>' : ''}</div>
+        ${rows}
+        ${sg.best ? `<p class="ex-hint">Grey numbers are suggestions from your e1RM of ${Math.round(sg.best)} kg. Tap − or + to use one.</p>` : ''}
+      </div>`;
+  }
+  const sugg = sg.perSet.find((v) => v != null);
+  const ph = sugg != null ? fmtW(sugg) : sg.last != null ? fmtW(sg.last) : '';
+  const chips = [];
+  if (sg.last != null) chips.push(`<button class="chip" data-act="use" data-w="${sg.last}">Last ${fmtW(sg.last)} kg</button>`);
+  if (sugg != null && sugg !== sg.last) chips.push(`<button class="chip" data-act="use" data-w="${sugg}">Suggested ${fmtW(sugg)} kg</button>`);
+  return `
+    <div class="wlog">
+      <div class="wl-head"><span>Weight <small>${n > 1 ? `same for all ${n} sets` : 'kg'}${added}</small></span></div>
+      ${stepper('all', log[0].w, ph, false, 'Weight in kg for all sets')}
+      ${chips.length ? `<div class="chips-row">${chips.join('')}</div>` : ''}
+      ${n > 1 ? '<button class="link sm" data-act="per">Different weight per set</button>' : ''}
+    </div>`;
+}
+
+function exRow(x, i, open = false) {
   const inf = info(x);
   const log = state.active.log[i];
-  const last = lastSet(inf.name);
-  const pct = x.sets.find((t) => t.pct)?.pct;
-  const best = x.slot === 'M' && inf.lift !== 'pullup' ? bestE1rm(inf.lift) : null;
-  const hint = x.slot === 'M' && pct && best ? `Suggested weights come from your e1RM of ${Math.round(best)} kg.`
-    : inf.lift === 'pullup' ? 'Log added weight only.' : '';
-
-  const sets = x.sets.map((t, k) => {
-    let ph = t.pct && best ? String(roundDown(t.pct * best)) : last ? fmt1(last.w) : '';
-    const prevTyped = log.slice(0, k).map((e) => e.w).filter((w) => w !== '').at(-1);
-    const shown = prevTyped || ph;
-    return `
-      <div class="wrow">
-        <span class="set-n">${k + 1}</span>
-        <span class="set-t"><b>${esc(t.reps)}${t.pct ? ` · ${Math.round(t.pct * 1000) / 10}%` : ''}</b><small>${esc(t.eff)}</small></span>
-        <label class="kg"><input class="in" data-k="${k}" inputmode="decimal" autocomplete="off"
-          enterkeyhint="${k === x.sets.length - 1 ? 'done' : 'next'}" placeholder="${esc(shown || '–')}" data-ph="${esc(ph || '–')}"
-          value="${esc(log[k].w)}" aria-label="Set ${k + 1} weight in kg"><span>kg</span></label>
-      </div>`;
-  }).join('');
-
   return `
-    <div class="xrow" data-ex="${i}">
+    <div class="xrow ${open ? 'open' : ''}" data-ex="${i}">
       <div class="xhead" data-act="toggle">
         <span class="tag ${tagCls(x)}">${x.label}</span>
         <div class="grow">
           <div class="xname">${esc(inf.name)}${x.spec ? ' <span class="star">★</span>' : ''}</div>
           <div class="xrx">${esc(x.rx)}</div>
-          <div class="xmeta">${metaHtml(log, last)}</div>
+          <div class="xmeta">${metaHtml(log, lastSet(inf.name))}</div>
         </div>
         <button class="tbtn" data-act="rest" data-sec="${x.rest}" data-label="Rest · ${esc(inf.name)}" aria-label="Start ${x.rest} second rest timer">${ICON.timer}<span>${restLabel(x.rest)}</span></button>
       </div>
-      <div class="xbody" hidden>
-        ${sets}
+      <div class="xbody" ${open ? '' : 'hidden'}>
+        ${inf.bw ? '<p class="bw-note">Bodyweight exercise, nothing to log.</p>' : weightLogger(x, i, inf)}
         <p class="cue">${esc(inf.cue)}</p>
-        ${hint ? `<p class="ex-hint">${esc(hint)}</p>` : ''}
         <button class="btn sm done-btn" data-act="collapse">Done</button>
       </div>
     </div>`;
@@ -268,14 +314,60 @@ function metaHtml(log, last) {
   return parts.join('');
 }
 
+// Save a weight. 'all' sets every set; a single set also fills the empty
+// (or auto-filled) sets below it, so what you see in white is what's saved.
+function writeWeight(s, row, k, v, src) {
+  const i = +row.dataset.ex, log = state.active.log[i], sets = s.ex[i].sets;
+  if (k === 'all') log.forEach((e) => { e.w = v; e.auto = false; });
+  else {
+    const kk = +k;
+    log[kk].w = v;
+    log[kk].auto = false;
+    // Only copy down into sets with the same target (never top set -> back-offs).
+    for (let j = kk + 1; j < log.length; j++) {
+      if ((sets[j].pct ?? 0) !== (sets[kk].pct ?? 0)) break;
+      if (log[j].w !== '' && !log[j].auto) break;
+      log[j].w = v;
+      log[j].auto = v !== '';
+    }
+  }
+  save();
+  row.querySelectorAll('.in').forEach((el) => {
+    if (el === src) return;
+    el.value = el.dataset.k === 'all' ? log[0].w : log[+el.dataset.k].w;
+  });
+  row.querySelector('.xmeta').innerHTML = metaHtml(log, lastSet(info(s.ex[i]).name));
+}
+
+// − / +: the first tap on an empty box takes the suggestion, then steps 2.5 kg.
+function stepWeight(s, row, k, d) {
+  const log = state.active.log[+row.dataset.ex];
+  const inp = row.querySelector(`.in[data-k="${k}"]`);
+  const cur = num(k === 'all' ? log[0].w : log[+k].w);
+  const base = num(inp.placeholder);
+  const v = cur == null ? (base ?? Math.max(0, d)) : Math.max(0, Math.min(999, cur + d));
+  writeWeight(s, row, k, fmtW(v), null);
+}
+
+function switchMode(s, row, per) {
+  const i = +row.dataset.ex, log = state.active.log[i];
+  state.active.per = { ...(state.active.per || {}), [i]: per };
+  if (!per) {
+    const first = log.find((e) => e.w !== '')?.w || '';
+    log.forEach((e) => { e.w = first; e.auto = false; });
+  }
+  save();
+  row.outerHTML = exRow(s.ex[i], i, true);
+}
+
 function toggleRow(root, row) {
   const wasOpen = row.classList.contains('open');
   root.querySelectorAll('.xrow.open').forEach(collapseRow);
   if (wasOpen) return;
   row.classList.add('open');
   row.querySelector('.xbody').hidden = false;
-  // No auto-focus: the keyboard only opens when you tap a kg box. On iPhone
-  // a surprise keyboard makes the pinned header and tab bar jump around.
+  // No auto-focus: − / + and the chips need no keyboard. On iPhone a
+  // surprise keyboard makes the pinned header and tab bar jump around.
   row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
@@ -284,11 +376,6 @@ function collapseRow(row) {
   row.classList.remove('open');
   row.querySelector('.xbody').hidden = true;
   if (row.contains(document.activeElement)) document.activeElement.blur();
-  const i = row.dataset.ex;
-  if (i !== 'cardio') {
-    const x = plan.byId[state.active.sid].ex[+i];
-    row.querySelector('.xmeta').innerHTML = metaHtml(state.active.log[+i], lastSet(info(x).name));
-  }
 }
 
 export function updateElapsed() {
@@ -296,17 +383,14 @@ export function updateElapsed() {
   if (el && state.active) el.textContent = clock((Date.now() - state.active.start) / 1000);
 }
 
-// Every set counts as done. Typed weights carry down to the sets below them.
+// Every set counts as done; a set's weight is exactly what its box shows.
 function summarize(s) {
   const a = state.active;
   let sets = 0, vol = 0, reps = 0, logged = 0;
   const ex = s.ex.map((x, i) => {
     const inf = info(x);
-    let carry = null;
     const done = x.sets.map((t, k) => {
-      const typed = num(a.log[i][k].w);
-      if (typed != null) carry = typed;
-      const w = typed ?? carry;
+      const w = num(a.log[i][k].w);
       const r = isHold(t.reps) ? null : firstInt(t.reps) || null;
       sets += 1;
       if (r) reps += r;

@@ -85,8 +85,25 @@ document.addEventListener('touchstart', () => {}, { passive: true });
 // While typing, hide the tab bar and unpin the header: iOS moves pinned
 // elements around when the keyboard is open.
 document.addEventListener('focusin', (ev) => {
-  if (ev.target.matches('input, select')) document.body.classList.add('typing');
+  if (!ev.target.matches('input, select')) return;
+  document.body.classList.add('typing');
+  // Weight boxes: select the current value so typing replaces it.
+  if (ev.target.matches('.in')) {
+    ev.target.dataset.fresh = '1';
+    setTimeout(() => selectAll(ev.target), 30);
+  }
 });
+// iOS moves the caret to the tap point after focusing, which clears the
+// selection, so select again on that first tap.
+document.addEventListener('click', (ev) => {
+  const el = ev.target.closest('.in');
+  if (!el || !el.dataset.fresh) return;
+  delete el.dataset.fresh;
+  selectAll(el);
+});
+function selectAll(el) {
+  try { el.setSelectionRange(0, el.value.length); } catch (e) { /* ignore */ }
+}
 // iOS can leave the page shifted after the keyboard closes; nudge it back.
 document.addEventListener('focusout', (ev) => {
   if (!ev.target.matches('input, select')) return;

@@ -40,7 +40,7 @@ export function makeSample() {
         const inf = info(x);
         let base = null;
         if (inf.lift && !(inf.lift === 'pullup' && s.month <= 3)) base = MAIN_BASE[inf.lift] * grow;
-        else if (!BODYWEIGHT.test(inf.name)) base = (10 + (hash(inf.name) % 25)) * grow;
+        else if (!inf.bw && !BODYWEIGHT.test(inf.name)) base = (10 + (hash(inf.name) % 25)) * grow;
         const done = x.sets.map((t) => {
           const r = isHold(t.reps) ? null : firstInt(t.reps) || null;
           const w = base == null ? null : Math.max(2.5, roundDown(base * (t.pct ? t.pct / 0.75 : 1)));

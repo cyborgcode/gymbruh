@@ -781,6 +781,10 @@ def app_session(m, k, day, wk, kind):
 
 
 EXERCISES = {}
+# Pure bodyweight moves: the app shows no weight logger for these.
+BODYWEIGHT = re.compile(r"^(Hanging Knee Raise|Hanging Leg Raise \(straight|Toes-to-Bar|Reverse Crunch|"
+                        r"Incline Reverse Crunch|Side Plank|Hollow Body Hold|Dragon Flag|L-Sit|"
+                        r"Kneeling Ab Wheel|Ab Wheel Rollout)")
 
 
 def exercise_id(e):
@@ -789,7 +793,8 @@ def exercise_id(e):
         if (data["name"], data["cue"]) == key:
             return eid
     eid = f"e{len(EXERCISES) + 1}"
-    EXERCISES[eid] = dict(name=e["name"], cue=e["cue"], muscles=e["muscles"], lift=LIFT_KEYS.get(e["name"]))
+    EXERCISES[eid] = dict(name=e["name"], cue=e["cue"], muscles=e["muscles"], lift=LIFT_KEYS.get(e["name"]),
+                          bw=bool(BODYWEIGHT.match(e["name"])))
     return eid
 
 
