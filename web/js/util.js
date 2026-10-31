@@ -72,7 +72,11 @@ export const ICON = {
 };
 
 // ---- UI bits
-export function toast(msg, ms = 2200) {
+// Message bar above the tab bar. Pass { undo: fn } to offer an Undo button
+// instead of asking "are you sure?" first.
+export function toast(msg, opts = {}) {
+  if (typeof opts === 'number') opts = { ms: opts };
+  const ms = opts.ms || (opts.undo ? 5000 : 2200);
   let el = document.getElementById('toast');
   if (!el) {
     el = document.createElement('div');
@@ -80,10 +84,16 @@ export function toast(msg, ms = 2200) {
     el.setAttribute('role', 'status');
     document.body.appendChild(el);
   }
-  el.textContent = msg;
+  el.innerHTML = `<span></span>${opts.undo ? '<button type="button">Undo</button>' : ''}`;
+  el.querySelector('span').textContent = msg;
+  const hide = () => el.classList.remove('show');
+  if (opts.undo) {
+    el.querySelector('button').onclick = () => { hide(); opts.undo(); };
+  }
+  el.classList.toggle('has-action', !!opts.undo);
   el.classList.add('show');
   clearTimeout(toast.t);
-  toast.t = setTimeout(() => el.classList.remove('show'), ms);
+  toast.t = setTimeout(hide, ms);
 }
 
 // Bottom sheet. Close with the × button, a tap on the dimmed area, a swipe

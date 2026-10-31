@@ -3,7 +3,7 @@ import { state, save, plan, workouts, nextSession } from './store.js';
 import { sampleBanner, loadSample } from './settings.js';
 import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
-  timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1,
+  timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast,
 } from './util.js';
 
 const GROUPS = {
@@ -128,12 +128,18 @@ export function openWorkout(id) {
     <button class="btn danger" data-act="del">Delete workout</button>`);
   sh.el.onclick = (ev) => {
     if (!ev.target.closest('[data-act="del"]')) return;
-    if (!confirm('Delete this workout?')) return;
+    const before = { workouts: [...state.workouts], status: state.status[w.sid] };
     state.workouts = state.workouts.filter((x) => x.id !== id);
     if (!state.workouts.some((x) => x.sid === w.sid)) delete state.status[w.sid];
     save();
     sh.close();
     rerender();
+    toast('Workout deleted', { undo: () => {
+      state.workouts = before.workouts;
+      if (before.status) state.status[w.sid] = before.status;
+      save();
+      rerender();
+    } });
   };
 }
 

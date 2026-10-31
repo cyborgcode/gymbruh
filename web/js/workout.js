@@ -1,7 +1,7 @@
 // Today, the live workout, the Plan tab and session previews.
 import { state, save, plan, info, nextSession, monthOf, lastSet, bestE1rm, workouts } from './store.js';
 import {
-  esc, ICON, clock, dur, kg, num, firstInt, isHold, roundDown, fmt1, sheet, unlockAudio,
+  esc, ICON, clock, dur, kg, num, firstInt, isHold, roundDown, fmt1, sheet, toast, unlockAudio,
   dateStr, sameDay, daysBetween,
 } from './util.js';
 import { startTimer, clearTimer } from './timer.js';
@@ -30,6 +30,7 @@ export function renderToday(root) {
     ${sampleBanner()}
     ${installBanner()}
     ${weekStrip()}
+    ${introCard()}
     ${todays.map(doneCard).join('')}
     ${next ? hero(next, todays.length > 0, last) + previewList(next) : planDoneCard()}`;
 
@@ -38,6 +39,8 @@ export function renderToday(root) {
     if (!b) return;
     const act = b.dataset.act;
     if (act === 'settings') openSettings();
+    if (act === 'intro-ok') { state.seenIntro = true; save(); rerender(); }
+    if (act === 'terms') openTerms();
     if (act === 'start') startSession(next.id);
     if (act === 'skip') skipSession(next.id);
     if (act === 'hide-install') { state.hideInstall = true; save(); rerender(); }
@@ -57,15 +60,47 @@ function hero(s, doneToday, last) {
       <div class="hero-sub">${esc(s.dayName)}</div>
       <div class="chips"><span>≈ ${dur(s.est * 60)}</span><span>${s.ex.length} exercises</span><span>30 min cardio</span></div>
       ${hint ? `<p class="hint">${hint}</p>` : ''}
-      <button class="btn primary big" data-act="start">${ICON.play}<span>Start workout</span></button>
+      ${doneToday
+        ? `<button class="btn big" data-act="start">${ICON.play}<span>Start anyway</span></button>`
+        : `<button class="btn primary big" data-act="start">${ICON.play}<span>Start workout</span></button>`}
       <button class="link center" data-act="skip">Skip this session</button>
     </section>`;
+}
+
+function introCard() {
+  if (state.seenIntro || state.workouts.length) return '';
+  return `
+    <section class="card intro">
+      <div class="card-title">How it works</div>
+      <ol>
+        <li><b>Start</b> today's workout. Every session opens with 30 min of easy cardio.</li>
+        <li>Tap <b>${ICON.timer}</b> on an exercise for its rest timer. Tap an exercise to log a weight if you want to.</li>
+        <li>Tap <b>Finish</b>. Everything is marked done and your stats update.</li>
+      </ol>
+      <div class="row"><button class="btn sm primary" data-act="intro-ok">Got it</button><button class="btn sm" data-act="terms">What do RIR &amp; % mean?</button></div>
+    </section>`;
+}
+
+// Plain-language guide to the training terms used across the plan.
+export function openTerms() {
+  sheet(`
+    <h3>Training terms</h3>
+    <dl class="terms">
+      <dt>RIR</dt><dd>Reps in reserve: how many more clean reps you could still do. <b>RIR 2</b> means stop with 2 left in the tank.</dd>
+      <dt>RPE</dt><dd>Effort from 1 to 10. <b>RPE 8</b> is about 2 reps left (RPE = 10 − RIR).</dd>
+      <dt>%</dt><dd>Share of your one-rep max. <b>≈ 65%</b> is only a guide: pick a weight that matches the RIR.</dd>
+      <dt>e1RM</dt><dd>Your estimated one-rep max, worked out from the weights you log. It powers the suggested weights.</dd>
+      <dt>Superset</dt><dd>Do one set of each exercise back to back, then rest.</dd>
+      <dt>Top set · Back-off</dt><dd>One heavy set, then lighter sets for volume.</dd>
+      <dt>Deload</dt><dd>A planned easy week so you recover and come back stronger.</dd>
+      <dt>Zone 2</dt><dd>Easy cardio: you can still talk in full sentences.</dd>
+    </dl>`);
 }
 
 function previewList(s) {
   return `
     <section class="card">
-      <div class="card-title">What's in it</div>
+      <div class="card-title row-between"><span>What's in it</span><button class="link sm" data-act="terms">Terms</button></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
       <ol class="preview">
         <li><span class="tag c">C</span><div><b>Cardio · 30 min</b><small>${esc(s.cardio)}</small></div></li>
@@ -117,10 +152,10 @@ export function startSession(id) {
 
 function skipSession(id) {
   const s = plan.byId[id];
-  if (!confirm(`Skip ${s.title}? It won't count as a workout.`)) return;
   state.status[id] = 'skipped';
   save();
   rerender();
+  toast(`Skipped ${s.title}`, { undo: () => { delete state.status[id]; save(); rerender(); } });
 }
 
 // ------------------------------------------------------------------ Live workout
@@ -151,7 +186,7 @@ function renderWorkout(root) {
       <div class="row"><button class="btn sm primary" data-act="finish">Finish it</button><button class="btn sm" data-act="discard">Discard</button></div></div>` : ''}
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
-    <p class="tip">Tap an exercise to log weights (optional). Tap ${ICON.timer} for the rest timer.</p>
+    <p class="tip">Tap an exercise to log weights (optional). Tap ${ICON.timer} for the rest timer. <button class="link sm" data-act="terms">What do RIR &amp; % mean?</button></p>
     ${rows}
     <button class="btn primary big" data-act="finish">${ICON.check}<span>Finish workout</span></button>
     <button class="btn ghost" data-act="discard">Discard workout</button>`;
@@ -170,12 +205,14 @@ function renderWorkout(root) {
     else if (act === 'use') writeWeight(s, row, 'all', fmtW(+b.dataset.w), null);
     else if (act === 'per' || act === 'same') switchMode(s, row, act === 'per');
     else if (act === 'finish') finishSheet(root, s);
+    else if (act === 'terms') openTerms();
     else if (act === 'discard') {
-      if (!confirm('Discard this workout? Nothing will be saved.')) return;
+      const kept = state.active;
       state.active = null;
       clearTimer();
       save();
       rerender();
+      toast('Workout discarded', { undo: () => { state.active = kept; save(); rerender(); } });
     }
   };
 
@@ -427,6 +464,14 @@ function finishSheet(root, s) {
 
 function saveWorkout(root, s, sum) {
   const a = state.active;
+  // Compare logged weights with your previous session, before saving this one.
+  const changes = sum.ex.map((x) => {
+    const top = Math.max(...x.sets.map((st) => st.w || 0));
+    if (!top) return null;
+    const prev = lastSet(x.n);
+    const best = Math.max(0, ...state.workouts.flatMap((w) => w.ex.filter((e) => e.n === x.n).flatMap((e) => e.sets.map((st) => st.w || 0))));
+    return { n: x.n, top, prev: prev ? prev.w : null, pr: best > 0 && top > best };
+  }).filter(Boolean);
   const w = {
     id: Date.now().toString(36),
     sid: s.id, title: s.title, dayName: s.dayName, day: s.day, week: s.week, month: s.month, kind: s.kind,
@@ -449,6 +494,13 @@ function saveWorkout(root, s, sum) {
         ${statBox('Duration', dur(w.dur))}${statBox('Exercises', s.ex.length)}
         ${statBox('Sets', w.sets)}${statBox('Volume', w.vol ? `${kg(w.vol)} kg` : '–')}
       </div>
+      ${changes.length ? `<div class="changes"><div class="card-title">Weights today</div>${changes.map((c) => {
+        const d = c.prev == null ? null : Math.round((c.top - c.prev) * 10) / 10;
+        const tag = c.pr ? '<span class="pr">New best</span>'
+          : d == null ? '<span class="muted">first time</span>'
+          : d > 0 ? `<span class="up">↑ ${fmt1(d)} kg</span>` : d < 0 ? `<span class="down">↓ ${fmt1(-d)} kg</span>` : '<span class="muted">same as last</span>';
+        return `<div class="chg"><span>${esc(c.n)}</span><b>${fmt1(c.top)} kg</b>${tag}</div>`;
+      }).join('')}</div>` : ''}
       ${next ? `<p class="muted">Next up: <b>${esc(next.title)}</b> · ${esc(next.dayName)}</p>` : ''}
       <a class="btn primary big" href="#/stats">See your stats</a>
       <button class="btn ghost" data-act="home">Back to Today</button>
@@ -484,7 +536,12 @@ export function renderPlan(root) {
   root.querySelectorAll('details.month').forEach((d) => d.addEventListener('toggle', () => {
     if (d.open) openMonths.add(+d.dataset.m); else openMonths.delete(+d.dataset.m);
   }));
+  if (!planScrolled && next && next.month > 1) {
+    planScrolled = true;
+    requestAnimationFrame(() => root.querySelector('button.dchip.next')?.closest('.wk-row')?.scrollIntoView({ block: 'center' }));
+  }
 }
+let planScrolled = false;
 
 function monthBlock(m, open, next) {
   const sess = plan.sessions.filter((s) => s.month === m.n);
@@ -533,6 +590,13 @@ export function renderSession(root, id) {
     if (act === 'back') { if (history.length > 1) history.back(); else location.hash = '#/plan'; }
     if (act === 'start') startSession(id);
     if (act === 'skip') skipSession(id);
-    if (act === 'reset') { delete state.status[id]; save(); rerender(); }
+    if (act === 'reset') {
+      const was = state.status[id];
+      delete state.status[id];
+      save();
+      rerender();
+      toast('Marked as not done', { undo: () => { state.status[id] = was; save(); rerender(); } });
+    }
+    if (act === 'terms') openTerms();
   };
 }
