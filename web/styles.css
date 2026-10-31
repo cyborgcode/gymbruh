@@ -485,3 +485,17 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .link.sm { display: inline-block; padding: 10px 0 0; font-size: 14px; }
 .wl-head .link.sm { padding: 0; }
 .bw-note { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+
+/* ---------- stats: tappable charts, captions, empty chart */
+.totals.three { grid-template-columns: repeat(3, 1fr); margin-top: 14px; }
+.totals.three b { font-size: 20px; }
+.sub.tight { margin: 10px 0 0; font-size: 12px; }
+.chart-caption { margin-top: 8px; padding: 9px 12px; border-radius: 12px; background: var(--card2); font-size: 13px; color: var(--text); }
+.chart-caption .muted { color: var(--muted); }
+.chart-empty { margin: 4px 0; padding: 28px 16px; border-radius: 14px; border: 1.5px dashed var(--line); color: var(--muted); font-size: 14px; text-align: center; }
+.bars .hit, .heat .h-hit { fill: transparent; }
+.bars g[data-bar], .heat g[data-day] { cursor: pointer; }
+.bars .bar.cur { fill: var(--lv3); }
+.bars .bar.sel { fill: var(--accent); }
+.bars .axis.on { fill: var(--text); font-weight: 700; }
+.heat .h-sel { stroke: var(--text); stroke-width: 1.5; }

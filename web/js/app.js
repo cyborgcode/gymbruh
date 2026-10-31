@@ -26,6 +26,7 @@ function route() {
   });
   view.oninput = null;
   view.onkeydown = null;
+  view.style.minHeight = '';
   if (name === 'session') renderSession(view, decodeURIComponent(arg || ''));
   else ROUTES[tab](view);
   document.body.classList.toggle('in-workout', tab === 'today' && !!state.active);

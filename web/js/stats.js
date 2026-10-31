@@ -14,7 +14,7 @@ const AXES = ['Back', 'Chest', 'Core', 'Shoulders', 'Arms', 'Legs']; // hexagon,
 const LIFTS = [['bench', 'Bench Press'], ['legpress', 'Leg Press'], ['hipthrust', 'Hip Thrust'],
   ['row', 'Barbell Row'], ['ohp', 'Overhead Press'], ['pullup', 'Pull-up (added kg)']];
 
-const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0 };
+const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0, barSel: null, daySel: null };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const inRange = (list, from, to) => list.filter((w) => w.start >= +from && w.start < +to);
 const total = (list, k) => list.reduce((a, w) => a + (w[k] || 0), 0);
@@ -138,24 +138,22 @@ export function openWorkout(id) {
 }
 
 // ------------------------------------------------------------------ Stats
+// Each card renders on its own, so tapping a toggle, arrow, bar or heatmap
+// square only redraws that card and the page never jumps.
+const CARDS = {
+  totals: totalsCard,
+  week: weekCard,
+  activity: (list) => `<div class="card-title">Activity</div>${heatmap(list)}`,
+  bars: (list) => `<div class="card-title">Last 12 weeks</div>
+    ${seg('metric', [['n', 'Workouts'], ['dur', 'Duration'], ['vol', 'Volume'], ['reps', 'Reps']], ui.metric)}
+    ${weekBars(list, ui.metric)}`,
+  muscles: (list) => `${seg('tab', [['balance', 'Balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
+    ${ui.tab === 'balance' ? balance(list) : ui.tab === 'fatigue' ? fatigue(list) : strength(list)}`,
+  planned: (list) => `<div class="card-title">Weekly muscle volume</div>${plannedVolume(list)}`,
+};
+
 export function renderStats(root) {
   const list = workouts();
-  const now = new Date();
-  const wk0 = sow(now);
-
-  const weeks = new Set(list.map((w) => +sow(w.start)));
-  let cur = weeks.has(+wk0) ? wk0 : addDays(wk0, -7);
-  let streak = 0;
-  while (weeks.has(+cur)) { streak++; cur = addDays(cur, -7); }
-  const last = list.at(-1);
-  const restDays = last ? daysBetween(last.start, now) : null;
-
-  const todayMin = Math.round(total(inRange(list, sod(now), addDays(sod(now), 1)), 'dur') / 60);
-  const firstWk = list.length ? sow(list[0].start) : wk0;
-  const nWeeks = Math.min(12, Math.max(1, Math.round((wk0 - firstWk) / (7 * 864e5)) + 1));
-  const avgMin = Math.round(total(inRange(list, addDays(wk0, -7 * (nWeeks - 1)), addDays(wk0, 7)), 'dur') / 60 / nWeeks);
-  const hours = total(list, 'dur') / 3600;
-
   if (!list.length) {
     root.innerHTML = `
       <header class="top"><div class="grow"><div class="eyebrow">Your progress</div><h1>Stats</h1></div></header>
@@ -166,10 +164,7 @@ export function renderStats(root) {
         <a class="btn primary" href="#/today">${ICON.play}<span>Go to today's workout</span></a>
         <button class="btn ghost" data-act="sample">Or explore with sample data</button>
       </section>
-      <section class="card">
-        <div class="card-title">Weekly muscle volume</div>
-        ${plannedVolume(list)}
-      </section>`;
+      <section class="card">${CARDS.planned(list)}</section>`;
     root.onclick = (ev) => { if (ev.target.closest('[data-act="sample"]')) loadSample(); };
     return;
   }
@@ -177,82 +172,110 @@ export function renderStats(root) {
   root.innerHTML = `
     <header class="top"><div class="grow"><div class="eyebrow">Your progress</div><h1>Stats</h1></div></header>
     ${sampleBanner()}
-    <section class="card">
-      <div class="card-title">Total</div>
-      <div class="totals">
-        <div><span>Workouts</span><b>${list.length}</b></div>
-        <div><span>Time</span><b>${hours < 10 ? hours.toFixed(1) : Math.round(hours)} h</b></div>
-        <div><span>Volume</span><b>${kg(total(list, 'vol'))} kg</b></div>
-      </div>
-      <div class="duo">
-        <div class="flame">${ICON.flame}<span><b>${streak}</b><small>week streak</small></span></div>
-        <div class="moon">${ICON.moon}<span><b>${restDays}</b><small>${restDays === 0 ? 'trained today' : `rest day${restDays === 1 ? '' : 's'}`}</small></span></div>
-      </div>
-    </section>
-    <section class="card">
-      <div class="card-title">This week</div>
-      ${weekStrip(false)}
-      <div class="totals two">
-        <div><span>Today</span><b>${todayMin} min</b></div>
-        <div><span>Weekly average</span><b>${avgMin} min</b></div>
-      </div>
-    </section>
-    <section class="card">
-      <div class="card-title">Activity</div>
-      ${heatmap(list)}
-    </section>
-    <section class="card">
-      <div class="card-title">Last 12 weeks</div>
-      ${seg('metric', [['n', 'Workouts'], ['dur', 'Duration'], ['vol', 'Volume'], ['reps', 'Reps']], ui.metric)}
-      ${weekBars(list, ui.metric)}
-    </section>
-    <section class="card">
-      ${seg('tab', [['balance', 'Balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
-      ${ui.tab === 'balance' ? balance(list) : ui.tab === 'fatigue' ? fatigue(list) : strength(list)}
-    </section>
-    <section class="card">
-      <div class="card-title">Weekly muscle volume</div>
-      ${plannedVolume(list)}
-    </section>`;
+    ${Object.entries(CARDS).map(([k, f]) => `<section class="card" data-card="${k}">${f(list)}</section>`).join('')}`;
 
   root.onclick = (ev) => {
-    const b = ev.target.closest('[data-seg],[data-act]');
-    if (!b) return;
+    const b = ev.target.closest('[data-seg],[data-act],[data-bar],[data-day]');
+    const cardEl = b && b.closest('[data-card]');
+    if (!cardEl) return;
     if (b.dataset.seg) {
       ui[b.dataset.seg] = b.dataset.val;
       if (b.dataset.seg === 'period') ui.weekOff = 0;
-    }
-    if (b.dataset.act === 'wprev') ui.weekOff -= 1;
-    if (b.dataset.act === 'wnext' && ui.weekOff < 0) ui.weekOff += 1;
-    renderStats(root);
+    } else if (b.dataset.act === 'wprev') ui.weekOff -= 1;
+    else if (b.dataset.act === 'wnext') ui.weekOff = Math.min(0, ui.weekOff + 1);
+    else if (b.dataset.bar != null) ui.barSel = +b.dataset.bar;
+    else if (b.dataset.day) ui.daySel = ui.daySel === b.dataset.day ? null : b.dataset.day;
+    else return;
+    // Redraw only this card and keep it exactly where it was on screen. The
+    // page keeps its height so a shorter card can't yank you upward.
+    root.style.minHeight = `${root.offsetHeight}px`;
+    const top = cardEl.getBoundingClientRect().top;
+    cardEl.innerHTML = CARDS[cardEl.dataset.card](workouts());
+    const shift = cardEl.getBoundingClientRect().top - top;
+    if (shift) window.scrollBy(0, shift);
   };
 }
 
+function totalsCard(list) {
+  const now = new Date();
+  const wk0 = sow(now);
+  const weeks = new Set(list.map((w) => +sow(w.start)));
+  let cur = weeks.has(+wk0) ? wk0 : addDays(wk0, -7);
+  let streak = 0;
+  while (weeks.has(+cur)) { streak++; cur = addDays(cur, -7); }
+  const restDays = daysBetween(list.at(-1).start, now);
+  const hours = total(list, 'dur') / 3600;
+  return `
+    <div class="card-title">Total</div>
+    <div class="totals">
+      <div><span>Workouts</span><b>${list.length}</b></div>
+      <div><span>Time</span><b>${hours < 10 ? hours.toFixed(1) : Math.round(hours)} h</b></div>
+      <div><span>Volume</span><b>${kg(total(list, 'vol'))} kg</b></div>
+    </div>
+    <div class="duo">
+      <div class="flame">${ICON.flame}<span><b>${streak}</b><small>week streak</small></span></div>
+      <div class="moon">${ICON.moon}<span><b>${restDays}</b><small>${restDays === 0 ? 'trained today' : `rest day${restDays === 1 ? '' : 's'}`}</small></span></div>
+    </div>`;
+}
+
+// Weekly average uses finished weeks only (up to the last 8), so it doesn't
+// drop every Monday because the new week has barely started.
+function weekCard(list) {
+  const now = new Date();
+  const wk0 = sow(now);
+  const todayMin = Math.round(total(inRange(list, sod(now), addDays(sod(now), 1)), 'dur') / 60);
+  const thisWeekMin = Math.round(total(inRange(list, wk0, addDays(wk0, 7)), 'dur') / 60);
+  const doneWeeks = Math.min(8, Math.max(0, Math.round((wk0 - sow(list[0].start)) / (7 * 864e5))));
+  const avgMin = doneWeeks ? Math.round(total(inRange(list, addDays(wk0, -7 * doneWeeks), wk0), 'dur') / 60 / doneWeeks) : thisWeekMin;
+  return `
+    <div class="card-title">This week</div>
+    ${weekStrip(false)}
+    <div class="totals three">
+      <div><span>Today</span><b>${todayMin} min</b></div>
+      <div><span>This week</span><b>${thisWeekMin} min</b></div>
+      <div><span>Weekly avg</span><b>${avgMin} min</b></div>
+    </div>
+    <p class="sub tight">${doneWeeks ? `Average of your last ${doneWeeks} full week${doneWeeks === 1 ? '' : 's'}.` : 'Your average appears after your first full week.'}</p>`;
+}
+
 // GitHub-style grid of the last 26 weeks, coloured by minutes trained.
+// Tap a square to see that day.
 function heatmap(list) {
-  const weeks = 26, c = 11, g = 3, step = c + g, top = 16;
+  const weeks = 26, c = 11, g = 3, step = c + g, top = 16, left = 14;
   const end = sow(new Date());
   const start = addDays(end, -7 * (weeks - 1));
   const today = sod(new Date());
-  const mins = {};
-  list.forEach((w) => { const k = dkey(w.start); mins[k] = (mins[k] || 0) + w.dur / 60; });
-  let s = `<svg viewBox="0 0 ${weeks * step - g} ${top + 7 * step - g}" class="heat" role="img" aria-label="Activity over the last 26 weeks">`;
+  const mins = {}, byDay = {};
+  list.forEach((w) => { const k = dkey(w.start); mins[k] = (mins[k] || 0) + w.dur / 60; (byDay[k] ||= []).push(w); });
+  let s = `<svg viewBox="0 0 ${left + weeks * step - g} ${top + 7 * step - g}" class="heat" role="img" aria-label="Activity over the last 26 weeks">`;
+  ['M', 'W', 'F'].forEach((d, i) => { s += `<text x="0" y="${top + i * 2 * step + 9}" class="h-label">${d}</text>`; });
   let lastMonth = -1, lastLabel = -9;
   for (let col = 0; col < weeks; col++) {
     const colStart = addDays(start, col * 7);
+    const x = left + col * step;
     if (colStart.getMonth() !== lastMonth) {
-      if (col - lastLabel >= 3 && col < weeks - 1) { s += `<text x="${col * step}" y="10" class="h-label">${MON[colStart.getMonth()]}</text>`; lastLabel = col; }
+      if (col - lastLabel >= 3 && col < weeks - 1) { s += `<text x="${x}" y="10" class="h-label">${MON[colStart.getMonth()]}</text>`; lastLabel = col; }
       lastMonth = colStart.getMonth();
     }
     for (let r = 0; r < 7; r++) {
       const d = addDays(colStart, r);
       if (d > today) continue;
-      const m = mins[dkey(d)] || 0;
+      const k = dkey(d);
+      const m = mins[k] || 0;
       const lv = m === 0 ? 0 : m < 45 ? 1 : m < 75 ? 2 : m < 100 ? 3 : 4;
-      s += `<rect x="${col * step}" y="${top + r * step}" width="${c}" height="${c}" rx="2.5" class="lv${lv}${+d === +today ? ' h-today' : ''}"/>`;
+      const cls = `lv${lv}${+d === +today ? ' h-today' : ''}${ui.daySel === k ? ' h-sel' : ''}`;
+      // The invisible larger square makes the tiny cells easier to hit.
+      s += `<g data-day="${k}"><rect x="${x - 1.5}" y="${top + r * step - 1.5}" width="${step}" height="${step}" class="h-hit"/>
+        <rect x="${x}" y="${top + r * step}" width="${c}" height="${c}" rx="2.5" class="${cls}"/></g>`;
     }
   }
+  let caption = '<span class="muted">Tap a square to see that day.</span>';
+  if (ui.daySel) {
+    const ws = byDay[ui.daySel] || [];
+    caption = `<b>${dateStr(fromKey(ui.daySel))}</b> · ${ws.length ? ws.map((w) => `${esc(w.title)} · ${dur(w.dur)}`).join(', ') : 'rest day'}`;
+  }
   return `${s}</svg>
+    <div class="chart-caption">${caption}</div>
     <div class="legend"><span>Less time</span>${[0, 1, 2, 3, 4].map((l) => `<i class="lv${l}"></i>`).join('')}<span>More time</span></div>`;
 }
 
@@ -270,28 +293,41 @@ function fmtMetric(v, metric) {
 }
 
 function weekBars(list, metric) {
-  const n = 12, W = 340, H = 190, L = 34, B = 34, T = 22;
+  const n = 12, W = 340, H = 186, L = 34, B = 30, T = 22;
   const end = sow(new Date());
   const starts = Array.from({ length: n }, (_, i) => addDays(end, -7 * (n - 1 - i)));
   const val = (w) => (metric === 'n' ? 1 : metric === 'dur' ? w.dur / 3600 : metric === 'vol' ? w.vol || 0 : w.reps || 0);
-  const vals = starts.map((st) => inRange(list, st, addDays(st, 7)).reduce((a, w) => a + val(w), 0));
+  const weekLists = starts.map((st) => inRange(list, st, addDays(st, 7)));
+  const vals = weekLists.map((ws) => ws.reduce((a, w) => a + val(w), 0));
+  if (metric === 'vol' && !vals.some((v) => v > 0)) {
+    return '<div class="chart-empty">Volume needs weights. Log a weight on an exercise during a workout and it shows up here.</div>';
+  }
+  const sel = ui.barSel ?? n - 1;
   const max = niceMax(Math.max(...vals), metric);
   const ph = H - B - T, bw = (W - L) / n, barW = Math.min(16, bw * 0.5);
-  let s = `<svg viewBox="0 0 ${W} ${H}" class="bars" role="img" aria-label="Weekly chart">`;
+  let s = `<svg viewBox="0 0 ${W} ${H}" class="bars" role="img" aria-label="Weekly chart, tap a bar for details">`;
   [0, 0.5, 1].forEach((f) => {
     const y = T + ph * (1 - f);
     s += `<line x1="${L}" x2="${W}" y1="${y}" y2="${y}" class="grid"/><text x="${L - 6}" y="${y + 4}" text-anchor="end" class="axis">${fmtMetric(max * f, metric)}</text>`;
   });
-  const hi = vals[n - 1] > 0 ? n - 1 : vals.indexOf(Math.max(...vals));
   vals.forEach((v, i) => {
-    const x = L + bw * i + (bw - barW) / 2;
+    const x = L + bw * i + (bw - barW) / 2, cx = x + barW / 2;
     const h = v > 0 ? Math.max(barW, (v / max) * ph) : 0;
-    if (h) s += `<rect x="${x}" y="${T + ph - h}" width="${barW}" height="${h}" rx="${barW / 2}" class="${i === n - 1 ? 'bar cur' : 'bar'}"/>`;
-    if (i === hi && v > 0) s += `<text x="${x + barW / 2}" y="${T + ph - h - 6}" text-anchor="middle" class="val">${fmtMetric(v, metric)}</text>`;
-    s += `<text x="${x + barW / 2}" y="${H - 18}" text-anchor="middle" class="axis">${starts[i].getDate()}</text>
-          <text x="${x + barW / 2}" y="${H - 6}" text-anchor="middle" class="axis sm">${MON[starts[i].getMonth()].toUpperCase()}</text>`;
+    const cls = i === sel ? 'bar sel' : i === n - 1 ? 'bar cur' : 'bar';
+    s += `<g data-bar="${i}"><rect x="${L + bw * i}" y="${T - 10}" width="${bw}" height="${ph + 10 + B}" class="hit"/>`;
+    if (h) s += `<rect x="${x}" y="${T + ph - h}" width="${barW}" height="${h}" rx="${barW / 2}" class="${cls}"/>`;
+    if (i === sel && v > 0) s += `<text x="${cx}" y="${T + ph - h - 6}" text-anchor="middle" class="val">${fmtMetric(v, metric)}</text>`;
+    // Day number on every other bar, month name only where the month changes.
+    const newMonth = i === 0 || starts[i].getMonth() !== starts[i - 1].getMonth();
+    if (i % 2 === (n - 1) % 2 || i === sel) s += `<text x="${cx}" y="${H - 16}" text-anchor="middle" class="axis${i === sel ? ' on' : ''}">${starts[i].getDate()}</text>`;
+    if (newMonth) s += `<text x="${cx}" y="${H - 4}" text-anchor="middle" class="axis sm">${MON[starts[i].getMonth()].toUpperCase()}</text>`;
+    s += '</g>';
   });
-  return `${s}</svg>`;
+  const ws = weekLists[sel];
+  const label = sel === n - 1 ? 'This week' : `Week of ${shortDate(starts[sel])}`;
+  const parts = [`${ws.length} workout${ws.length === 1 ? '' : 's'}`, dur(total(ws, 'dur'))];
+  if (total(ws, 'vol')) parts.push(`${kg(total(ws, 'vol'))} kg`);
+  return `${s}</svg><div class="chart-caption"><b>${label}</b> · ${parts.join(' · ')}</div>`;
 }
 
 function radar(curG, prevG) {
@@ -325,9 +361,12 @@ function delta(cur, prev, f) {
 function balance(list) {
   const now = new Date();
   let from, to, pFrom, pTo, label = '';
+  let vs = 'Previous';
   if (ui.period === 'week') {
     from = addDays(sow(now), 7 * ui.weekOff); to = addDays(from, 7);
     pFrom = addDays(from, -7); pTo = from;
+    // A week in progress is compared with the same days of last week, not all of it.
+    if (ui.weekOff === 0) { pTo = new Date(+now - 7 * 864e5); vs = 'Same days last week'; }
     label = `<div class="period-nav">
       <button class="icon-btn sm" data-act="wprev" aria-label="Previous week">${ICON.chevL}</button>
       <b>Week of ${shortDate(from)}</b>
@@ -349,7 +388,7 @@ function balance(list) {
     ${seg('period', [['week', 'Week'], ['30', '30d'], ['90', '90d'], ['all', 'All']], ui.period)}
     ${label}
     ${radar(groupSets(ms), prev ? groupSets(muscleSets(prev)) : null)}
-    <div class="legend center"><i class="dot cur"></i>Current${prev ? '<i class="dot prev"></i>Previous' : ''}</div>
+    <div class="legend center"><i class="dot cur"></i>${ui.period === 'week' && ui.weekOff === 0 ? 'This week' : 'Current'}${prev ? `<i class="dot prev"></i>${vs}` : ''}</div>
     ${cur.length ? '' : '<p class="muted center">No workouts in this period yet.</p>'}
     <div class="cmp-grid">
       ${card('Workouts', cur.length, prev?.length, (v) => String(v))}

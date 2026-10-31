@@ -3,7 +3,7 @@
 // breaks layouts after an update on a patchy connection). A new release
 // installs all files at once in the background; the page then reloads once.
 // Bump CACHE on every release so phones pick up the new version.
-const CACHE = 'gymbruh-v8';
+const CACHE = 'gymbruh-v9';
 const SHELL = [
   '/', '/index.html', '/styles.css', '/plan.json', '/manifest.webmanifest',
   '/js/app.js', '/js/store.js', '/js/util.js', '/js/timer.js', '/js/workout.js', '/js/stats.js', '/js/settings.js', '/js/theme.js', '/js/sample.js',
