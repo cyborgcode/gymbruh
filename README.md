@@ -21,6 +21,21 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 3. Open **[Month 1](months/01-foundation.md)** and train.
 4. Log your main lifts in [`tracker/main-lifts-tracker.csv`](tracker/main-lifts-tracker.csv). Import it into Google Sheets or Excel and the e1RM column fills itself in.
 
+## The app
+
+The plan also runs as a web app (in [`web/`](web/)) that you install on your iPhone's home screen.
+
+- **Today:** opens on your next workout. Tap **Start**, tick each set as you finish it, then tap **Finish**. Logging weights and reps is optional. Once you type a weight, it carries down to the next sets, and ticking an empty set accepts the suggestion.
+- **Rest timer:** starts by itself when you tick a set, using that exercise's rest time. In a superset it waits until the last exercise. Use −15 / +15 to adjust, and there's a 30-min timer for the cardio.
+- **Plan:** every week and session of the year, showing which are done, skipped or next.
+- **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
+- **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, current vs previous period), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle.
+- **Offline-ready and private:** everything is stored on your phone. Use Settings → Export for a backup.
+
+**Install on iPhone:** open the site in Safari → **Share** → **Add to Home Screen**.
+
+The app has no build step, and Vercel serves the `web/` folder as-is (see [`vercel.json`](vercel.json)). To change the plan, edit [`scripts/generate.py`](scripts/generate.py), then run `python3 scripts/generate.py`. That rewrites this README, the month files, the tracker and `web/plan.json` together.
+
 ## Weekly schedule
 
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
