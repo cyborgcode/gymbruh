@@ -144,9 +144,8 @@ details.note[open] summary { margin-bottom: 6px; }
 /* ---------- live workout (compact rows that open for weight logging) */
 .tip { font-size: 13px; color: var(--muted); margin: 4px 2px 10px; }
 .tip .ic { width: 15px; height: 15px; color: var(--accent); vertical-align: -3px; }
-.xlist { padding: 4px 14px; }
-.xrow { border-top: 1px solid var(--line); }
-.xlist > .xrow:first-child { border-top: 0; }
+.xrow { background: var(--card); border-radius: var(--r); padding: 4px 14px; margin-bottom: 10px; transition: box-shadow 0.2s; }
+.xrow.open { box-shadow: 0 0 0 1.5px var(--accent) inset; }
 .xhead { display: flex; align-items: center; gap: 12px; padding: 12px 0; cursor: pointer; }
 .xname { font-weight: 650; font-size: 16px; line-height: 1.25; }
 .xrx { color: var(--muted); font-size: 13px; margin-top: 2px; }
@@ -178,10 +177,10 @@ details.note[open] summary { margin-bottom: 6px; }
 .cue { background: var(--card2); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: 10px 0 0; color: #d4d4d8; }
 .ex-hint { font-size: 13px; color: var(--muted); margin: 8px 2px 0; }
 .btn.done-btn { margin-top: 10px; background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 44px; }
-.ssgroup { border-top: 1px solid var(--line); position: relative; }
-.ssgroup::before { content: ''; position: absolute; left: -8px; top: 30px; bottom: 12px; width: 3px; border-radius: 3px; background: var(--warn); opacity: 0.7; }
-.ssgroup .xrow:first-of-type { border-top: 0; }
-.sslabel { font-size: 11px; font-weight: 700; color: var(--warn); text-transform: uppercase; letter-spacing: 0.06em; padding: 10px 0 0; }
+.ssgroup { margin: 4px 0 10px; }
+.ssgroup .xrow { margin-bottom: 6px; box-shadow: inset 3px 0 0 var(--warn); }
+.ssgroup .xrow.open { box-shadow: inset 3px 0 0 var(--warn), 0 0 0 1.5px var(--accent) inset; }
+.sslabel { font-size: 11px; font-weight: 700; color: var(--warn); text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 4px 8px; }
 
 .complete { text-align: center; padding-top: 24px; }
 .big-check { width: 84px; height: 84px; margin: 0 auto 18px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; }

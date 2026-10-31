@@ -145,7 +145,7 @@ function renderWorkout(root) {
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
     <p class="tip">Tap an exercise to log weights (optional). Tap ${ICON.timer} for the rest timer.</p>
-    <section class="card xlist">${rows}</section>
+    ${rows}
     <button class="btn primary big" data-act="finish">${ICON.check}<span>Finish workout</span></button>
     <button class="btn ghost" data-act="discard">Discard workout</button>`;
 
