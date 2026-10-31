@@ -130,6 +130,8 @@ function renderWorkout(root) {
   const a = state.active;
   const s = plan.byId[a.sid];
   const m = monthOf(s);
+  a.log = s.ex.map((x, i) => x.sets.map((_, k) => (a.log && a.log[i] && a.log[i][k]) || { w: '' }));
+  const hoursOpen = (Date.now() - a.start) / 3.6e6;
 
   let rows = cardioRow(s);
   s.ex.forEach((x, i) => {
@@ -145,6 +147,8 @@ function renderWorkout(root) {
       <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2 one-line">${esc(s.dayName)}</h1></div>
       <div class="elapsed" id="elapsed">${clock((Date.now() - a.start) / 1000)}</div>
     </header>
+    ${hoursOpen >= 5 ? `<div class="stale"><p>This workout was started ${Math.floor(hoursOpen)} hours ago. Finished it?</p>
+      <div class="row"><button class="btn sm primary" data-act="finish">Finish it</button><button class="btn sm" data-act="discard">Discard</button></div></div>` : ''}
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
     <p class="tip">Tap an exercise to log weights (optional). Tap ${ICON.timer} for the rest timer.</p>
@@ -270,9 +274,8 @@ function toggleRow(root, row) {
   if (wasOpen) return;
   row.classList.add('open');
   row.querySelector('.xbody').hidden = false;
-  const inputs = [...row.querySelectorAll('.in')];
-  const target = inputs.find((el) => !el.value) || inputs[0];
-  if (target) target.focus({ preventScroll: true });
+  // No auto-focus: the keyboard only opens when you tap a kg box. On iPhone
+  // a surprise keyboard makes the pinned header and tab bar jump around.
   row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
 }
 
@@ -351,6 +354,7 @@ function saveWorkout(root, s, sum) {
   state.active = null;
   save();
   clearTimer();
+  document.querySelector('#tabbar [data-tab="today"]')?.classList.remove('live');
   const next = nextSession();
   root.innerHTML = `
     <section class="complete">

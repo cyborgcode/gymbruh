@@ -79,10 +79,22 @@ fixViewportGap();
 window.addEventListener('resize', fixViewportGap);
 window.addEventListener('orientationchange', () => setTimeout(fixViewportGap, 300));
 
+// iOS only shows :active press styles when the page listens for touches.
+document.addEventListener('touchstart', () => {}, { passive: true });
+
+// While typing, hide the tab bar and unpin the header: iOS moves pinned
+// elements around when the keyboard is open.
+document.addEventListener('focusin', (ev) => {
+  if (ev.target.matches('input, select')) document.body.classList.add('typing');
+});
 // iOS can leave the page shifted after the keyboard closes; nudge it back.
 document.addEventListener('focusout', (ev) => {
   if (!ev.target.matches('input, select')) return;
-  setTimeout(() => { window.scrollTo(window.scrollX, window.scrollY); fixViewportGap(); }, 80);
+  setTimeout(() => {
+    if (!document.activeElement || !document.activeElement.matches('input, select')) document.body.classList.remove('typing');
+    window.scrollTo(window.scrollX, window.scrollY);
+    fixViewportGap();
+  }, 80);
 });
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) return;

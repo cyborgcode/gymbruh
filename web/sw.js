@@ -1,6 +1,9 @@
-// Offline support: serve from cache instantly, refresh the cache in the
-// background. Bump CACHE on each release so phones pick up the new version.
-const CACHE = 'gymbruh-v5';
+// Offline support. Each release is cached as one complete, versioned set and
+// served cache-first, so the app never mixes files from two versions (which
+// breaks layouts after an update on a patchy connection). A new release
+// installs all files at once in the background; the page then reloads once.
+// Bump CACHE on every release so phones pick up the new version.
+const CACHE = 'gymbruh-v7';
 const SHELL = [
   '/', '/index.html', '/styles.css', '/plan.json', '/manifest.webmanifest',
   '/js/app.js', '/js/store.js', '/js/util.js', '/js/timer.js', '/js/workout.js', '/js/stats.js', '/js/settings.js', '/js/theme.js', '/js/sample.js',
@@ -8,6 +11,7 @@ const SHELL = [
 ];
 
 self.addEventListener('install', (event) => {
+  // addAll is all-or-nothing: a half-downloaded release is never used.
   event.waitUntil(
     caches.open(CACHE)
       .then((c) => c.addAll(SHELL.map((url) => new Request(url, { cache: 'reload' }))))
@@ -30,14 +34,13 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.open(CACHE).then(async (cache) => {
       const cached = await cache.match(key, { ignoreSearch: true });
-      const fresh = fetch(req)
-        .then((res) => {
-          if (res.ok) cache.put(key, res.clone());
-          return res;
-        })
-        .catch(() => cached);
-      event.waitUntil(fresh.then(() => undefined, () => undefined));
-      return cached || fresh;
+      if (cached) return cached;
+      try {
+        return await fetch(req);
+      } catch (e) {
+        if (req.mode === 'navigate') return (await cache.match('/')) || Response.error();
+        return Response.error();
+      }
     }),
   );
 });
