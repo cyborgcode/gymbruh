@@ -1,7 +1,7 @@
 // Today, the live workout, the Plan tab and session previews.
 import { state, save, plan, info, nextSession, monthOf, lastSet, bestE1rm, workouts } from './store.js';
 import {
-  esc, ICON, clock, dur, kg, num, firstInt, isHold, roundDown, sheet, toast, unlockAudio,
+  esc, ICON, clock, dur, kg, num, firstInt, isHold, roundDown, fmt1, sheet, unlockAudio,
   dateStr, sameDay, daysBetween,
 } from './util.js';
 import { startTimer, clearTimer } from './timer.js';
@@ -11,7 +11,8 @@ import { openSettings } from './settings.js';
 const KIND = { deload: 'Deload', test: 'Test week', final: 'Final assessment', flex: 'Flex week' };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const kindBadge = (k) => (KIND[k] ? `<span class="badge ${k}">${KIND[k]}</span>` : '');
-const exName = (x) => esc(info(x).name);
+const tagCls = (x) => (x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : '');
+const restLabel = (sec) => (sec < 60 ? `${sec}s` : clock(sec));
 
 // ------------------------------------------------------------------ Today
 export function renderToday(root) {
@@ -66,7 +67,7 @@ function previewList(s) {
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
       <ol class="preview">
         <li><span class="tag c">C</span><div><b>Cardio · 30 min</b><small>${esc(s.cardio)}</small></div></li>
-        ${s.ex.map((x) => `<li><span class="tag ${x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : ''}">${x.label}</span><div><b>${exName(x)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)}</small></div></li>`).join('')}
+        ${s.ex.map((x) => `<li><span class="tag ${tagCls(x)}">${x.label}</span><div><b>${esc(info(x).name)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)} · rest ${restLabel(x.rest)}</small></div></li>`).join('')}
       </ol>
     </section>`;
 }
@@ -75,7 +76,7 @@ function doneCard(w) {
   return `
     <section class="card done-card">
       <div class="done-icon">${ICON.check}</div>
-      <div><b>Done today · ${esc(w.title)}</b><small>${dur(w.dur)} · ${w.sets} sets${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
+      <div><b>Done today · ${esc(w.title)}</b><small>${dur(w.dur)} · ${w.ex.length} exercises${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
     </section>`;
 }
 
@@ -102,12 +103,7 @@ export function startSession(id) {
     state.active = null;
   }
   if (!state.active) {
-    state.active = {
-      sid: id,
-      start: Date.now(),
-      cardio: false,
-      log: s.ex.map((x) => x.sets.map(() => ({ w: '', r: '', d: false }))),
-    };
+    state.active = { sid: id, start: Date.now(), log: s.ex.map((x) => x.sets.map(() => ({ w: '' }))) };
     save();
   }
   unlockAudio();
@@ -125,56 +121,44 @@ function skipSession(id) {
 }
 
 // ------------------------------------------------------------------ Live workout
+// Compact list: tap an exercise to open it and (optionally) log weights,
+// tap ⏱ for a rest timer, and Finish marks the whole session done.
 function renderWorkout(root) {
   const a = state.active;
   const s = plan.byId[a.sid];
   const m = monthOf(s);
+
+  let rows = cardioRow(s);
+  s.ex.forEach((x, i) => {
+    const first = x.group && s.ex.findIndex((y) => y.group === x.group) === i;
+    const lastInGroup = x.group && s.ex.findLastIndex((y) => y.group === x.group) === i;
+    if (first) rows += `<div class="ssgroup"><div class="sslabel">Superset · rest after both</div>`;
+    rows += exRow(x, i);
+    if (lastInGroup) rows += '</div>';
+  });
+
   root.innerHTML = `
     <header class="top sticky">
       <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2">${esc(s.dayName)}</h1></div>
       <div class="elapsed" id="elapsed">${clock((Date.now() - a.start) / 1000)}</div>
-      <button class="icon-btn" data-act="quick-timer" aria-label="Rest timer">${ICON.timer}</button>
     </header>
-    <div class="progress"><i id="pbar"></i></div>
-    <div class="progress-label" id="plabel"></div>
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
-    <section class="card ex cardio ${a.cardio ? 'is-done' : ''}">
-      <div class="ex-head">
-        <span class="tag c">C</span>
-        <div class="grow"><div class="ex-name">Cardio · 30 min</div><div class="ex-rx">${esc(s.cardio)}</div></div>
-      </div>
-      <div class="cardio-actions">
-        <button class="btn" data-act="cardio-timer">${ICON.timer}<span>Start 30:00</span></button>
-        <button class="btn ${a.cardio ? 'primary' : ''}" data-act="cardio-done" id="cardioBtn">${ICON.check}<span>${a.cardio ? 'Done' : 'Mark done'}</span></button>
-      </div>
-    </section>
-    ${s.ex.map((x, i) => exerciseCard(s, x, i)).join('')}
-    <button class="btn primary big" data-act="finish">Finish workout</button>
+    <p class="tip">Tap an exercise to log weights (optional). Tap ${ICON.timer} for the rest timer.</p>
+    <section class="card xlist">${rows}</section>
+    <button class="btn primary big" data-act="finish">${ICON.check}<span>Finish workout</span></button>
     <button class="btn ghost" data-act="discard">Discard workout</button>`;
-  updateProgress();
 
   root.onclick = (ev) => {
     const b = ev.target.closest('[data-act]');
     if (!b) return;
     const act = b.dataset.act;
-    if (act === 'set') {
-      const row = b.closest('.set-row');
-      toggleSet(s, +row.dataset.i, +row.dataset.k, row);
-    } else if (act === 'cue') {
-      b.closest('.ex').querySelector('.cue').toggleAttribute('hidden');
-    } else if (act === 'cardio-timer') {
+    const row = b.closest('.xrow');
+    if (act === 'rest') {
       unlockAudio();
-      startTimer(30 * 60, 'Cardio');
-    } else if (act === 'cardio-done') {
-      a.cardio = !a.cardio;
-      save();
-      b.classList.toggle('primary', a.cardio);
-      b.querySelector('span').textContent = a.cardio ? 'Done' : 'Mark done';
-      b.closest('.ex').classList.toggle('is-done', a.cardio);
-      if (a.cardio && state.timer?.label === 'Cardio') clearTimer();
-      updateProgress();
-    } else if (act === 'quick-timer') quickTimer();
+      startTimer(+b.dataset.sec, b.dataset.label);
+    } else if (act === 'toggle') toggleRow(root, row);
+    else if (act === 'collapse') collapseRow(row);
     else if (act === 'finish') finishSheet(root, s);
     else if (act === 'discard') {
       if (!confirm('Discard this workout? Nothing will be saved.')) return;
@@ -188,114 +172,117 @@ function renderWorkout(root) {
   root.oninput = (ev) => {
     const inp = ev.target.closest('.in');
     if (!inp) return;
-    const row = inp.closest('.set-row');
-    a.log[+row.dataset.i][+row.dataset.k][inp.dataset.f] = inp.value;
+    const i = +inp.closest('.xrow').dataset.ex, k = +inp.dataset.k;
+    a.log[i][k].w = inp.value;
     save();
-    // Carry a typed weight down as the suggestion for the following sets.
-    if (inp.dataset.f === 'w') {
-      let next = row.nextElementSibling;
-      while (next) {
-        const w = next.querySelector('[data-f="w"]');
-        if (w) w.placeholder = inp.value || w.dataset.ph;
-        next = next.nextElementSibling;
-      }
-    }
+    // A typed weight becomes the suggestion for the sets below it.
+    inp.closest('.xbody').querySelectorAll('.in').forEach((el) => {
+      if (+el.dataset.k > k) el.placeholder = inp.value || el.dataset.ph;
+    });
+  };
+
+  // Keyboard "next"/"done": jump to the next set, or close the exercise.
+  root.onkeydown = (ev) => {
+    const inp = ev.target.closest('.in');
+    if (!inp || ev.key !== 'Enter') return;
+    ev.preventDefault();
+    const next = inp.closest('.xbody').querySelector(`.in[data-k="${+inp.dataset.k + 1}"]`);
+    if (next) next.focus();
+    else collapseRow(inp.closest('.xrow'));
   };
 }
 
-function exerciseCard(s, x, i) {
-  const inf = info(x);
-  const log = state.active.log[i];
-  const group = x.group ? s.ex.filter((y) => y.group === x.group) : null;
-  const pct = x.sets.find((t) => t.pct)?.pct;
-  const best = x.slot === 'M' && inf.lift !== 'pullup' ? bestE1rm(inf.lift) : null;
-  const last = lastSet(inf.name);
-
-  const hints = [];
-  if (x.slot === 'M') {
-    if (pct && best) hints.push(`Weights suggested from your e1RM of ${Math.round(best)} kg`);
-    else if (pct) hints.push('Log your weights and the app will suggest loads from your e1RM');
-    if (inf.lift === 'pullup') hints.push('Log added weight only');
-  }
-  if (last) hints.push(`Last time: ${last.w} kg × ${last.r ?? '–'}`);
-
-  const ssHint = group && group[0] === x
-    ? `<div class="ss">Superset ${group.map((y) => y.label).join(' + ')}: one set of each, then rest ${x.rest}s</div>` : '';
-
+function cardioRow(s) {
   return `
-    <section class="card ex" data-ex="${i}">
-      ${ssHint}
-      <div class="ex-head">
-        <span class="tag ${x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : ''}">${x.label}</span>
-        <div class="grow">
-          <div class="ex-name">${esc(inf.name)}${x.spec ? ' <span class="star">★ V-taper</span>' : ''}</div>
-          <div class="ex-rx">${esc(x.rx)} · rest ${x.rest}s</div>
-        </div>
-        <button class="icon-btn sm" data-act="cue" aria-label="Coaching cue">${ICON.info}</button>
+    <div class="xrow" data-ex="cardio">
+      <div class="xhead" data-act="toggle">
+        <span class="tag c">C</span>
+        <div class="grow"><div class="xname">Cardio · 30 min</div><div class="xrx">Before you lift · tap for details</div></div>
+        <button class="tbtn" data-act="rest" data-sec="1800" data-label="Cardio" aria-label="Start 30 minute cardio timer">${ICON.timer}<span>30:00</span></button>
       </div>
-      <p class="cue" hidden>${esc(inf.cue)}</p>
-      <div class="sets">
-        <div class="set-head"><span>Set</span><span>Target</span><span>kg</span><span>Reps</span><span></span></div>
-        ${x.sets.map((t, k) => setRow(x, t, i, k, log[k], best, last)).join('')}
+      <div class="xbody" hidden>
+        <p class="cue">${esc(s.cardio)}</p>
+        <button class="btn sm done-btn" data-act="collapse">Done</button>
       </div>
-      ${hints.length ? `<p class="ex-hint">${esc(hints.join(' · '))}</p>` : ''}
-    </section>`;
-}
-
-function setRow(x, t, i, k, entry, best, last) {
-  const pctTxt = t.pct ? ` · ${Math.round(t.pct * 1000) / 10}%` : '';
-  let ph = 'kg';
-  if (t.pct && best) ph = String(roundDown(t.pct * best));
-  else if (last) ph = String(last.w);
-  return `
-    <div class="set-row ${entry.d ? 'done' : ''}" data-i="${i}" data-k="${k}">
-      <span class="set-n">${k + 1}</span>
-      <span class="set-t"><b>${esc(t.reps)}${pctTxt}</b><small>${esc(t.eff)}</small></span>
-      <input class="in" data-f="w" inputmode="decimal" autocomplete="off" placeholder="${esc(ph)}" data-ph="${esc(ph)}" value="${esc(entry.w)}" aria-label="Weight in kg">
-      <input class="in" data-f="r" inputmode="numeric" autocomplete="off" placeholder="${firstInt(t.reps) || ''}" value="${esc(entry.r)}" aria-label="Reps">
-      <button class="check" data-act="set" aria-label="Mark set done">${ICON.check}</button>
     </div>`;
 }
 
-function toggleSet(s, i, k, row) {
-  const e = state.active.log[i][k];
-  e.d = !e.d;
-  // Ticking an empty set accepts the suggested numbers (only if you've logged before).
-  if (e.d) {
-    for (const f of ['w', 'r']) {
-      const inp = row.querySelector(`[data-f="${f}"]`);
-      if (e[f] === '' && /^\d+(\.\d+)?$/.test(inp.placeholder) && (f === 'r' ? e.w !== '' : true)) {
-        e[f] = inp.placeholder;
-        inp.value = inp.placeholder;
-      }
-    }
-  }
-  save();
-  row.classList.toggle('done', e.d);
-  updateProgress();
-  if (!e.d) return;
-  unlockAudio();
-  const x = s.ex[i];
-  // In a superset, go straight to the next exercise that still has this set.
-  if (x.group) {
-    const g = s.ex.filter((y) => y.group === x.group);
-    const nextUp = g.slice(g.indexOf(x) + 1).find((y) => y.sets[k]);
-    if (nextUp) {
-      toast(`Superset → ${nextUp.label} ${info(nextUp).name}`);
-      return;
-    }
-  }
-  startTimer(x.rest, 'Rest');
+function exRow(x, i) {
+  const inf = info(x);
+  const log = state.active.log[i];
+  const last = lastSet(inf.name);
+  const pct = x.sets.find((t) => t.pct)?.pct;
+  const best = x.slot === 'M' && inf.lift !== 'pullup' ? bestE1rm(inf.lift) : null;
+  const hint = x.slot === 'M' && pct && best ? `Suggested weights come from your e1RM of ${Math.round(best)} kg.`
+    : inf.lift === 'pullup' ? 'Log added weight only.' : '';
+
+  const sets = x.sets.map((t, k) => {
+    let ph = t.pct && best ? String(roundDown(t.pct * best)) : last ? fmt1(last.w) : '';
+    const prevTyped = log.slice(0, k).map((e) => e.w).filter((w) => w !== '').at(-1);
+    const shown = prevTyped || ph;
+    return `
+      <div class="wrow">
+        <span class="set-n">${k + 1}</span>
+        <span class="set-t"><b>${esc(t.reps)}${t.pct ? ` · ${Math.round(t.pct * 1000) / 10}%` : ''}</b><small>${esc(t.eff)}</small></span>
+        <label class="kg"><input class="in" data-k="${k}" inputmode="decimal" autocomplete="off"
+          enterkeyhint="${k === x.sets.length - 1 ? 'done' : 'next'}" placeholder="${esc(shown || '–')}" data-ph="${esc(ph || '–')}"
+          value="${esc(log[k].w)}" aria-label="Set ${k + 1} weight in kg"><span>kg</span></label>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="xrow" data-ex="${i}">
+      <div class="xhead" data-act="toggle">
+        <span class="tag ${tagCls(x)}">${x.label}</span>
+        <div class="grow">
+          <div class="xname">${esc(inf.name)}${x.spec ? ' <span class="star">★</span>' : ''}</div>
+          <div class="xrx">${esc(x.rx)}</div>
+          <div class="xmeta">${metaHtml(log, last)}</div>
+        </div>
+        <button class="tbtn" data-act="rest" data-sec="${x.rest}" data-label="Rest · ${esc(inf.name)}" aria-label="Start ${x.rest} second rest timer">${ICON.timer}<span>${restLabel(x.rest)}</span></button>
+      </div>
+      <div class="xbody" hidden>
+        ${sets}
+        <p class="cue">${esc(inf.cue)}</p>
+        ${hint ? `<p class="ex-hint">${esc(hint)}</p>` : ''}
+        <button class="btn sm done-btn" data-act="collapse">Done</button>
+      </div>
+    </div>`;
 }
 
-function updateProgress() {
-  const a = state.active;
-  const total = a.log.reduce((n, l) => n + l.length, 0);
-  const done = a.log.reduce((n, l) => n + l.filter((e) => e.d).length, 0);
-  const bar = document.getElementById('pbar');
-  const label = document.getElementById('plabel');
-  if (bar) bar.style.width = `${(done / total) * 100}%`;
-  if (label) label.textContent = `${done} / ${total} sets${a.cardio ? ' · cardio done' : ''}`;
+function metaHtml(log, last) {
+  const typed = log.map((e) => num(e.w)).filter((w) => w != null);
+  const parts = [];
+  if (typed.length) {
+    const lo = Math.min(...typed), hi = Math.max(...typed);
+    parts.push(`<span class="today-w">Today ${lo === hi ? fmt1(hi) : `${fmt1(lo)}-${fmt1(hi)}`} kg</span>`);
+  }
+  if (last) parts.push(`<span>Last ${fmt1(last.w)} kg</span>`);
+  return parts.join('');
+}
+
+function toggleRow(root, row) {
+  const wasOpen = row.classList.contains('open');
+  root.querySelectorAll('.xrow.open').forEach(collapseRow);
+  if (wasOpen) return;
+  row.classList.add('open');
+  row.querySelector('.xbody').hidden = false;
+  const inputs = [...row.querySelectorAll('.in')];
+  const target = inputs.find((el) => !el.value) || inputs[0];
+  if (target) target.focus({ preventScroll: true });
+  row.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+}
+
+function collapseRow(row) {
+  if (!row) return;
+  row.classList.remove('open');
+  row.querySelector('.xbody').hidden = true;
+  if (row.contains(document.activeElement)) document.activeElement.blur();
+  const i = row.dataset.ex;
+  if (i !== 'cardio') {
+    const x = plan.byId[state.active.sid].ex[+i];
+    row.querySelector('.xmeta').innerHTML = metaHtml(state.active.log[+i], lastSet(info(x).name));
+  }
 }
 
 export function updateElapsed() {
@@ -303,56 +290,42 @@ export function updateElapsed() {
   if (el && state.active) el.textContent = clock((Date.now() - state.active.start) / 1000);
 }
 
-function quickTimer() {
-  const sh = sheet(`<h3>Rest timer</h3>
-    <div class="quick">${[60, 90, 120, 180, 240].map((t) => `<button class="btn" data-sec="${t}">${t < 120 ? `${t}s` : `${t / 60} min`}</button>`).join('')}</div>`);
-  sh.el.onclick = (ev) => {
-    const b = ev.target.closest('[data-sec]');
-    if (!b) return;
-    unlockAudio();
-    startTimer(+b.dataset.sec, 'Rest');
-    sh.close();
-  };
-}
-
+// Every set counts as done. Typed weights carry down to the sets below them.
 function summarize(s) {
   const a = state.active;
-  let sets = 0, vol = 0, reps = 0;
-  const ex = [];
-  s.ex.forEach((x, i) => {
+  let sets = 0, vol = 0, reps = 0, logged = 0;
+  const ex = s.ex.map((x, i) => {
     const inf = info(x);
-    const done = [];
-    a.log[i].forEach((e, k) => {
-      if (!e.d) return;
-      const t = x.sets[k];
-      const w = num(e.w);
-      const hold = isHold(t.reps);
-      const r = num(e.r) ?? (hold ? null : firstInt(t.reps) || null);
-      done.push({ w, r });
+    let carry = null;
+    const done = x.sets.map((t, k) => {
+      const typed = num(a.log[i][k].w);
+      if (typed != null) carry = typed;
+      const w = typed ?? carry;
+      const r = isHold(t.reps) ? null : firstInt(t.reps) || null;
       sets += 1;
-      if (!hold && r) reps += r;
-      if (w && r && !hold) vol += w * r;
+      if (r) reps += r;
+      if (w != null) logged += 1;
+      if (w && r) vol += w * r;
+      return { w, r };
     });
-    if (done.length) ex.push({ n: inf.name, lift: inf.lift || null, m: inf.muscles, sets: done });
+    return { n: inf.name, lift: inf.lift || null, m: inf.muscles, sets: done };
   });
-  const total = a.log.reduce((n, l) => n + l.length, 0);
   const durSec = Math.min(Math.round((Date.now() - a.start) / 1000), 4 * 3600);
-  return { ex, sets, vol: Math.round(vol), reps, total, dur: durSec };
+  return { ex, sets, vol: Math.round(vol), reps, logged, dur: durSec };
 }
 
 const statBox = (label, value) => `<div class="stat"><span>${label}</span><b>${value}</b></div>`;
 
 function finishSheet(root, s) {
   const sum = summarize(s);
-  const pending = sum.total - sum.sets;
   const sh = sheet(`
     <h3>Finish workout?</h3>
+    <p class="muted">All ${s.ex.length} exercises and the cardio will be marked done.</p>
     <div class="stat-grid">
-      ${statBox('Duration', dur(sum.dur))}${statBox('Sets', `${sum.sets}/${sum.total}`)}
-      ${statBox('Volume', sum.vol ? `${kg(sum.vol)} kg` : '–')}${statBox('Reps', sum.reps)}
+      ${statBox('Duration', dur(sum.dur))}${statBox('Exercises', s.ex.length + 1)}
+      ${statBox('Sets', sum.sets)}${statBox('Volume', sum.vol ? `${kg(sum.vol)} kg` : '–')}
     </div>
-    ${pending ? `<p class="muted">${pending} unchecked set${pending > 1 ? 's' : ''} won't be saved.</p>` : '<p class="muted">Every set done. Nice work.</p>'}
-    <button class="btn primary big" data-act="save">Save workout</button>
+    <button class="btn primary big" data-act="save">${ICON.check}<span>Finish &amp; save</span></button>
     <button class="btn ghost" data-act="close">Keep going</button>`);
   sh.el.onclick = (ev) => {
     const b = ev.target.closest('[data-act]');
@@ -367,7 +340,7 @@ function saveWorkout(root, s, sum) {
   const w = {
     id: Date.now().toString(36),
     sid: s.id, title: s.title, dayName: s.dayName, day: s.day, week: s.week, month: s.month, kind: s.kind,
-    start: a.start, end: a.start + sum.dur * 1000, dur: sum.dur, cardio: a.cardio,
+    start: a.start, end: a.start + sum.dur * 1000, dur: sum.dur, cardio: true,
     ex: sum.ex, sets: sum.sets, vol: sum.vol, reps: sum.reps,
   };
   state.workouts.push(w);
@@ -382,14 +355,16 @@ function saveWorkout(root, s, sum) {
       <h1>Workout complete</h1>
       <p class="muted">${esc(s.title)} · ${esc(s.dayName)}</p>
       <div class="stat-grid">
-        ${statBox('Duration', dur(w.dur))}${statBox('Sets', w.sets)}
-        ${statBox('Volume', w.vol ? `${kg(w.vol)} kg` : '–')}${statBox('Reps', w.reps)}
+        ${statBox('Duration', dur(w.dur))}${statBox('Exercises', s.ex.length + 1)}
+        ${statBox('Sets', w.sets)}${statBox('Volume', w.vol ? `${kg(w.vol)} kg` : '–')}
       </div>
       ${next ? `<p class="muted">Next up: <b>${esc(next.title)}</b> · ${esc(next.dayName)}</p>` : ''}
       <a class="btn primary big" href="#/stats">See your stats</a>
       <button class="btn ghost" data-act="home">Back to Today</button>
     </section>`;
   root.onclick = (ev) => { if (ev.target.closest('[data-act="home"]')) rerender(); };
+  root.oninput = null;
+  root.onkeydown = null;
   window.scrollTo(0, 0);
 }
 

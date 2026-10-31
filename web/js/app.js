@@ -20,6 +20,8 @@ function route() {
     a.classList.toggle('on', on);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
   });
+  view.oninput = null;
+  view.onkeydown = null;
   if (name === 'session') renderSession(view, decodeURIComponent(arg || ''));
   else ROUTES[tab](view);
   document.body.classList.toggle('in-workout', tab === 'today' && !!state.active);
@@ -43,7 +45,18 @@ async function boot() {
   route();
   tick();
   setInterval(() => { tick(); updateElapsed(); }, 500);
-  if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+  if ('serviceWorker' in navigator) {
+    // When a new version is deployed, the new service worker takes over and
+    // we reload once so the update shows up straight away.
+    const hadController = !!navigator.serviceWorker.controller;
+    let reloading = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (!hadController || reloading) return;
+      reloading = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register('/sw.js').then((reg) => reg.update()).catch(() => {});
+  }
 }
 
 boot();

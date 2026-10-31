@@ -1,6 +1,6 @@
 // Offline support: serve from cache instantly, refresh the cache in the
-// background. New versions show up on the next launch.
-const CACHE = 'gymbruh-v1';
+// background. Bump CACHE on each release so phones pick up the new version.
+const CACHE = 'gymbruh-v2';
 const SHELL = [
   '/', '/index.html', '/styles.css', '/plan.json', '/manifest.webmanifest',
   '/js/app.js', '/js/store.js', '/js/util.js', '/js/timer.js', '/js/workout.js', '/js/stats.js', '/js/settings.js',
@@ -8,7 +8,11 @@ const SHELL = [
 ];
 
 self.addEventListener('install', (event) => {
-  event.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
+  event.waitUntil(
+    caches.open(CACHE)
+      .then((c) => c.addAll(SHELL.map((url) => new Request(url, { cache: 'reload' }))))
+      .then(() => self.skipWaiting()),
+  );
 });
 
 self.addEventListener('activate', (event) => {

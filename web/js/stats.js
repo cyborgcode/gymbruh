@@ -116,8 +116,13 @@ function openWorkout(id) {
       <div class="stat"><span>Volume</span><b>${w.vol ? `${kg(w.vol)} kg` : '–'}</b></div>
       <div class="stat"><span>Cardio</span><b>${w.cardio ? 'Done' : '–'}</b></div>
     </div>
-    <div class="detail">${w.ex.map((x) => `<div class="d-ex"><b>${esc(x.n)}</b><div class="d-sets">${x.sets
-      .map((s) => `<span>${s.w != null ? `${fmt1(s.w)} kg × ` : ''}${s.r ?? '✓'}</span>`).join('')}</div></div>`).join('')}</div>
+    <div class="detail">${w.ex.map((x) => {
+      const weighed = x.sets.some((s) => s.w != null);
+      const chips = weighed
+        ? x.sets.map((s) => `<span>${s.w != null ? `${fmt1(s.w)} kg` : '–'}${s.r ? ` × ${s.r}` : ''}</span>`).join('')
+        : `<span>${x.sets.length} × ${x.sets[0]?.r ?? 'set'}</span>`;
+      return `<div class="d-ex"><b>${esc(x.n)}</b><div class="d-sets">${chips}</div></div>`;
+    }).join('')}</div>
     <button class="btn danger" data-act="del">Delete workout</button>`);
   sh.el.onclick = (ev) => {
     if (!ev.target.closest('[data-act="del"]')) return;

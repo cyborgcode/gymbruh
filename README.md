@@ -25,8 +25,9 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 
 The plan also runs as a web app (in [`web/`](web/)) that you install on your iPhone's home screen.
 
-- **Today:** opens on your next workout. Tap **Start**, tick each set as you finish it, then tap **Finish**. Logging weights and reps is optional. Once you type a weight, it carries down to the next sets, and ticking an empty set accepts the suggestion.
-- **Rest timer:** starts by itself when you tick a set, using that exercise's rest time. In a superset it waits until the last exercise. Use −15 / +15 to adjust, and there's a 30-min timer for the cardio.
+- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done.
+- **Weights (optional):** tap an exercise to open it, type the kg (it carries down to the following sets), then tap **Done** to close it. Next time you'll see "Last 60 kg" on that exercise.
+- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, and Cardio has a 30:00 timer.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
 - **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, current vs previous period), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle.
