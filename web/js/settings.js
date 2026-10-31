@@ -49,6 +49,12 @@ function body() {
     </div>
 
     <div class="field">
+      <span>Offline</span>
+      <div class="offline-status" id="offlineStatus">Checking…</div>
+      <small>Workouts, timers, weight logging and stats all run on your phone with no internet. Open the app online now and then to get updates.</small>
+    </div>
+
+    <div class="field">
       <span>Backup</span>
       <div class="row">
         <button class="btn sm" data-act="export">Export</button>
@@ -68,7 +74,26 @@ function refresh(sh) {
   wire(sh);
 }
 
+// Is a complete offline copy of this version stored on the phone?
+async function showOfflineStatus(sh) {
+  const el = sh.el.querySelector('#offlineStatus');
+  if (!el) return;
+  let ready = false, version = '';
+  try {
+    if ('caches' in window) {
+      const keys = (await caches.keys()).filter((k) => k.startsWith('gymbruh-'));
+      version = keys.sort().pop()?.replace('gymbruh-', '') || '';
+      ready = !!(await caches.match('/plan.json')) && !!(await caches.match('/js/app.js')) && !!navigator.serviceWorker?.controller;
+    }
+  } catch (e) { /* not available */ }
+  el.classList.toggle('ok', ready);
+  el.innerHTML = ready
+    ? `${ICON.check}<span>Ready to use offline${version ? ` · version ${version.replace('v', '')}` : ''}</span>`
+    : `${ICON.info}<span>Not ready yet: keep the app open with internet for a few seconds, then check again.</span>`;
+}
+
 function wire(sh) {
+  showOfflineStatus(sh);
   sh.el.onclick = async (ev) => {
     const b = ev.target.closest('[data-act],[data-accent],[data-bg]');
     if (!b) return;

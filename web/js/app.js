@@ -3,7 +3,7 @@ import { state, loadPlan } from './store.js';
 import { renderToday, renderPlan, renderSession, updateElapsed } from './workout.js';
 import { renderHistory, renderStats } from './stats.js';
 import { tick } from './timer.js';
-import { ICON, dkey } from './util.js';
+import { ICON, dkey, toast } from './util.js';
 import { applyTheme } from './theme.js';
 import { removeSample } from './settings.js';
 
@@ -122,28 +122,37 @@ document.addEventListener('visibilitychange', () => {
   if (dkey(new Date()) !== renderedDay && !(state.active && location.hash.startsWith('#/today'))) route();
 });
 
+// ---- offline support
+function registerOffline() {
+  if (!('serviceWorker' in navigator)) return;
+  // When a new version is deployed, the new service worker takes over and
+  // we reload once so the update shows up straight away.
+  const hadController = !!navigator.serviceWorker.controller;
+  let reloading = false;
+  navigator.serviceWorker.addEventListener('controllerchange', () => {
+    if (!hadController || reloading) return;
+    reloading = true;
+    location.reload();
+  });
+  navigator.serviceWorker.register('/sw.js').then((reg) => reg.update()).catch(() => {});
+  // Ask iOS to keep the offline copy and your workouts even when storage is low.
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+}
+window.addEventListener('offline', () => toast("You're offline. Everything still works."));
+window.addEventListener('online', () => toast('Back online'));
+
 async function boot() {
+  registerOffline(); // first, so the offline copy is set up even if the plan fails to load
   try {
     await loadPlan();
   } catch (e) {
-    view.innerHTML = '<div class="empty">Couldn\'t load the plan. Check your connection and open the app again.</div>';
+    view.innerHTML = `<div class="empty">Couldn't load the plan. The app needs internet the very first time it opens; after that it works offline.
+      <button class="btn primary" style="margin-top:16px" onclick="location.reload()">Try again</button></div>`;
     return;
   }
   route();
   tick();
   setInterval(() => { tick(); updateElapsed(); }, 500);
-  if ('serviceWorker' in navigator) {
-    // When a new version is deployed, the new service worker takes over and
-    // we reload once so the update shows up straight away.
-    const hadController = !!navigator.serviceWorker.controller;
-    let reloading = false;
-    navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (!hadController || reloading) return;
-      reloading = true;
-      location.reload();
-    });
-    navigator.serviceWorker.register('/sw.js').then((reg) => reg.update()).catch(() => {});
-  }
 }
 
 boot();

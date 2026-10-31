@@ -525,3 +525,8 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .chg .down { color: #ff7b72; font-weight: 700; }
 .chg .pr { color: var(--accent-ink); background: var(--accent); border-radius: 8px; padding: 2px 8px; font-size: 12px; font-weight: 800; }
 .btn.big:not(.primary) { border: 1.5px solid var(--line); }
+
+/* ---------- offline status */
+.offline-status { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255, 159, 10, 0.12); color: var(--warn); font-size: 14px; font-weight: 600; }
+.offline-status.ok { background: var(--accent-soft); color: var(--accent-2); }
+.offline-status .ic { width: 18px; height: 18px; flex: none; }
