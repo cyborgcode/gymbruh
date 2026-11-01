@@ -18,17 +18,6 @@ function body() {
     <h3>Settings</h3>
 
     <div class="field">
-      <span>Color theme</span>
-      <div class="swatches">${Object.entries(ACCENTS).map(([k, [label, hex]]) => `
-        <button class="swatch ${t.accent === k ? 'on' : ''} ${isLight(hex) ? 'light' : ''}" data-accent="${k}"
-          style="background:${hex}" aria-label="${label}" aria-pressed="${t.accent === k}">${ICON.check}</button>`).join('')}
-      </div>
-      <div class="bgs">${Object.entries(BACKGROUNDS).map(([k, b]) => `
-        <button class="bgopt ${t.bg === k ? 'on' : ''}" data-bg="${k}" aria-pressed="${t.bg === k}"><i style="background:${b.card}"></i>${b.label}</button>`).join('')}
-      </div>
-    </div>
-
-    <div class="field">
       <span>Start the plan at week</span>
       <div class="row">
         <select id="startWeek" aria-label="Week">${Array.from({ length: 52 }, (_, i) => `<option value="${i + 1}" ${i + 1 === nextWeek ? 'selected' : ''}>Week ${i + 1}</option>`).join('')}</select>
@@ -60,6 +49,18 @@ function body() {
     </div>
 
     <button class="btn danger" data-act="reset">Reset all data</button>
+
+    <div class="field theme-field">
+      <span>Color theme</span>
+      <div class="swatches">${Object.entries(ACCENTS).map(([k, [label, hex]]) => `
+        <button class="swatch ${t.accent === k ? 'on' : ''} ${isLight(hex) ? 'light' : ''}" data-accent="${k}"
+          style="background:${hex}" aria-label="${label}" aria-pressed="${t.accent === k}">${ICON.check}</button>`).join('')}
+      </div>
+      <div class="bgs">${Object.entries(BACKGROUNDS).map(([k, b]) => `
+        <button class="bgopt ${t.bg === k ? 'on' : ''}" data-bg="${k}" aria-pressed="${t.bg === k}"><i style="background:${b.card}"></i>${b.label}</button>`).join('')}
+      </div>
+    </div>
+
     <p class="muted small center">GymBruh · 12-month strength &amp; aesthetics plan</p>`;
 }
 
