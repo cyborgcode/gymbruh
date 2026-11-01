@@ -25,10 +25,12 @@ async function keepAwake(on) {
   } catch (e) { lock = null; } finally { pending = false; }
 }
 
-export function startTimer(sec, label = 'Rest') {
+// `key` names what the timer is for (e.g. 'cardio'); when it runs out, a
+// 'timer-done' event tells the workout so it can tick that block off.
+export function startTimer(sec, label = 'Rest', key = null) {
   // Close the keyboard first, otherwise it can cover the timer buttons.
   if (document.activeElement && document.activeElement.matches('input, select')) document.activeElement.blur();
-  state.timer = { end: Date.now() + sec * 1000, total: sec, label, rang: false, mini: false };
+  state.timer = { end: Date.now() + sec * 1000, total: sec, label, key, rang: false, mini: false };
   save();
   tick();
 }
@@ -97,7 +99,9 @@ export function tick() {
   const left = (t.end - Date.now()) / 1000;
   // Ended a while ago (app was in the background): just close.
   if (left < -1.6) {
+    const missed = !t.rang && t.key;
     clearTimer();
+    if (missed) window.dispatchEvent(new CustomEvent('timer-done', { detail: t.key }));
     return;
   }
   if (!el.dataset.built) build(el);
@@ -118,5 +122,6 @@ export function tick() {
     save();
     beep();
     if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    if (t.key) window.dispatchEvent(new CustomEvent('timer-done', { detail: t.key }));
   }
 }

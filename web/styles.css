@@ -71,8 +71,7 @@ small { display: block; color: var(--muted); font-size: 13px; }
   position: sticky; top: 0; z-index: 10; align-items: center;
   margin: calc(-1 * (var(--safe-t) + 12px)) -16px 0;
   padding: calc(var(--safe-t) + 10px) 16px 10px;
-  background: var(--blur);
-  backdrop-filter: saturate(160%) blur(18px); -webkit-backdrop-filter: saturate(160%) blur(18px);
+  background: var(--bg);
 }
 .elapsed { font-variant-numeric: tabular-nums; font-weight: 700; font-size: 18px; color: var(--accent); }
 
@@ -569,3 +568,64 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .ssgroup .xrow.open .xname { color: var(--accent-2); }
 .ssgroup .xtag { background: rgba(255, 159, 10, 0.14); color: var(--warn); }
 .xtag { text-transform: none; }
+
+/* ---------- live workout v3: progress, "Up next", set dots */
+/* Header: title left, clock + count (or Finish) right, progress bar below. */
+.wk-head { flex-wrap: wrap; row-gap: 10px; padding-bottom: 12px; }
+.wk-head h1.h2 { font-size: 21px; }
+.clamp2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.wk-side { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.wk-count { font-size: 13px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.wk-finish { display: none; min-height: 40px; padding: 0 14px; gap: 6px; font-size: 16px; border-radius: 12px; }
+.wk-finish .ic { width: 18px; height: 18px; }
+/* All done: the button takes the clock's place, so the header keeps its height. */
+.wk-head.all .wk-count, .wk-head.all .elapsed { display: none; }
+.wk-head.all .wk-finish { display: inline-flex; }
+.wk-bar { flex-basis: 100%; height: 4px; border-radius: 2px; background: var(--card2); overflow: hidden; }
+.wk-bar i { display: block; height: 100%; width: 0; border-radius: 2px; background: var(--accent); transition: width 0.35s ease; }
+.xrow, .ssgroup { scroll-margin-top: 104px; }
+
+/* First workouts only: a short tip you can close. */
+.tip { display: flex; align-items: flex-start; gap: 10px; background: var(--card); border-radius: 14px; padding: 10px 10px 10px 14px; margin: 0 0 10px; }
+.tip p { margin: 0; flex: 1; line-height: 1.45; }
+.tip .icon-btn.sm { width: 30px; height: 30px; border-radius: 10px; }
+.tip .icon-btn.sm .ic { width: 15px; height: 15px; color: var(--muted); }
+
+/* Timers are quiet; the one for the card that's up next is filled. */
+.tround-ic { background: var(--card2); color: var(--accent-2); }
+.tround small { color: var(--muted); }
+.xrow.next .tround-ic, .ssgroup.next .ss-head .tround-ic { background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 18px var(--accent-fill); }
+.xrow.next .tround small, .ssgroup.next .ss-head .tround small { color: var(--accent-2); }
+.tdots { display: flex; justify-content: center; gap: 3px; min-height: 6px; }
+.tdots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background 0.2s; }
+.tdots i.on { background: var(--accent); }
+.tround.solo { justify-content: center; width: 48px; }
+
+/* "Up next" / "Done" labels in the card's top line. */
+.xnext, .xdone { display: none; align-items: center; height: 20px; padding: 0 7px; border-radius: 6px; font-size: 11px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; }
+.xnext { background: var(--accent); color: var(--accent-ink); }
+.xdone { background: var(--accent-soft); color: var(--accent-2); }
+.xrow.next > .xhead .xnext, .ssgroup.next > .ss-head .xnext { display: inline-flex; }
+.xrow.done > .xhead .xdone, .ssgroup.done > .ss-head .xdone { display: inline-flex; }
+.ss-title .xnext, .ss-title .xdone { margin-left: 6px; vertical-align: 1px; }
+/* Done: dimmed, same size (nothing jumps), still tappable. */
+.xrow.done > .xhead .xname, .xrow.done > .xhead .xchips, .xrow.done > .xhead .xeyebrow > :not(.xdone) { opacity: 0.45; }
+.xrow.done > .xhead .xeyebrow { color: rgba(154, 154, 163, 0.6); }
+.xrow.done:not(.open) .tround-ic, .ssgroup.done .ss-head .tround-ic { color: var(--muted); }
+
+/* Inside an opened card: fix the count, then close. */
+.sets-done { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 6px 6px 6px 12px; border-radius: 12px; background: var(--card2); }
+.sets-done > span { font-size: 14px; font-weight: 600; color: var(--muted); }
+.sd-ctl { display: flex; align-items: center; gap: 4px; }
+.sd-ctl .stp { width: 40px; height: 36px; border-radius: 10px; background: var(--card); font-size: 22px; line-height: 1; color: var(--text); }
+.sd-ctl b { min-width: 58px; text-align: center; font-variant-numeric: tabular-nums; }
+.sd-toggle { height: 34px; background: var(--card); color: var(--text); }
+.sd-toggle.on { background: var(--accent-soft); color: var(--accent-2); }
+.btn.close-btn { margin-top: 10px; width: 100%; min-height: 44px; }
+.cue .link.sm { display: inline; padding: 0; font-size: 14px; white-space: nowrap; }
+
+/* Superset: a clean orange bar on the left that stops short of the rounded corners. */
+.ssgroup { position: relative; box-shadow: none; }
+.ssgroup::before { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--warn); }
+.ssgroup.done .ss-head small { opacity: 0.45; }
+.ssgroup.done .ss-title { color: rgba(255, 159, 10, 0.55); }

@@ -52,10 +52,16 @@ document.addEventListener('click', (ev) => {
   if (confirm('Remove the sample data and bring back your own?')) removeSample();
 });
 
-window.addEventListener('hashchange', () => {
+// Leaving a workout for another tab and coming back returns you to the same
+// spot (instead of the top, where you'd have to find your exercise again).
+const inToday = (hash) => !hash || hash === '#' || hash.startsWith('#/today');
+let workoutScroll = null; // { id: workout start, y }
+window.addEventListener('hashchange', (ev) => {
+  if (state.active && inToday(new URL(ev.oldURL).hash)) workoutScroll = { id: state.active.start, y: window.scrollY };
   document.querySelectorAll('.sheet-wrap').forEach((el) => el.remove());
   route();
-  window.scrollTo(0, 0);
+  const back = state.active && inToday(location.hash) && workoutScroll && workoutScroll.id === state.active.start;
+  window.scrollTo(0, back ? workoutScroll.y : 0);
 });
 window.addEventListener('rerender', route);
 // iOS only shows :active press styles when the page listens for touches.
