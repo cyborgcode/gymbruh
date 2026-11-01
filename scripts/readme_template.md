@@ -2,6 +2,8 @@
 
 A 52-week gym program: **3 days a week**, **30 minutes of cardio before every session**, **no squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
 
+**Live app: [gymbruh-orcin.vercel.app](https://gymbruh-orcin.vercel.app)** · an offline iPhone web app that opens on today's workout, with rest timers, optional weight logging and progress stats. To install it, open the link in Safari, then tap **Share** → **Add to Home Screen**.
+
 | Your requirement | How the plan meets it |
 |---|---|
 | 30 min cardio before each session | Every session starts with 30 min of cardio, planned month by month. It's mostly Zone 2, with intervals only in the definition phase. |
