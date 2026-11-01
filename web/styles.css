@@ -537,3 +537,35 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 
 /* ---------- settings: color theme sits last */
 .theme-field { margin-top: 24px; padding-top: 18px; border-top: 1px solid var(--line); }
+
+/* ---------- exercise cards v2: label, big name, chips, round timer */
+.xhead { align-items: center; gap: 14px; padding: 14px 0; }
+.xbody { padding: 0 0 14px; }
+.xeyebrow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.xeyebrow .star { letter-spacing: 0; text-transform: none; }
+.xtag { min-width: 26px; height: 22px; padding: 0 6px; border-radius: 7px; display: grid; place-items: center; background: var(--card2); color: var(--muted); font-size: 12px; letter-spacing: 0; }
+.xtag.m { background: var(--accent-soft); color: var(--accent-2); }
+.xtag.x { background: rgba(255, 159, 10, 0.14); color: var(--warn); }
+.xtag.c { background: rgba(191, 90, 242, 0.16); color: #d68cff; }
+.xname { font-size: 18px; font-weight: 700; line-height: 1.25; }
+.xrow.open .xhead .xname { color: var(--text); }
+.xchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }
+.xchips .xmeta { display: contents; }
+.xc, .xchips .xmeta span { padding: 4px 9px; border-radius: 8px; background: var(--card2); color: var(--muted); font-size: 13px; font-weight: 600; line-height: 1.25; }
+.xc.main { color: var(--text); font-size: 15px; font-weight: 800; }
+.xchips .xmeta .today-w { background: var(--accent-soft); color: var(--accent-2); }
+.tround { flex: none; display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--accent-2); }
+.tround-ic { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); transition: transform 0.12s; }
+.tround-ic .ic { width: 22px; height: 22px; }
+.tround small { font-size: 12px; font-weight: 700; color: var(--accent-2); font-variant-numeric: tabular-nums; }
+.tround:active .tround-ic { transform: scale(0.9); }
+
+/* superset: one card, both exercises inside, one timer */
+.ssgroup { background: var(--card); border-radius: var(--r); padding: 4px 14px; margin: 0 0 10px; box-shadow: inset 3px 0 0 var(--warn); }
+.ss-head { display: flex; align-items: center; gap: 12px; padding: 12px 0 6px; }
+.ss-title { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--warn); }
+.ss-head small { font-size: 13px; }
+.ssgroup .xrow, .ssgroup .xrow.open { background: none; margin: 0; padding: 0; border-radius: 0; box-shadow: none; border-top: 1px solid var(--line); }
+.ssgroup .xrow.open .xname { color: var(--accent-2); }
+.ssgroup .xtag { background: rgba(255, 159, 10, 0.14); color: var(--warn); }
+.xtag { text-transform: none; }

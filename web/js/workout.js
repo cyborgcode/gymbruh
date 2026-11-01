@@ -170,11 +170,10 @@ function renderWorkout(root) {
 
   let rows = cardioRow(s);
   s.ex.forEach((x, i) => {
-    const first = x.group && s.ex.findIndex((y) => y.group === x.group) === i;
-    const lastInGroup = x.group && s.ex.findLastIndex((y) => y.group === x.group) === i;
-    if (first) rows += `<div class="ssgroup"><div class="sslabel">Superset · rest after both</div>`;
+    const members = x.group ? s.ex.filter((y) => y.group === x.group) : null;
+    if (members && members[0] === x) rows += supersetHead(members);
     rows += exRow(x, i);
-    if (lastInGroup) rows += '</div>';
+    if (members && members.at(-1) === x) rows += '</div>';
   });
 
   root.innerHTML = `
@@ -237,13 +236,40 @@ function renderWorkout(root) {
   };
 }
 
-function cardioRow(s) {
+// ---- exercise cards: what it trains, glanceable chips, a quiet round timer
+function timerButton(sec, label) {
+  return `<button class="tround" data-act="rest" data-sec="${sec}" data-label="${esc(label)}" aria-label="Start ${restLabel(sec)} timer">
+    <span class="tround-ic">${ICON.timer}</span><small>${restLabel(sec)}</small></button>`;
+}
+
+function chips(rx) {
+  const [main, ...rest] = rx.split(' · ');
+  return `<b class="xc main">${esc(main.replace(/×/g, ' × '))}</b>${rest.map((c) => `<span class="xc">${esc(c)}</span>`).join('')}`;
+}
+
+function supersetHead(members) {
+  const rounds = Math.max(...members.map((y) => y.sets.length));
+  const names = members.map((y) => y.label).join(' + ');
   return `
-    <div class="xrow" data-ex="cardio">
+    <div class="ssgroup">
+      <div class="ss-head">
+        <div class="grow"><div class="ss-title">Superset · ${rounds} rounds</div><small>One set of each, then rest</small></div>
+        ${timerButton(members[0].rest, `Rest · Superset ${names}`)}
+      </div>`;
+}
+
+function cardioRow(s) {
+  const kind = /Sprint/.test(s.cardio) ? 'Sprints' : /Interval/.test(s.cardio) ? 'Intervals'
+    : /Zone 3/.test(s.cardio) ? 'Zone 2 + Zone 3 finish' : /easy/i.test(s.cardio) ? 'Easy Zone 2' : 'Zone 2';
+  return `
+    <div class="xrow cardio" data-ex="cardio">
       <div class="xhead" data-act="toggle">
-        <span class="tag c">C</span>
-        <div class="grow"><div class="xname">Cardio · 30 min</div><div class="xrx">Before you lift · tap for details</div></div>
-        <button class="tbtn" data-act="rest" data-sec="1800" data-label="Cardio" aria-label="Start 30 minute cardio timer">${ICON.timer}<span>30:00</span></button>
+        <div class="grow">
+          <div class="xeyebrow"><span class="xtag c">C</span>Before you lift</div>
+          <div class="xname">Cardio</div>
+          <div class="xchips"><b class="xc main">30 min</b><span class="xc">${kind}</span></div>
+        </div>
+        ${timerButton(1800, 'Cardio')}
       </div>
       <div class="xbody" hidden>
         <p class="cue">${esc(s.cardio)}</p>
@@ -321,16 +347,17 @@ function weightLogger(x, i, inf) {
 function exRow(x, i, open = false) {
   const inf = info(x);
   const log = state.active.log[i];
+  const primary = Object.entries(inf.muscles).find(([, f]) => f === 1)?.[0] || '';
+  const eyebrow = x.slot === 'M' ? `Main lift · ${primary}` : x.slot === 'X' ? 'Abs' : primary;
   return `
     <div class="xrow ${open ? 'open' : ''}" data-ex="${i}">
       <div class="xhead" data-act="toggle">
-        <span class="tag ${tagCls(x)}">${x.label}</span>
         <div class="grow">
-          <div class="xname">${esc(inf.name)}${x.spec ? ' <span class="star">★</span>' : ''}</div>
-          <div class="xrx">${esc(x.rx)}</div>
-          <div class="xmeta">${metaHtml(log, lastSet(inf.name))}</div>
+          <div class="xeyebrow"><span class="xtag ${tagCls(x)}">${x.label}</span>${esc(eyebrow)}${x.spec ? ' <span class="star">★ V-taper</span>' : ''}</div>
+          <div class="xname">${esc(inf.name)}</div>
+          <div class="xchips">${chips(x.rx)}<span class="xmeta">${metaHtml(log, lastSet(inf.name))}</span></div>
         </div>
-        <button class="tbtn" data-act="rest" data-sec="${x.rest}" data-label="Rest · ${esc(inf.name)}" aria-label="Start ${x.rest} second rest timer">${ICON.timer}<span>${restLabel(x.rest)}</span></button>
+        ${x.group ? '' : timerButton(x.rest, `Rest · ${inf.name}`)}
       </div>
       <div class="xbody" ${open ? '' : 'hidden'}>
         ${inf.bw ? '<p class="bw-note">Bodyweight exercise, nothing to log.</p>' : weightLogger(x, i, inf)}
