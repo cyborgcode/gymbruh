@@ -32,7 +32,7 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
 - **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
-- **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), **Load sample data** (about 10 weeks of example workouts for exploring the stats; your own data is set aside and comes back when you remove it), start at any week, export/import, and reset.
+- **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
 - **Works offline and stays private:** after the first open with internet, everything (workouts, timers, weight logging, stats, history) runs with no connection, and Settings → Offline shows "Ready to use offline". Your data is stored only on your phone. Use Settings → Export for a backup.
 
 **Install on iPhone:** open the site in Safari → **Share** → **Add to Home Screen**.

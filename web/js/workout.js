@@ -100,7 +100,7 @@ export function openTerms() {
 function previewList(s) {
   return `
     <section class="card">
-      <div class="card-title row-between"><span>What's in it</span><button class="link sm" data-act="terms">Terms</button></div>
+      <div class="card-title row-between"><span>What's in it for me</span><button class="link sm" data-act="terms">Terms</button></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
       <ol class="preview">
         <li><span class="tag c">C</span><div><b>Cardio · 30 min</b><small>${esc(s.cardio)}</small></div></li>

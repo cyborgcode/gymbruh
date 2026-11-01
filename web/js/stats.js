@@ -1,6 +1,6 @@
 // History (calendar + workout list) and Stats (reports & charts).
 import { state, save, plan, workouts, nextSession } from './store.js';
-import { sampleBanner, loadSample } from './settings.js';
+import { sampleBanner } from './settings.js';
 import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
   timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast,
@@ -168,10 +168,9 @@ export function renderStats(root) {
         <h3>No workouts yet</h3>
         <p class="muted">Finish your first workout and your totals, streak, charts and muscle balance show up here.</p>
         <a class="btn primary" href="#/today">${ICON.play}<span>Go to today's workout</span></a>
-        <button class="btn ghost" data-act="sample">Or explore with sample data</button>
       </section>
       <section class="card">${CARDS.planned(list)}</section>`;
-    root.onclick = (ev) => { if (ev.target.closest('[data-act="sample"]')) loadSample(); };
+    root.onclick = null;
     return;
   }
 

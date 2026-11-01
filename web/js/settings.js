@@ -1,8 +1,7 @@
-// Settings sheet: colour theme, plan position, sample data, backup, reset.
+// Settings sheet: colour theme, plan position, offline status, backup, reset.
 import { state, save, plan, replaceState, BACKUP_KEY } from './store.js';
 import { sheet, toast, dkey, ICON } from './util.js';
 import { ACCENTS, BACKGROUNDS, applyTheme } from './theme.js';
-import { makeSample } from './sample.js';
 
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const isLight = (hex) => ['#ffd60a', '#40c8e0', '#30d158', '#ff9f0a'].includes(hex);
@@ -38,15 +37,12 @@ function body() {
       <small>Unfinished sessions before that week are marked as skipped.</small>
     </div>
 
-    <div class="field">
+    ${state.sample ? `<div class="field">
       <span>Sample data</span>
-      ${state.sample
-        ? `<div class="sample-on">${ICON.info} Sample data is loaded</div>
-           <button class="btn" data-act="sample-off">Remove sample data</button>
-           <small>Brings back your own data exactly as it was. Workouts you logged in the meantime are kept.</small>`
-        : `<button class="btn" data-act="sample-on">Load sample data</button>
-           <small>Fills the app with about 10 weeks of example workouts so you can explore the stats. Your own data is set aside and comes back when you remove it.</small>`}
-    </div>
+      <div class="sample-on">${ICON.info} Sample data is loaded</div>
+      <button class="btn" data-act="sample-off">Remove sample data</button>
+      <small>Brings back your own data exactly as it was. Workouts you logged in the meantime are kept.</small>
+    </div>` : ''}
 
     <div class="field">
       <span>Offline</span>
@@ -116,7 +112,6 @@ function wire(sh) {
       toast(`Plan set to start at week ${wk}`);
       rerender();
     }
-    if (act === 'sample-on') loadSample(sh);
     if (act === 'sample-off') removeSample(sh);
     if (act === 'export') await exportData();
     if (act === 'reset') {
@@ -145,22 +140,6 @@ function wire(sh) {
       toast('That file is not a GymBruh backup');
     }
   };
-}
-
-export function loadSample(sh) {
-  if (state.active && !confirm('A workout is in progress. It will be set aside with your data. Continue?')) return;
-  try {
-    localStorage.setItem(BACKUP_KEY, JSON.stringify(state));
-  } catch (e) {
-    toast('Not enough storage to set your data aside');
-    return;
-  }
-  const { workouts, status } = makeSample();
-  replaceState({ workouts, status, sample: true, hideInstall: state.hideInstall });
-  if (sh) sh.close();
-  toast(`Loaded ${workouts.length} sample workouts`);
-  location.hash = '#/stats';
-  rerender();
 }
 
 export function removeSample(sh) {
