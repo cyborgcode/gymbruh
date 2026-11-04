@@ -141,7 +141,10 @@ export function startSession(id) {
     state.active = null;
   }
   if (!state.active) {
-    state.active = { sid: id, start: Date.now(), log: s.ex.map((x) => x.sets.map(() => ({ w: '' }))), done: {} };
+    state.active = {
+      sid: id, start: Date.now(), log: s.ex.map((x) => x.sets.map(() => ({ w: '' }))), done: {},
+      names: s.ex.map((x) => info(x).name),
+    };
     save();
   }
   unlockAudio();
@@ -165,9 +168,10 @@ function renderWorkout(root) {
   const a = state.active;
   const s = plan.byId[a.sid];
   const m = monthOf(s);
+  const changed = matchPlan(a, s);
   a.log = s.ex.map((x, i) => x.sets.map((_, k) => (a.log && a.log[i] && a.log[i][k]) || { w: '' }));
-
   a.done = a.done || {};
+  if (changed) save();
   const hoursOpen = (Date.now() - a.start) / 3.6e6;
   // Keep the card you had open (e.g. after a look at your stats).
   const openKey = openMemo && openMemo.id === a.start ? openMemo.key : null;
@@ -250,6 +254,32 @@ function renderWorkout(root) {
     if (next) next.focus();
     else inp.blur();
   };
+}
+
+// An app update can change a session while a workout is in progress. Weights
+// and ticks are stored by position, so re-pair them with their exercise by
+// name. (Workouts started before names were stored: keep them only if the
+// shape still fits.) Returns true when something changed.
+function matchPlan(a, s) {
+  const names = s.ex.map((x) => info(x).name);
+  if (a.names && a.names.join('|') === names.join('|')) return false;
+  if (!a.names) {
+    const fits = Array.isArray(a.log) && a.log.length === s.ex.length && s.ex.every((x, i) => a.log[i]?.length === x.sets.length);
+    if (!fits) { a.log = null; a.done = { cardio: a.done?.cardio }; a.per = {}; }
+  } else {
+    const from = names.map((n) => a.names.indexOf(n));
+    const old = { log: a.log || [], done: a.done || {}, per: a.per || {} };
+    a.log = from.map((j) => (j >= 0 ? old.log[j] : null));
+    a.done = { cardio: old.done.cardio };
+    a.per = {};
+    from.forEach((j, i) => {
+      if (j < 0) return;
+      if (old.done[j] != null) a.done[i] = old.done[j];
+      if (old.per[j] != null) a.per[i] = old.per[j];
+    });
+  }
+  a.names = names;
+  return true;
 }
 
 // ---- exercise cards: what it trains, glanceable chips, a round timer.

@@ -9,7 +9,7 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 | 30 min cardio before each session | Every session starts with 30 min of cardio, planned month by month. It's mostly Zone 2, with intervals only in the definition phase. |
 | No squats | Quads are trained with the leg press, lunges, step-ups and leg extensions. |
 | No deadlifts | The posterior chain is trained with hip thrusts, back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
-| 3 days per week | Full-body A / B / C split, so every muscle is hit 2-3× a week. |
+| 3 days per week | **Push / Pull / Legs**: Push (chest, shoulders, triceps), Pull (back, rear delts, biceps), Legs (quads, glutes, hamstrings, calves). Side delts get work on Push and Pull days, and abs every session. |
 | Works your abs | 2 ab exercises every session (≈ 18 hard sets a week). They progress from knee raises and planks to dragon flags, ab wheel from the feet and L-sits. |
 | Strength | Six tracked main lifts, percentage-based periodization, two test weeks and a final assessment. |
 | Aesthetics | V-taper focus (upper chest, side delts, lats, arms, abs) with balanced legs, a specialization month and a definition phase. |
@@ -27,9 +27,9 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 
 The plan also runs as a web app (in [`web/`](web/)) that you install on your iPhone's home screen.
 
-- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done.
-- **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Done** to close.
-- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, **Hide** shrinks it to a small pill so you can keep using the workout, and Cardio has a 30:00 timer. The screen stays on while it runs (where iOS allows it).
+- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done. The pinned header shows how much is ticked off, and the next exercise is marked **Up next**.
+- **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Close** when you're done.
+- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it after each set: it ticks the set off (the dots under the button) and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, **Hide** shrinks it to a small pill so you can keep using the workout, and Cardio has a 30:00 timer. The screen stays on while it runs (where iOS allows it).
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
@@ -45,7 +45,7 @@ The app has no build step, and Vercel serves the `web/` folder as-is (see [`verc
 
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
 |---|---|---|---|---|---|---|
-| **Day A** | Rest | **Day B** | Rest | **Day C** | Rest | Rest |
+| **Push** (A) | Rest | **Pull** (B) | Rest | **Legs** (C) | Rest | Rest |
 
 Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between sessions when you can, and never train 3 days in a row. On rest days, walk 7-10k steps.
 
@@ -93,12 +93,12 @@ The six main lifts stay the same all year so you can track your strength. Access
 
 | Lift | Day | Why it's in the plan |
 |---|---|---|
-| Barbell Bench Press | A | Chest size and upper-body pressing strength |
-| Leg Press | A | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
-| Barbell Hip Thrust | B | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
-| Barbell Row | B | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
-| Standing Overhead Press | C | Shoulder size and pressing strength |
-| Weighted Pull-up | C | Lat width, the core of the V-taper |
+| Barbell Bench Press | A · Push | Chest size and upper-body pressing strength |
+| Standing Overhead Press | A · Push | Shoulder size and pressing strength |
+| Barbell Row | B · Pull | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
+| Weighted Pull-up | B · Pull | Lat width, the core of the V-taper |
+| Leg Press | C · Legs | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
+| Barbell Hip Thrust | C · Legs | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
 
 ### Not in this plan (by request)
 
@@ -114,7 +114,7 @@ The six main lifts stay the same all year so you can track your strength. Access
 | **RIR** | Reps in reserve: how many more clean reps you could have done. RIR 2 means 2 left in the tank. |
 | **RPE** | Rate of perceived exertion, where RPE = 10 − RIR. |
 | **1RM / e1RM** | One-rep max / *estimated* one-rep max (from the formula below) |
-| **Superset** | Exercises with the same number (3a/3b) are done back to back, then you rest. |
+| **Superset** | Exercises with the same number (4a/4b) are done back to back, then you rest. |
 | **Drop set** | Finish the set, drop the weight about 25%, and keep going to RIR 0-1. |
 | **Rest-pause** | Finish the set, rest 15 s, rep out again, and repeat once more. |
 | **Myo-reps** | One set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest between them. |
@@ -207,8 +207,8 @@ Each week, adjust the e1RM your percentages are based on:
 
 ## Cardio rules (and why cardio before lifting works here)
 
-- **Keep it Zone 2 most of the year.** Easy cardio barely hurts your strength and doubles as a long warm-up. Hard cardio before lifting would cost you strength, so intervals only show up on **Day C in Months 11-12**. Day C's main lifts are upper body, so that's where intervals do the least damage.
-- **Choose low-impact machines:** bike, elliptical, incline walk, rower, stair climber. **Don't run before Day A or Day B**: running's impact and downhill (eccentric) loading tire out the legs you're about to train.
+- **Keep it Zone 2 most of the year.** Easy cardio barely hurts your strength and doubles as a long warm-up. Hard cardio before lifting would cost you strength, so intervals only show up on **Push day in Months 11-12**. Push day uses no leg lifts, so that's where intervals do the least damage.
+- **Choose low-impact machines:** bike, elliptical, incline walk, rower, stair climber. **Don't run before Legs day**: running's impact and downhill (eccentric) loading tire out the legs you're about to train.
 - **Stay in the zone as you get fitter.** You'll need more incline, speed or resistance over time to keep the same heart rate.
 - **Fuel it.** Eat a meal with carbs and protein 1.5-3 h before training, and drink 500 ml+ of water during the session. 30 min of cardio plus 60 min of lifting is a long session.
 
@@ -233,7 +233,7 @@ Every session has **2 ab exercises done as a superset**, about **6 hard sets per
 
 ## Weekly volume per muscle
 
-Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders, back and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for.
+Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for. With Push / Pull / Legs, each muscle gets its week's sets in one focused session (side delts and abs are spread over several days).
 
 {{VOLUME}}
 
@@ -312,7 +312,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 
 ## When life happens
 
-- **Missed 1 session:** do it on your next training day and keep the A → B → C order.
+- **Missed 1 session:** do it on your next training day and keep the Push → Pull → Legs order.
 - **Missed a full week:** repeat the last week you completed.
 - **Sick for 2+ weeks:** take the next flex week early, then restart from the last week you completed with loads 10% lighter.
 - **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the cardio, the main lifts or the abs: those are the core of what you asked for.

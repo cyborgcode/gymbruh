@@ -61,15 +61,19 @@ BACK_EXT = ex("45° Back Extension", "C", {"Glutes": 1, "Hamstrings": .5},
 NEUTRAL_PD = ex("Neutral-Grip Lat Pulldown", "C", {"Back": 1, "Biceps": .5},
                 "Close neutral handle, pull to the upper chest, lean back slightly.")
 
+HAMMER = ex("Hammer Curl", "I", {"Biceps": 1}, "Neutral grip trains the brachialis for thicker arms.")
+PEC_DECK = ex("Pec Deck Fly", "I", {"Chest": 1}, "Slight bend in the elbows, deep stretch, squeeze 1 s with the hands together.")
+
+# Push / Pull / Legs. Day A = Push, Day B = Pull, Day C = Legs.
+# Supersets pair muscles that don't compete (side delts with triceps,
+# rear delts with biceps, quads with hamstrings, calves with everything).
 Q1 = {
     "A": [
-        ("1", BENCH), ("2", LEGPRESS),
-        ("3a", ex("Incline Dumbbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
-                  "Upper-chest builder. Elbows at about 45°, deep stretch at the bottom.", spec=True)),
-        ("3b", ex("Lat Pulldown (wide grip)", "C", {"Back": 1, "Biceps": .5},
-                  "Chest up, drive the elbows down to your ribs, control the way up.", spec=True)),
-        ("4a", LEG_EXT), ("4b", CALF_ST),
-        ("5a", CABLE_LAT), ("5b", ROPE_PD),
+        ("1", BENCH), ("2", OHP),
+        ("3", ex("Incline Dumbbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
+                 "Upper-chest builder. Elbows at about 45°, deep stretch at the bottom.", spec=True)),
+        ("4a", CABLE_LAT), ("4b", ROPE_PD),
+        ("5a", PEC_DECK), ("5b", OH_CABLE_EXT),
         ("6a", ex("Hanging Knee Raise", "X", {"Abs": 1},
                   "No swinging. Curl the pelvis up at the top (posterior tilt).",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -78,13 +82,11 @@ Q1 = {
                   abs_rx=["3×12", "3×15", "4×12 (heavier)"])),
     ],
     "B": [
-        ("1", HIPTHRUST), ("2", ROW),
-        ("3", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
-                 "Long stride, slight forward lean, back knee lightly touches the floor.")),
-        ("4a", ex("Single-Arm Dumbbell Row", "C", {"Back": 1, "Biceps": .5},
-                  "Hand on the bench, pull the elbow toward your hip, full stretch at the bottom.")),
-        ("4b", LYING_CURL),
-        ("5a", FACE_PULL), ("5b", INC_CURL),
+        ("1", ROW), ("2", PULLUP_Q1),
+        ("3", ex("Lat Pulldown (wide grip)", "C", {"Back": 1, "Biceps": .5},
+                 "Chest up, drive the elbows down to your ribs, control the way up.", spec=True)),
+        ("4a", FACE_PULL), ("4b", INC_CURL),
+        ("5a", DB_LAT), ("5b", HAMMER),
         ("6a", ex("Kneeling Ab Wheel Rollout", "X", {"Abs": 1},
                   "Ribs down, glutes tight. Roll out only as far as your lower back stays flat.",
                   abs_rx=["3×6-8 (partial range)", "3×8-10", "3×10-12 (full range)"])),
@@ -93,13 +95,11 @@ Q1 = {
                   abs_rx=["3×10/side", "3×12/side", "3×12/side + 3 s hold"])),
     ],
     "C": [
-        ("1", OHP), ("2", PULLUP_Q1),
-        ("3a", ex("Dips (assisted if needed)", "C", {"Chest": 1, "Triceps": .5, "Shoulders": .5},
-                  "Lean forward slightly for chest. Only go as deep as your shoulders are comfortable.")),
-        ("3b", ex("Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
-                  "Knee-height box. Drive through the front heel and don't push off the back foot.")),
-        ("4a", SEATED_CURL), ("4b", CALF_SE),
-        ("5a", EZ_CURL), ("5b", OH_CABLE_EXT), ("5c", DB_LAT),
+        ("1", LEGPRESS), ("2", HIPTHRUST),
+        ("3", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
+                 "Long stride, slight forward lean, back knee lightly touches the floor.")),
+        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_ST),
+        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_SE),
         ("6a", ex("Reverse Crunch", "X", {"Abs": 1},
                   "Curl the hips off the bench toward your chest, lower slowly.",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -110,13 +110,13 @@ Q1 = {
 
 Q2 = {
     "A": [
-        ("1", BENCH), ("2", LEGPRESS),
-        ("3a", ex("Incline Barbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
-                  "Bar to the upper chest, elbows slightly tucked.", spec=True)),
-        ("3b", NEUTRAL_PD),
-        ("4a", LEG_EXT), ("4b", CALF_ST),
-        ("5a", CABLE_LAT),
-        ("5b", ex("Straight-Bar Triceps Pushdown", "I", {"Triceps": 1}, "Elbows pinned, full lockout, slow return.")),
+        ("1", BENCH), ("2", OHP),
+        ("3", ex("Incline Barbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
+                 "Bar to the upper chest, elbows slightly tucked.", spec=True)),
+        ("4a", CABLE_LAT),
+        ("4b", ex("Straight-Bar Triceps Pushdown", "I", {"Triceps": 1}, "Elbows pinned, full lockout, slow return.")),
+        ("5a", ex("Cable Crossover", "I", {"Chest": 1}, "Hands meet in front of the lower chest, slow stretch on the way back.")),
+        ("5b", SKULL),
         ("6a", ex("Hanging Leg Raise (straight legs)", "X", {"Abs": 1},
                   "Legs straight, raise to hip height or higher, no swinging.",
                   abs_rx=["3×8", "3×10", "3×12"])),
@@ -125,14 +125,12 @@ Q2 = {
                   abs_rx=["3×10 (heavy)", "4×10", "4×8 (heavier)"])),
     ],
     "B": [
-        ("1", HIPTHRUST), ("2", ROW),
-        ("3", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
-                 "Step back, keep the front shin close to vertical. Easier on the knees than forward lunges.")),
-        ("4a", ex("Chest-Supported Row (T-bar or dumbbell)", "C", {"Back": 1, "Biceps": .5},
-                  "Chest on the pad, squeeze the shoulder blades. No load on the lower back.")),
-        ("4b", SEATED_CURL),
-        ("5a", ex("Reverse Pec Deck", "I", {"Shoulders": 1}, "Arms long, sweep wide, squeeze the rear delts.")),
-        ("5b", ex("Hammer Curl", "I", {"Biceps": 1}, "Neutral grip trains the brachialis for thicker arms.")),
+        ("1", ROW), ("2", PULLUP),
+        ("3", ex("Chest-Supported Row (T-bar or dumbbell)", "C", {"Back": 1, "Biceps": .5},
+                 "Chest on the pad, squeeze the shoulder blades. No load on the lower back.")),
+        ("4a", ex("Reverse Pec Deck", "I", {"Shoulders": 1}, "Arms long, sweep wide, squeeze the rear delts.")),
+        ("4b", HAMMER),
+        ("5a", DB_LAT), ("5b", EZ_CURL),
         ("6a", ex("Ab Wheel Rollout (kneeling, full range)", "X", {"Abs": 1},
                   "Full extension, ribs down, glutes tight, no sagging.",
                   abs_rx=["3×10", "3×12", "4×10 + 2 s pause at full extension"])),
@@ -141,10 +139,11 @@ Q2 = {
                   abs_rx=["3×20 m/side", "3×30 m/side", "3×40 m/side"])),
     ],
     "C": [
-        ("1", OHP), ("2", PULLUP),
-        ("3a", DIPS_W), ("3b", BACK_EXT),
-        ("4a", LYING_CURL), ("4b", CALF_SE),
-        ("5a", EZ_CURL), ("5b", SKULL), ("5c", DB_LAT),
+        ("1", LEGPRESS), ("2", HIPTHRUST),
+        ("3", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
+                 "Step back, keep the front shin close to vertical. Easier on the knees than forward lunges.")),
+        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_SE),
+        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_ST),
         ("6a", ex("Incline Reverse Crunch", "X", {"Abs": 1},
                   "Head at the top of an incline bench, curl the hips up and over.",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -155,15 +154,17 @@ Q2 = {
 
 Q3 = {
     "A": [
-        ("1", BENCH), ("2", LEGPRESS),
-        ("3a", ex("Incline Dumbbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
-                  "Upper-chest priority. Deep stretch, 3 s on the way down.", spec=True)),
-        ("3b", ex("Wide-Grip Lat Pulldown", "C", {"Back": 1, "Biceps": .5},
-                  "Width builder. Pull the elbows down and out, squeeze the lats at the bottom.", spec=True)),
-        ("4a", LEG_EXT), ("4b", CALF_ST),
-        ("5a", ex("Cable Y-Raise", "I", {"Shoulders": 1},
+        ("1", BENCH), ("2", OHP),
+        ("3", ex("Incline Dumbbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
+                 "Upper-chest priority. Deep stretch, 3 s on the way down.", spec=True)),
+        ("4a", ex("Cable Y-Raise", "I", {"Shoulders": 1},
                   "Cable low, sweep the arm up in a Y in front of the body. Targets the side delts.", spec=True)),
-        ("5b", ex("Overhead Rope Triceps Extension", "I", {"Triceps": 1}, "Face away from the stack, deep stretch.")),
+        ("4b", ex("Overhead Rope Triceps Extension", "I", {"Triceps": 1}, "Face away from the stack, deep stretch.")),
+        ("5a", ex("Low-to-High Cable Fly", "I", {"Chest": 1},
+                  "Cables low, sweep the hands up to chin height. Targets the upper chest.", spec=True)),
+        ("5b", ex("Single-Arm Cable Pushdown", "I", {"Triceps": 1}, "Reverse or neutral grip, full lockout.")),
+        ("5c", ex("Lean-Away Cable Lateral Raise", "I", {"Shoulders": 1},
+                  "Hold the post and lean away. Keeps tension on the delt at the bottom.", spec=True)),
         ("6a", ex("Toes-to-Bar (or Hanging Leg Raise)", "X", {"Abs": 1},
                   "Controlled. Use the lats to stay still and curl the pelvis up.",
                   abs_rx=["3×6", "3×8", "3×10"])),
@@ -171,15 +172,15 @@ Q3 = {
                   abs_rx=["3×10", "3×12", "4×10"])),
     ],
     "B": [
-        ("1", HIPTHRUST), ("2", ROW),
-        ("3", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
-                 "Long stride, 2 s on the way down, drive through the front heel.")),
+        ("1", ROW), ("2", PULLUP),
+        ("3", ex("Wide-Grip Lat Pulldown", "C", {"Back": 1, "Biceps": .5},
+                 "Width builder. Pull the elbows down and out, squeeze the lats at the bottom.", spec=True)),
         ("4a", ex("Straight-Arm Cable Pulldown", "I", {"Back": 1},
                   "Arms nearly straight, sweep the bar down to your thighs. Isolates the lats for width.", spec=True)),
-        ("4b", SEATED_CURL),
-        ("5a", ex("Rear-Delt Cable Fly", "I", {"Shoulders": 1}, "Cross the cables, sweep the arms wide at shoulder height.")),
-        ("5b", ex("Bayesian Cable Curl", "I", {"Biceps": 1},
+        ("4b", ex("Bayesian Cable Curl", "I", {"Biceps": 1},
                   "Face away from a low cable with the arm behind the body for a full stretch.")),
+        ("5a", ex("Rear-Delt Cable Fly", "I", {"Shoulders": 1}, "Cross the cables, sweep the arms wide at shoulder height.")),
+        ("5b", ex("Preacher Curl", "I", {"Biceps": 1}, "Full stretch at the bottom, don't let the elbows lift.")),
         ("6a", ex("Ab Wheel Rollout (from feet, shortened range)", "X", {"Abs": 1},
                   "Roll toward a wall or up an incline to limit the range. Not ready? Kneeling with a 3 s pause.",
                   abs_rx=["3×4-5", "3×5-6", "3×6-8"])),
@@ -187,16 +188,11 @@ Q3 = {
                   abs_rx=["3×12/side", "3×12/side (heavier)", "3×15/side"])),
     ],
     "C": [
-        ("1", OHP), ("2", PULLUP),
-        ("3a", ex("Low-to-High Cable Fly", "I", {"Chest": 1},
-                  "Cables low, sweep the hands up to chin height. Targets the upper chest.", spec=True)),
-        ("3b", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
-                  "Box a bit above knee height for more glute. Control the way down.")),
-        ("4a", LYING_CURL), ("4b", CALF_SE),
-        ("5a", ex("Preacher Curl", "I", {"Biceps": 1}, "Full stretch at the bottom, don't let the elbows lift.")),
-        ("5b", ex("Single-Arm Cable Pushdown", "I", {"Triceps": 1}, "Reverse or neutral grip, full lockout.")),
-        ("5c", ex("Lean-Away Cable Lateral Raise", "I", {"Shoulders": 1},
-                  "Hold the post and lean away. Keeps tension on the delt at the bottom.", spec=True)),
+        ("1", LEGPRESS), ("2", HIPTHRUST),
+        ("3", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
+                 "Box a bit above knee height for more glute. Control the way down.")),
+        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_SE),
+        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_ST),
         ("6a", ex("Dragon Flag Negative", "X", {"Abs": 1},
                   "Grip the bench behind your head, body rigid, lower over 5 s.",
                   abs_rx=["3×3 (5 s down)", "3×4 (5 s down)", "3×5 (5 s down)"])),
@@ -207,24 +203,22 @@ Q3 = {
 
 Q4 = {
     "A": [
-        ("1", BENCH), ("2", LEGPRESS),
-        ("3a", ex("Low-Incline Barbell Press (15-30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
-                  "Bar to the upper chest, 1 s pause on the chest.", spec=True)),
-        ("3b", NEUTRAL_PD),
-        ("4a", LEG_EXT), ("4b", CALF_ST),
-        ("5a", CABLE_LAT), ("5b", ROPE_PD),
+        ("1", BENCH), ("2", OHP),
+        ("3", ex("Low-Incline Barbell Press (15-30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
+                 "Bar to the upper chest, 1 s pause on the chest.", spec=True)),
+        ("4a", CABLE_LAT), ("4b", ROPE_PD),
+        ("5a", DIPS_W), ("5b", SKULL),
         ("6a", ex("Weighted Hanging Leg Raise", "X", {"Abs": 1}, "Light dumbbell between the feet, no swinging.",
                   abs_rx=["3×8 (light DB)", "3×10", "3×12"])),
         ("6b", ex("Heavy Cable Crunch", "X", {"Abs": 1}, "Heavy and strict, full spinal flexion.",
                   abs_rx=["4×8", "3×12-15", "3×15 + drop set"])),
     ],
     "B": [
-        ("1", HIPTHRUST), ("2", ROW),
-        ("3", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
-                 "Front foot on a 5-10 cm plate for a deeper stretch.")),
-        ("4a", ex("Machine Chest-Supported Row", "C", {"Back": 1, "Biceps": .5}, "Full stretch forward, squeeze at the back.")),
-        ("4b", SEATED_CURL),
-        ("5a", FACE_PULL), ("5b", INC_CURL),
+        ("1", ROW), ("2", PULLUP),
+        ("3", NEUTRAL_PD),
+        ("4a", FACE_PULL), ("4b", INC_CURL),
+        ("5a", ex("Machine Chest-Supported Row", "C", {"Back": 1, "Biceps": .5}, "Full stretch forward, squeeze at the back.")),
+        ("5b", EZ_CURL), ("5c", DB_LAT),
         ("6a", ex("Ab Wheel Rollout (from feet)", "X", {"Abs": 1},
                   "Full range from the feet if you've earned it. Otherwise kneeling with a 3 s pause.",
                   abs_rx=["3×5", "3×6-8", "3×8"])),
@@ -233,10 +227,11 @@ Q4 = {
                   abs_rx=["3×10/side", "3×12/side", "3×12/side"])),
     ],
     "C": [
-        ("1", OHP), ("2", PULLUP),
-        ("3a", DIPS_W), ("3b", BACK_EXT),
-        ("4a", LYING_CURL), ("4b", CALF_SE),
-        ("5a", EZ_CURL), ("5b", SKULL), ("5c", DB_LAT),
+        ("1", LEGPRESS), ("2", HIPTHRUST),
+        ("3", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
+                 "Front foot on a 5-10 cm plate for a deeper stretch.")),
+        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_ST),
+        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_SE),
         ("6a", ex("Dragon Flag", "X", {"Abs": 1}, "Full rep: lower under control, raise back up as one rigid piece.",
                   abs_rx=["3×3-5", "3×5", "3×5-6"])),
         ("6b", ex("L-Sit Hold (dip bars or parallettes)", "X", {"Abs": 1}, "Shoulders pushed down, legs straight (tuck if needed).",
@@ -252,9 +247,14 @@ QUARTER_NAMES = {
     4: "Peak & Reveal: Strength Peak & Definition",
 }
 DAY_NAMES = {
-    "A": "Day A: Push & Quads",
-    "B": "Day B: Pull & Posterior Chain",
-    "C": "Day C: Shoulders, Back Width & Arms",
+    "A": "Day A: Push",
+    "B": "Day B: Pull",
+    "C": "Day C: Legs",
+}
+DAY_MUSCLES = {
+    "A": "chest, shoulders, triceps",
+    "B": "back, rear delts, biceps",
+    "C": "quads, glutes, hamstrings, calves",
 }
 
 # ------------------------------------------------------------------ cardio
@@ -262,24 +262,24 @@ Z2 = "Zone 2 (60-70% HRmax, RPE 4-5, you can talk in full sentences)"
 CARDIO_Q1 = dict(A="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.",
                  B="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.",
                  C="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.")
-CARDIO_Q2 = dict(A="30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press.",
-                 B="30 min Zone 2, elliptical or incline walk. An easy bike is fine too.",
-                 C="30 min Zone 2, any machine: bike, stair climber, rower, incline walk.")
-CARDIO_Q3 = dict(A="30 min Zone 2, incline walk or elliptical.",
+CARDIO_Q2 = dict(A="30 min Zone 2, any machine: bike, stair climber, rower, incline walk.",
                  B="30 min Zone 2, elliptical or bike.",
-                 C="25 min Zone 2, then 5 min Zone 3 (70-80% HRmax, RPE 6) to finish.")
-CARDIO_Z2_ALL = dict(A="30 min Zone 2, incline walk or elliptical.",
+                 C="30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press.")
+CARDIO_Q3 = dict(A="25 min Zone 2, then 5 min Zone 3 (70-80% HRmax, RPE 6) to finish.",
+                 B="30 min Zone 2, elliptical or bike.",
+                 C="30 min Zone 2, incline walk or elliptical.")
+CARDIO_Z2_ALL = dict(A="30 min Zone 2, any machine.",
                      B="30 min Zone 2, elliptical or bike.",
-                     C="30 min Zone 2, any machine.")
-CARDIO_PEAK = dict(A="30 min easy Zone 2 (60-65% HRmax), incline walk.",
+                     C="30 min Zone 2, incline walk or elliptical.")
+CARDIO_PEAK = dict(A="30 min easy Zone 2 (60-65% HRmax), any machine.",
                    B="30 min easy Zone 2 (60-65% HRmax), elliptical.",
-                   C="30 min easy Zone 2 (60-65% HRmax), any machine.")
-CARDIO_DEF1 = dict(A="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.",
+                   C="30 min easy Zone 2 (60-65% HRmax), incline walk.")
+CARDIO_DEF1 = dict(A="Intervals (bike or rower): 10 min Zone 2, then 6 × (1 min hard at 85-90% HRmax + 2 min easy), then 2 min easy = 30 min.",
                    B="30 min Zone 2 (65-70% HRmax), elliptical or bike.",
-                   C="Intervals (bike or rower): 10 min Zone 2, then 6 × (1 min hard at 85-90% HRmax + 2 min easy), then 2 min easy = 30 min.")
-CARDIO_DEF2 = dict(A="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.",
+                   C="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.")
+CARDIO_DEF2 = dict(A="Sprints (bike, rower or air bike): 10 min Zone 2, then 8 × (30 s sprint at about 90% HRmax + 90 s easy), then 4 min easy = 30 min.",
                    B="30 min Zone 2 (65-70% HRmax), elliptical or bike.",
-                   C="Sprints (bike, rower or air bike): 10 min Zone 2, then 8 × (30 s sprint at about 90% HRmax + 90 s easy), then 4 min easy = 30 min.")
+                   C="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.")
 
 # ---------------------------------------------------------- nutrition notes
 NUT_GAIN = "Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition)."
@@ -351,18 +351,18 @@ MONTHS = [
          main_sets=4, main_rest="2 min", base="Percentages are of the 1RM you tested in Week 25.",
          C=(4, "10-12", "RIR 1-2", "90 s"), I=(3, "12-15", "RIR 1", "60 s"),
          technique="3 s lowering on every accessory rep. On the last set of isolation work, finish with lengthened partials (half reps in the stretched position) until RIR 0.",
-         w4="normal", cardio=CARDIO_Q3, cardio_note="Zone 2 on Days A and B. On Day C, finish with 5 min of Zone 3.",
+         w4="normal", cardio=CARDIO_Q3, cardio_note="Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3.",
          nutrition=NUT_GAIN,
-         summary=("4×10→4×8 @ 67.5→75%", "4×10-12 / 3×12-15", "Zone 2 + Zone 3 finisher (Day C)", "Normal")),
+         summary=("4×10→4×8 @ 67.5→75%", "4×10-12 / 3×12-15", "Zone 2 + Zone 3 finisher (Push)", "Normal")),
     dict(n=8, slug="08-aesthetic-specialization", title="Aesthetic Specialization (V-Taper)", q=3,
          goal="Specialization month for the V-taper look: extra sets for side delts, upper chest and lats, plus intensity techniques. The main lifts drop to 3×6, which is enough to keep your strength.",
          main=[("3×6", "75%", "RIR 3"), ("3×6", "77.5%", "RIR 2-3"), ("3×6", "80%", "RIR 2"), ("2×6", "65%", "RIR 4+ (deload)")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 25.",
          C=(3, "8-12", "RIR 0-1", "90 s"), I=(3, "10-15", "RIR 0-1", "60 s"),
          technique="★ = specialization exercise and gets +1 set (already included below). Rest-pause on the last set of compound accessories (rest 15 s, rep out again, twice). Myo-reps on the last set of isolation work (one set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest).",
-         spec=True, w4="deload", cardio=CARDIO_Q3, cardio_note="Zone 2 on Days A and B. On Day C, finish with 5 min of Zone 3.",
+         spec=True, w4="deload", cardio=CARDIO_Q3, cardio_note="Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3.",
          nutrition=NUT_GAIN,
-         summary=("3×6 @ 75→80% (maintain)", "+1 set V-taper, myo-reps", "Zone 2 + Zone 3 finisher (Day C)", "Deload")),
+         summary=("3×6 @ 75→80% (maintain)", "+1 set V-taper, myo-reps", "Zone 2 + Zone 3 finisher (Push)", "Deload")),
     dict(n=9, slug="09-powerbuilding", title="Powerbuilding", q=3,
          goal="Strength and size together: one heavy top set followed by volume back-off sets. This bridges the aesthetics block into the strength peak.",
          main=[("1×5 then 3×8", "82.5% then 70%", "Top set RPE 8"), ("1×4 then 3×7", "85% then 72.5%", "Top set RPE 8"),
@@ -383,23 +383,23 @@ MONTHS = [
          nutrition=NUT_PEAK,
          summary=("5×3 → singles, then TEST", "3×6-8 / 2×10-12", "Easy Zone 2", "Test")),
     dict(n=11, slug="11-definition-1", title="Definition I: Lean Out", q=4,
-         goal="Reveal the work. Calorie deficit, supersets and shorter rests, and interval cardio on Day C. Heavy 3×5 main lifts keep your strength while you diet.",
+         goal="Reveal the work. Calorie deficit, supersets and shorter rests, and interval cardio on Push day. Heavy 3×5 main lifts keep your strength while you diet.",
          main=[("3×5", "77.5%", "RIR 3"), ("3×5", "80%", "RIR 2"), ("3×5", "82.5%", "RIR 2"), ("2×5", "65%", "RIR 4+ (deload)")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 43.",
          C=(3, "10-12", "RIR 1", "60 s"), I=(3, "15", "RIR 1", "30-45 s"),
          technique="Antagonist supersets and tri-sets with short rest (30-45 s isolation, 60 s compounds). Keep the heavy main work exactly as written.",
-         w4="deload", cardio=CARDIO_DEF1, cardio_note="Zone 2 on Days A and B, intervals on Day C. In the deload week, every day is Zone 2.",
+         w4="deload", cardio=CARDIO_DEF1, cardio_note="Zone 2 on Pull and Legs days, intervals on Push day (A). In the deload week, every day is Zone 2.",
          nutrition=NUT_CUT,
-         summary=("3×5 @ 77.5→82.5%", "3×10-15, short rest", "Zone 2 + intervals (Day C)", "Deload")),
+         summary=("3×5 @ 77.5→82.5%", "3×10-15, short rest", "Zone 2 + intervals (Push)", "Deload")),
     dict(n=12, slug="12-definition-2-final", title="Definition II: Final Assessment", q=4,
          goal="Final push for definition, then the Week 4 final assessment: strength, photos and measurements. Compare everything with Month 1.",
          main=[("3×6", "75%", "RIR 2"), ("3×5", "80%", "RIR 2"), ("3×4", "82.5%", "RIR 2"), ("FINAL", "Work up to a heavy triple", "RPE 9, then Epley e1RM")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 43.",
          C=(3, "12-15", "RIR 1", "60 s"), I=(3, "15-20", "RIR 0-1", "30-45 s"),
          technique="Giant-set finish: drop set on the last set of every isolation exercise, short rests.",
-         w4="final", cardio=CARDIO_DEF2, cardio_note="Zone 2 on Days A and B, sprints on Day C. In the assessment week, every day is Zone 2.",
+         w4="final", cardio=CARDIO_DEF2, cardio_note="Zone 2 on Pull and Legs days, sprints on Push day (A). In the assessment week, every day is Zone 2.",
          nutrition=NUT_CUT, flex=52,
-         summary=("3×6→3×4, then FINAL test", "3×12-20 + drop sets", "Zone 2 + sprints (Day C)", "Final, then Flex wk 52")),
+         summary=("3×6→3×4, then FINAL test", "3×12-20 + drop sets", "Zone 2 + sprints (Push)", "Final, then Flex wk 52")),
 ]
 
 # week numbers: 4 per month + flex week after each quarter
@@ -465,9 +465,9 @@ Do 30 min of easy Zone 2 cardio first, as always, then test:
 
 | Day | Lift 1 | Lift 2 |
 |---|---|---|
-| A | Bench Press: **1RM** (spotter or safety bars) | Leg Press: **5RM** |
-| B | Hip Thrust: **5RM** | Barbell Row: **5RM** (strict, from safeties) |
-| C | Overhead Press: **1RM** (or 3RM) | Weighted Pull-up: **3RM** (bodyweight + added) |
+| A (Push) | Bench Press: **1RM** (spotter or safety bars) | Overhead Press: **3RM** |
+| B (Pull) | Barbell Row: **5RM** (strict, from safeties) | Weighted Pull-up: **3RM** (bodyweight + added) |
+| C (Legs) | Leg Press: **5RM** | Hip Thrust: **5RM** |
 
 - **Warm-up ladder for a 1RM:** empty bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempt 1 (~95-97%) → attempt 2 (~100-102%) → optional attempt 3 (PR). Rest 3-5 min between heavy attempts.
 - **For 3RM/5RM tests:** ramp in 4-6 sets with fewer reps each time, up to a weight you can do for the target reps at RPE 9.5-10.
@@ -481,7 +481,7 @@ FINAL_PROTOCOL = """### Week 4: Final assessment
 Do 30 min of easy Zone 2 cardio first, then:
 
 1. **Strength:** for each main lift, work up to a heavy **triple at RPE 9** and convert it to an e1RM with the Epley formula. (A true 1RM isn't worth the risk while you're in a calorie deficit.) Compare with Weeks 12, 25 and 43.
-2. **Abs test (Day C):** max-time hollow body hold, and max strict dragon flags.
+2. **Abs test (Day C, Legs):** max-time hollow body hold, and max strict dragon flags.
 3. **Physique:** front, side and back photos in the same light and at the same time of day as your Month 1 photos. Measure waist (at the navel), chest, flexed arms and thighs, and take your 7-day average body weight.
 4. Accessories: **2 sets** at RIR 3. Abs: **2 sets**.
 """
@@ -557,7 +557,7 @@ def month_md(m):
     L.append("")
     L.append("## Main lifts: week by week")
     L.append("")
-    L.append("Applies to all six main lifts: **Bench Press, Leg Press, Hip Thrust, Barbell Row, Overhead Press, Pull-up**.")
+    L.append("Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).")
     L.append("")
     L.append("| Week | Sets × Reps | Load (% of 1RM) | Effort |")
     L.append("|---|---|---|---|")
@@ -567,7 +567,7 @@ def month_md(m):
     L.append(f"> **Load basis:** {m['base']}")
     L.append("")
     for d in "ABC":
-        L.append(f"## {DAY_NAMES[d]}")
+        L.append(f"## {DAY_NAMES[d]} ({DAY_MUSCLES[d]})")
         L.append("")
         L.append("| # | Exercise | Sets × Reps | Effort | Rest | Coaching cues |")
         L.append("|---|---|---|---|---|---|")
@@ -592,7 +592,7 @@ def month_md(m):
                     rest = group_rest[label[:-1]] + " after the superset"
                 L.append(f"| {label} | {name} | {sr} | {eff} | {rest} | {e['cue']} |")
         L.append("")
-    L.append("> Exercises with the same number and a letter (3a/3b, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.")
+    L.append("> Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.")
     L.append("")
     L.append({"deload": DELOAD_TEXT, "test": TEST_PROTOCOL, "final": FINAL_PROTOCOL, "normal": NORMAL_W4}[m["w4"]])
     L.append("## End-of-month checklist")
@@ -634,7 +634,7 @@ def overview_table():
 
 
 def day_template_table():
-    L = ["| Quarter | Day A: Push & Quads | Day B: Pull & Posterior Chain | Day C: Shoulders, Back Width & Arms |",
+    L = ["| Quarter | " + " | ".join(DAY_NAMES[d] for d in "ABC") + " |",
          "|---|---|---|---|"]
     for q in (1, 2, 3, 4):
         cells = []
@@ -656,9 +656,9 @@ def readme():
 
 
 # ------------------------------------------------------------------ tracker
-MAIN_BY_DAY = {"A": ["Barbell Bench Press", "Leg Press"],
-               "B": ["Barbell Hip Thrust", "Barbell Row"],
-               "C": ["Standing Overhead Press", "Pull-up (total load = BW + added)"]}
+MAIN_BY_DAY = {"A": ["Barbell Bench Press", "Standing Overhead Press"],
+               "B": ["Barbell Row", "Pull-up (total load = BW + added)"],
+               "C": ["Leg Press", "Barbell Hip Thrust"]}
 
 
 def tracker_rows():
@@ -698,7 +698,7 @@ def write_tracker(path):
 LIFT_KEYS = {"Barbell Bench Press": "bench", "Leg Press": "legpress", "Barbell Hip Thrust": "hipthrust",
              "Barbell Row": "row", "Standing Overhead Press": "ohp",
              PULLUP_Q1["name"]: "pullup", PULLUP["name"]: "pullup"}
-TEST_RM = {"bench": "1RM", "legpress": "5RM", "hipthrust": "5RM", "row": "5RM", "ohp": "1RM", "pullup": "3RM"}
+TEST_RM = {"bench": "1RM", "legpress": "5RM", "hipthrust": "5RM", "row": "5RM", "ohp": "3RM", "pullup": "3RM"}
 EASY_CARDIO = "30 min easy Zone 2 (60-65% HRmax), any low-impact machine."
 KIND_NOTES = {
     "deload": "Deload week: main lifts as written. Everything else is cut to 2 sets, about 10-15% lighter, stopping at RIR 4+. Keep the cardio easy.",

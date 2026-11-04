@@ -9,7 +9,7 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 | 30 min cardio before each session | Every session starts with 30 min of cardio, planned month by month. It's mostly Zone 2, with intervals only in the definition phase. |
 | No squats | Quads are trained with the leg press, lunges, step-ups and leg extensions. |
 | No deadlifts | The posterior chain is trained with hip thrusts, back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
-| 3 days per week | Full-body A / B / C split, so every muscle is hit 2-3× a week. |
+| 3 days per week | **Push / Pull / Legs**: Push (chest, shoulders, triceps), Pull (back, rear delts, biceps), Legs (quads, glutes, hamstrings, calves). Side delts get work on Push and Pull days, and abs every session. |
 | Works your abs | 2 ab exercises every session (≈ 18 hard sets a week). They progress from knee raises and planks to dragon flags, ab wheel from the feet and L-sits. |
 | Strength | Six tracked main lifts, percentage-based periodization, two test weeks and a final assessment. |
 | Aesthetics | V-taper focus (upper chest, side delts, lats, arms, abs) with balanced legs, a specialization month and a definition phase. |
@@ -27,9 +27,9 @@ A 52-week gym program: **3 days a week**, **30 minutes of cardio before every se
 
 The plan also runs as a web app (in [`web/`](web/)) that you install on your iPhone's home screen.
 
-- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done.
-- **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Done** to close.
-- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, **Hide** shrinks it to a small pill so you can keep using the workout, and Cardio has a 30:00 timer. The screen stays on while it runs (where iOS allows it).
+- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done. The pinned header shows how much is ticked off, and the next exercise is marked **Up next**.
+- **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Close** when you're done.
+- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it after each set: it ticks the set off (the dots under the button) and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, **Hide** shrinks it to a small pill so you can keep using the workout, and Cardio has a 30:00 timer. The screen stays on while it runs (where iOS allows it).
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
@@ -45,7 +45,7 @@ The app has no build step, and Vercel serves the `web/` folder as-is (see [`verc
 
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
 |---|---|---|---|---|---|---|
-| **Day A** | Rest | **Day B** | Rest | **Day C** | Rest | Rest |
+| **Push** (A) | Rest | **Pull** (B) | Rest | **Legs** (C) | Rest | Rest |
 
 Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between sessions when you can, and never train 3 days in a row. On rest days, walk 7-10k steps.
 
@@ -75,12 +75,12 @@ Each "month" is a **4-week training block**. Every quarter ends with a **flex we
 | [**4**](months/04-strength-accumulation.md) | 14-17 | Strength I: Accumulation | 5×5 @ 75→82.5% | 3×8-12 | Zone 2 (low-impact) | Normal |
 | [**5**](months/05-strength-intensification.md) | 18-21 | Strength II: Intensification | 5×4→4×3 @ 82.5→87.5% | 3×6-12 | Zone 2 (low-impact) | Deload |
 | [**6**](months/06-strength-realization-test.md) | 22-25 | Strength III: Realization & Test | Top set + back-offs, then TEST | 3×6-12 | Zone 2 (low-impact) | Test, then Flex wk 26 |
-| [**7**](months/07-hypertrophy-volume.md) | 27-30 | Hypertrophy III: Volume | 4×10→4×8 @ 67.5→75% | 4×10-12 / 3×12-15 | Zone 2 + Zone 3 finisher (Day C) | Normal |
-| [**8**](months/08-aesthetic-specialization.md) | 31-34 | Aesthetic Specialization (V-Taper) | 3×6 @ 75→80% (maintain) | +1 set V-taper, myo-reps | Zone 2 + Zone 3 finisher (Day C) | Deload |
+| [**7**](months/07-hypertrophy-volume.md) | 27-30 | Hypertrophy III: Volume | 4×10→4×8 @ 67.5→75% | 4×10-12 / 3×12-15 | Zone 2 + Zone 3 finisher (Push) | Normal |
+| [**8**](months/08-aesthetic-specialization.md) | 31-34 | Aesthetic Specialization (V-Taper) | 3×6 @ 75→80% (maintain) | +1 set V-taper, myo-reps | Zone 2 + Zone 3 finisher (Push) | Deload |
 | [**9**](months/09-powerbuilding.md) | 35-38 | Powerbuilding | Top set + back-offs | 3×8-15 + drop sets | Zone 2 | Normal, then Flex wk 39 |
 | [**10**](months/10-strength-peak.md) | 40-43 | Strength Peak & Test | 5×3 → singles, then TEST | 3×6-8 / 2×10-12 | Easy Zone 2 | Test |
-| [**11**](months/11-definition-1.md) | 44-47 | Definition I: Lean Out | 3×5 @ 77.5→82.5% | 3×10-15, short rest | Zone 2 + intervals (Day C) | Deload |
-| [**12**](months/12-definition-2-final.md) | 48-51 | Definition II: Final Assessment | 3×6→3×4, then FINAL test | 3×12-20 + drop sets | Zone 2 + sprints (Day C) | Final, then Flex wk 52 |
+| [**11**](months/11-definition-1.md) | 44-47 | Definition I: Lean Out | 3×5 @ 77.5→82.5% | 3×10-15, short rest | Zone 2 + intervals (Push) | Deload |
+| [**12**](months/12-definition-2-final.md) | 48-51 | Definition II: Final Assessment | 3×6→3×4, then FINAL test | 3×12-20 + drop sets | Zone 2 + sprints (Push) | Final, then Flex wk 52 |
 
 | Key weeks | |
 |---|---|
@@ -100,23 +100,23 @@ Each "month" is a **4-week training block**. Every quarter ends with a **flex we
 
 The six main lifts stay the same all year so you can track your strength. Accessories rotate every quarter so you keep progressing and stay motivated.
 
-| Quarter | Day A: Push & Quads | Day B: Pull & Posterior Chain | Day C: Shoulders, Back Width & Arms |
+| Quarter | Day A: Push | Day B: Pull | Day C: Legs |
 |---|---|---|---|
-| **Q1**<br>Build the Base: Foundation & Hypertrophy | 1. Barbell Bench Press<br>2. Leg Press<br>3a. Incline Dumbbell Press (30°)<br>3b. Lat Pulldown (wide grip)<br>4a. Leg Extension<br>4b. Standing Calf Raise<br>5a. Cable Lateral Raise<br>5b. Rope Triceps Pushdown<br>6a. Hanging Knee Raise<br>6b. Cable Crunch | 1. Barbell Hip Thrust<br>2. Barbell Row<br>3. Dumbbell Walking Lunge<br>4a. Single-Arm Dumbbell Row<br>4b. Lying Leg Curl<br>5a. Face Pull<br>5b. Incline Dumbbell Curl<br>6a. Kneeling Ab Wheel Rollout<br>6b. Pallof Press | 1. Standing Overhead Press<br>2. Pull-up (add weight once 3×10 is easy)<br>3a. Dips (assisted if needed)<br>3b. Dumbbell Step-up<br>4a. Seated Leg Curl<br>4b. Seated Calf Raise<br>5a. EZ-Bar Curl<br>5b. Overhead Cable Triceps Extension<br>5c. Dumbbell Lateral Raise<br>6a. Reverse Crunch<br>6b. Side Plank |
-| **Q2**<br>Get Strong: Strength | 1. Barbell Bench Press<br>2. Leg Press<br>3a. Incline Barbell Press (30°)<br>3b. Neutral-Grip Lat Pulldown<br>4a. Leg Extension<br>4b. Standing Calf Raise<br>5a. Cable Lateral Raise<br>5b. Straight-Bar Triceps Pushdown<br>6a. Hanging Leg Raise (straight legs)<br>6b. Weighted Cable Crunch | 1. Barbell Hip Thrust<br>2. Barbell Row<br>3. Dumbbell Reverse Lunge<br>4a. Chest-Supported Row (T-bar or dumbbell)<br>4b. Seated Leg Curl<br>5a. Reverse Pec Deck<br>5b. Hammer Curl<br>6a. Ab Wheel Rollout (kneeling, full range)<br>6b. Suitcase Carry | 1. Standing Overhead Press<br>2. Weighted Pull-up<br>3a. Weighted Dips<br>3b. 45° Back Extension<br>4a. Lying Leg Curl<br>4b. Seated Calf Raise<br>5a. EZ-Bar Curl<br>5b. EZ-Bar Skull Crusher<br>5c. Dumbbell Lateral Raise<br>6a. Incline Reverse Crunch<br>6b. Weighted Side Plank |
-| **Q3**<br>Build the Look: Hypertrophy & Aesthetics | 1. Barbell Bench Press<br>2. Leg Press<br>3a. Incline Dumbbell Press (30°)<br>3b. Wide-Grip Lat Pulldown<br>4a. Leg Extension<br>4b. Standing Calf Raise<br>5a. Cable Y-Raise<br>5b. Overhead Rope Triceps Extension<br>6a. Toes-to-Bar (or Hanging Leg Raise)<br>6b. Weighted Decline Crunch | 1. Barbell Hip Thrust<br>2. Barbell Row<br>3. Dumbbell Walking Lunge<br>4a. Straight-Arm Cable Pulldown<br>4b. Seated Leg Curl<br>5a. Rear-Delt Cable Fly<br>5b. Bayesian Cable Curl<br>6a. Ab Wheel Rollout (from feet, shortened range)<br>6b. Cable Woodchopper (high to low) | 1. Standing Overhead Press<br>2. Weighted Pull-up<br>3a. Low-to-High Cable Fly<br>3b. High-Box Dumbbell Step-up<br>4a. Lying Leg Curl<br>4b. Seated Calf Raise<br>5a. Preacher Curl<br>5b. Single-Arm Cable Pushdown<br>5c. Lean-Away Cable Lateral Raise<br>6a. Dragon Flag Negative<br>6b. Hollow Body Hold |
-| **Q4**<br>Peak & Reveal: Strength Peak & Definition | 1. Barbell Bench Press<br>2. Leg Press<br>3a. Low-Incline Barbell Press (15-30°)<br>3b. Neutral-Grip Lat Pulldown<br>4a. Leg Extension<br>4b. Standing Calf Raise<br>5a. Cable Lateral Raise<br>5b. Rope Triceps Pushdown<br>6a. Weighted Hanging Leg Raise<br>6b. Heavy Cable Crunch | 1. Barbell Hip Thrust<br>2. Barbell Row<br>3. Deficit Dumbbell Reverse Lunge<br>4a. Machine Chest-Supported Row<br>4b. Seated Leg Curl<br>5a. Face Pull<br>5b. Incline Dumbbell Curl<br>6a. Ab Wheel Rollout (from feet)<br>6b. Half-Kneeling Pallof Press + Overhead Reach | 1. Standing Overhead Press<br>2. Weighted Pull-up<br>3a. Weighted Dips<br>3b. 45° Back Extension<br>4a. Lying Leg Curl<br>4b. Seated Calf Raise<br>5a. EZ-Bar Curl<br>5b. EZ-Bar Skull Crusher<br>5c. Dumbbell Lateral Raise<br>6a. Dragon Flag<br>6b. L-Sit Hold (dip bars or parallettes) |
+| **Q1**<br>Build the Base: Foundation & Hypertrophy | 1. Barbell Bench Press<br>2. Standing Overhead Press<br>3. Incline Dumbbell Press (30°)<br>4a. Cable Lateral Raise<br>4b. Rope Triceps Pushdown<br>5a. Pec Deck Fly<br>5b. Overhead Cable Triceps Extension<br>6a. Hanging Knee Raise<br>6b. Cable Crunch | 1. Barbell Row<br>2. Pull-up (add weight once 3×10 is easy)<br>3. Lat Pulldown (wide grip)<br>4a. Face Pull<br>4b. Incline Dumbbell Curl<br>5a. Dumbbell Lateral Raise<br>5b. Hammer Curl<br>6a. Kneeling Ab Wheel Rollout<br>6b. Pallof Press | 1. Leg Press<br>2. Barbell Hip Thrust<br>3. Dumbbell Walking Lunge<br>4a. Leg Extension<br>4b. Lying Leg Curl<br>4c. Standing Calf Raise<br>5a. 45° Back Extension<br>5b. Seated Leg Curl<br>5c. Seated Calf Raise<br>6a. Reverse Crunch<br>6b. Side Plank |
+| **Q2**<br>Get Strong: Strength | 1. Barbell Bench Press<br>2. Standing Overhead Press<br>3. Incline Barbell Press (30°)<br>4a. Cable Lateral Raise<br>4b. Straight-Bar Triceps Pushdown<br>5a. Cable Crossover<br>5b. EZ-Bar Skull Crusher<br>6a. Hanging Leg Raise (straight legs)<br>6b. Weighted Cable Crunch | 1. Barbell Row<br>2. Weighted Pull-up<br>3. Chest-Supported Row (T-bar or dumbbell)<br>4a. Reverse Pec Deck<br>4b. Hammer Curl<br>5a. Dumbbell Lateral Raise<br>5b. EZ-Bar Curl<br>6a. Ab Wheel Rollout (kneeling, full range)<br>6b. Suitcase Carry | 1. Leg Press<br>2. Barbell Hip Thrust<br>3. Dumbbell Reverse Lunge<br>4a. Leg Extension<br>4b. Seated Leg Curl<br>4c. Seated Calf Raise<br>5a. 45° Back Extension<br>5b. Lying Leg Curl<br>5c. Standing Calf Raise<br>6a. Incline Reverse Crunch<br>6b. Weighted Side Plank |
+| **Q3**<br>Build the Look: Hypertrophy & Aesthetics | 1. Barbell Bench Press<br>2. Standing Overhead Press<br>3. Incline Dumbbell Press (30°)<br>4a. Cable Y-Raise<br>4b. Overhead Rope Triceps Extension<br>5a. Low-to-High Cable Fly<br>5b. Single-Arm Cable Pushdown<br>5c. Lean-Away Cable Lateral Raise<br>6a. Toes-to-Bar (or Hanging Leg Raise)<br>6b. Weighted Decline Crunch | 1. Barbell Row<br>2. Weighted Pull-up<br>3. Wide-Grip Lat Pulldown<br>4a. Straight-Arm Cable Pulldown<br>4b. Bayesian Cable Curl<br>5a. Rear-Delt Cable Fly<br>5b. Preacher Curl<br>6a. Ab Wheel Rollout (from feet, shortened range)<br>6b. Cable Woodchopper (high to low) | 1. Leg Press<br>2. Barbell Hip Thrust<br>3. High-Box Dumbbell Step-up<br>4a. Leg Extension<br>4b. Lying Leg Curl<br>4c. Seated Calf Raise<br>5a. 45° Back Extension<br>5b. Seated Leg Curl<br>5c. Standing Calf Raise<br>6a. Dragon Flag Negative<br>6b. Hollow Body Hold |
+| **Q4**<br>Peak & Reveal: Strength Peak & Definition | 1. Barbell Bench Press<br>2. Standing Overhead Press<br>3. Low-Incline Barbell Press (15-30°)<br>4a. Cable Lateral Raise<br>4b. Rope Triceps Pushdown<br>5a. Weighted Dips<br>5b. EZ-Bar Skull Crusher<br>6a. Weighted Hanging Leg Raise<br>6b. Heavy Cable Crunch | 1. Barbell Row<br>2. Weighted Pull-up<br>3. Neutral-Grip Lat Pulldown<br>4a. Face Pull<br>4b. Incline Dumbbell Curl<br>5a. Machine Chest-Supported Row<br>5b. EZ-Bar Curl<br>5c. Dumbbell Lateral Raise<br>6a. Ab Wheel Rollout (from feet)<br>6b. Half-Kneeling Pallof Press + Overhead Reach | 1. Leg Press<br>2. Barbell Hip Thrust<br>3. Deficit Dumbbell Reverse Lunge<br>4a. Leg Extension<br>4b. Seated Leg Curl<br>4c. Standing Calf Raise<br>5a. 45° Back Extension<br>5b. Lying Leg Curl<br>5c. Seated Calf Raise<br>6a. Dragon Flag<br>6b. L-Sit Hold (dip bars or parallettes) |
 
 ## The six main lifts
 
 | Lift | Day | Why it's in the plan |
 |---|---|---|
-| Barbell Bench Press | A | Chest size and upper-body pressing strength |
-| Leg Press | A | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
-| Barbell Hip Thrust | B | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
-| Barbell Row | B | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
-| Standing Overhead Press | C | Shoulder size and pressing strength |
-| Weighted Pull-up | C | Lat width, the core of the V-taper |
+| Barbell Bench Press | A · Push | Chest size and upper-body pressing strength |
+| Standing Overhead Press | A · Push | Shoulder size and pressing strength |
+| Barbell Row | B · Pull | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
+| Weighted Pull-up | B · Pull | Lat width, the core of the V-taper |
+| Leg Press | C · Legs | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
+| Barbell Hip Thrust | C · Legs | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
 
 ### Not in this plan (by request)
 
@@ -132,7 +132,7 @@ The six main lifts stay the same all year so you can track your strength. Access
 | **RIR** | Reps in reserve: how many more clean reps you could have done. RIR 2 means 2 left in the tank. |
 | **RPE** | Rate of perceived exertion, where RPE = 10 − RIR. |
 | **1RM / e1RM** | One-rep max / *estimated* one-rep max (from the formula below) |
-| **Superset** | Exercises with the same number (3a/3b) are done back to back, then you rest. |
+| **Superset** | Exercises with the same number (4a/4b) are done back to back, then you rest. |
 | **Drop set** | Finish the set, drop the weight about 25%, and keep going to RIR 0-1. |
 | **Rest-pause** | Finish the set, rest 15 s, rep out again, and repeat once more. |
 | **Myo-reps** | One set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest between them. |
@@ -225,8 +225,8 @@ Each week, adjust the e1RM your percentages are based on:
 
 ## Cardio rules (and why cardio before lifting works here)
 
-- **Keep it Zone 2 most of the year.** Easy cardio barely hurts your strength and doubles as a long warm-up. Hard cardio before lifting would cost you strength, so intervals only show up on **Day C in Months 11-12**. Day C's main lifts are upper body, so that's where intervals do the least damage.
-- **Choose low-impact machines:** bike, elliptical, incline walk, rower, stair climber. **Don't run before Day A or Day B**: running's impact and downhill (eccentric) loading tire out the legs you're about to train.
+- **Keep it Zone 2 most of the year.** Easy cardio barely hurts your strength and doubles as a long warm-up. Hard cardio before lifting would cost you strength, so intervals only show up on **Push day in Months 11-12**. Push day uses no leg lifts, so that's where intervals do the least damage.
+- **Choose low-impact machines:** bike, elliptical, incline walk, rower, stair climber. **Don't run before Legs day**: running's impact and downhill (eccentric) loading tire out the legs you're about to train.
 - **Stay in the zone as you get fitter.** You'll need more incline, speed or resistance over time to keep the same heart rate.
 - **Fuel it.** Eat a meal with carbs and protein 1.5-3 h before training, and drink 500 ml+ of water during the session. 30 min of cardio plus 60 min of lifting is a long session.
 
@@ -251,18 +251,18 @@ Every session has **2 ab exercises done as a superset**, about **6 hard sets per
 
 ## Weekly volume per muscle
 
-Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders, back and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for.
+Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for. With Push / Pull / Legs, each muscle gets its week's sets in one focused session (side delts and abs are spread over several days).
 
 | Muscle | M1 | M2 | M3 | M4 | M5 | M6 | M7 | M8 | M9 | M10 | M11 | M12 |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| Chest | 9 | 10 | 12 | 11 | 11 | 10 | 11 | 11 | 10 | 10 | 9 | 9 |
-| Back | 13.5 | 15.5 | 17.5 | 16 | 16 | 14 | 15 | 14 | 14 | 15 | 13.5 | 13.5 |
-| Shoulders | 16.5 | 18 | 19 | 19.5 | 19.5 | 18 | 17 | 17.5 | 16.5 | 15 | 16.5 | 16.5 |
-| Biceps | 12 | 13 | 14 | 14 | 14 | 13 | 12 | 11 | 11.5 | 11 | 12 | 12 |
-| Triceps | 12 | 13 | 14 | 14 | 14 | 13 | 12 | 11 | 11.5 | 11 | 12 | 12 |
-| Quads | 12 | 13 | 15 | 11 | 11 | 10 | 15 | 12 | 13 | 9 | 9 | 9 |
-| Hamstrings | 7.5 | 8 | 8 | 10 | 10 | 9.5 | 8 | 7.5 | 8 | 7.5 | 9 | 9 |
-| Glutes | 7.5 | 9 | 10 | 12 | 12 | 10.5 | 10 | 7.5 | 9 | 10.5 | 9 | 9 |
+| Chest | 9 | 10 | 11 | 11 | 11 | 10 | 11 | 11 | 10 | 10 | 9 | 9 |
+| Back | 10.5 | 12.5 | 13.5 | 13 | 13 | 11 | 15 | 14 | 14 | 15 | 13.5 | 13.5 |
+| Shoulders | 15 | 16.5 | 17 | 18 | 18 | 16.5 | 17 | 17.5 | 16.5 | 15 | 16.5 | 16.5 |
+| Biceps | 10.5 | 11.5 | 12 | 12.5 | 12.5 | 11.5 | 12 | 11 | 11.5 | 11 | 12 | 12 |
+| Triceps | 10.5 | 11.5 | 12 | 12.5 | 12.5 | 11.5 | 12 | 11 | 11.5 | 11 | 12 | 12 |
+| Quads | 9 | 10 | 11 | 11 | 11 | 10 | 11 | 9 | 10 | 9 | 9 | 9 |
+| Hamstrings | 9 | 9.5 | 10 | 10 | 10 | 9.5 | 10 | 9 | 9.5 | 7.5 | 9 | 9 |
+| Glutes | 9 | 10.5 | 12 | 12 | 12 | 10.5 | 12 | 9 | 10.5 | 10.5 | 9 | 9 |
 | Calves | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 6 | 4 | 6 | 6 |
 | Abs | 18 | 18 | 19 | 18 | 19 | 20 | 18 | 18 | 19 | 19 | 18 | 18 |
 
@@ -341,7 +341,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 
 ## When life happens
 
-- **Missed 1 session:** do it on your next training day and keep the A → B → C order.
+- **Missed 1 session:** do it on your next training day and keep the Push → Pull → Legs order.
 - **Missed a full week:** repeat the last week you completed.
 - **Sick for 2+ weeks:** take the next flex week early, then restart from the last week you completed with loads 10% lighter.
 - **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the cardio, the main lifts or the abs: those are the core of what you asked for.
