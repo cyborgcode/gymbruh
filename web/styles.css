@@ -63,6 +63,16 @@ small { display: block; color: var(--muted); font-size: 13px; }
 .grow { flex: 1; min-width: 0; }
 .ic { width: 22px; height: 22px; flex: none; }
 
+/* iOS 26+ draws a blur over the top ~40pt of home-screen web apps, unless
+   WebKit finds a fixed, full-width element with a solid background (taller
+   than 10px) at the top edge; then it fills the status bar with that color
+   instead. This band is that element: always on top, never tappable, and its
+   background is clipped to (non-existent) text, so it paints nothing itself. */
+#edge {
+  position: fixed; top: 0; left: 0; right: 0; height: 16px; z-index: 2147483647; pointer-events: none;
+  background: var(--bg); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+
 /* ---------- header */
 .top { display: flex; align-items: flex-end; gap: 12px; margin: 4px 0 16px; }
 .top .icon-btn { align-self: center; }
