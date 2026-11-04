@@ -16,17 +16,9 @@ Peak your strength: low reps at high intensity, with accessory volume cut back s
 | **Compound accessories** | 3×6-8 @ RIR 2 · rest 2 min |
 | **Isolation** | 2×10-12 @ RIR 2 · rest 60 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Easy Zone 2 only (60-65% HRmax). Cardio must not eat into your recovery this month. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | None. Accessory volume is cut back on purpose so you peak. |
 | **Nutrition** | Maintenance calories (TDEE), protein 1.6-2.2 g/kg. Fuel the heavy lifting. |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 30 min easy Zone 2 (60-65% HRmax), any machine. |
-| B | 30 min easy Zone 2 (60-65% HRmax), elliptical. |
-| C | 30 min easy Zone 2 (60-65% HRmax), incline walk. |
 
 ## Main lifts: week by week
 
@@ -90,7 +82,7 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 
 ### Week 4: Test week
 
-Do 30 min of easy Zone 2 cardio first, as always, then test:
+Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 
 | Day | Lift 1 | Lift 2 |
 |---|---|---|

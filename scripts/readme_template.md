@@ -1,12 +1,12 @@
 # GymBruh: 12-Month Strength & Aesthetics Plan
 
-A 52-week gym program: **3 days a week**, **30 minutes of cardio before every session**, **no squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
+A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **no squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
 
 **Live app: [gymbruh-orcin.vercel.app](https://gymbruh-orcin.vercel.app)** · an offline iPhone web app that opens on today's workout, with rest timers, optional weight logging and progress stats. To install it, open the link in Safari, then tap **Share** → **Add to Home Screen**.
 
 | Your requirement | How the plan meets it |
 |---|---|
-| 30 min cardio before each session | Every session starts with 30 min of cardio, planned month by month. It's mostly Zone 2, with intervals only in the definition phase. |
+| No cardio | Sessions start with a 10-min warm-up instead of a cardio block, so you lift fresh and sessions take about 1 h to 1 h 30. Walking 7-10k steps a day covers heart health and helps with fat loss. |
 | No squats | Quads are trained with the leg press, lunges, step-ups and leg extensions. |
 | No deadlifts | The posterior chain is trained with hip thrusts, back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
 | 3 days per week | **Push / Pull / Legs**: Push (chest, shoulders, triceps), Pull (back, rear delts, biceps), Legs (quads, glutes, hamstrings, calves). Side delts get work on Push and Pull days, and abs every session. |
@@ -29,7 +29,7 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 
 - **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done. The pinned header shows how much is ticked off, and the next exercise is marked **Up next**.
 - **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Close** when you're done.
-- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it after each set: it ticks the set off (the dots under the button) and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, **Hide** shrinks it to a small pill so you can keep using the workout, and Cardio has a 30:00 timer. The screen stays on while it runs (where iOS allows it).
+- **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it after each set: it ticks the set off (the dots under the button) and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, and **Hide** shrinks it to a small pill so you can keep using the workout. The screen stays on while it runs (where iOS allows it).
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
@@ -53,13 +53,12 @@ Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between
 
 | Block | Time | What you do |
 |---|---|---|
-| 1. Cardio | **30 min** | Exactly as written for the month (mostly Zone 2) |
-| 2. Warm-up | 5-8 min | Mobility plus ramp-up sets ([details](#warm-up-after-cardio-5-8-min)) |
-| 3. Main lifts | 20-30 min | 2 heavy compound lifts |
-| 4. Accessories | 20-30 min | Supersets, to save time |
-| 5. Abs | 8-10 min | 2 exercises, done as a superset |
+| 1. Warm-up | 10 min | Easy bike or rower, mobility, ramp-up sets ([details](#warm-up-10-min)) |
+| 2. Main lifts | 20-30 min | 2 heavy compound lifts |
+| 3. Accessories | 20-30 min | Supersets, to save time |
+| 4. Abs | 8-10 min | 2 exercises, done as a superset |
 
-**Total: about 1 h 30 to 1 h 45.**
+**Total: about 1 h to 1 h 30** (leg day in the strength months is the longest).
 
 ---
 
@@ -119,29 +118,11 @@ The six main lifts stay the same all year so you can track your strength. Access
 | **Rest-pause** | Finish the set, rest 15 s, rep out again, and repeat once more. |
 | **Myo-reps** | One set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest between them. |
 | **Deload** | A planned easy week (half the sets, lighter weights) to clear fatigue. |
-| **Zone 2** | Easy steady cardio at 60-70% of max heart rate, where you can still talk in full sentences. |
+| **Ramp-up sets** | Lighter sets before your working sets (for example 50% ×8 → 70% ×5 → 85% ×3) so the heavy sets go smoothly. |
 
 ## The maths
 
-### 1. Heart-rate zones for your cardio
-
-Estimated max heart rate (Tanaka formula):
-
-```math
-HR_{\max} \approx 208 - 0.7 \times \text{age}
-```
-
-Zone 2 is roughly 60-70% of that:
-
-```math
-0.60\,HR_{\max} \;\le\; HR_{\text{Zone 2}} \;\le\; 0.70\,HR_{\max}
-```
-
-Example, age 20: $HR_{\max} \approx 208 - 14 = 194$ bpm, so Zone 2 is about **116-136 bpm**. Zone 3 is 70-80% and the intervals are 85-90%.
-
-No heart-rate monitor? Use the talk test: in Zone 2 you can speak in full sentences but couldn't sing.
-
-### 2. Estimated 1-rep max (RIR-adjusted Epley)
+### 1. Estimated 1-rep max (RIR-adjusted Epley)
 
 ```math
 \widehat{1RM} = w \left( 1 + \frac{r + \text{RIR}}{30} \right)
@@ -151,7 +132,7 @@ $w$ = weight lifted, $r$ = reps completed, RIR = reps you had left. It's most ac
 
 Example: 80 kg × 6 reps at RIR 1 → $80 \times \left(1 + \tfrac{7}{30}\right) \approx 98.7$ kg.
 
-### 3. Working weight from a percentage
+### 2. Working weight from a percentage
 
 ```math
 w_{\text{work}} = 2.5 \times \left\lfloor \frac{p \cdot \widehat{1RM}}{2.5} \right\rfloor
@@ -159,7 +140,7 @@ w_{\text{work}} = 2.5 \times \left\lfloor \frac{p \cdot \widehat{1RM}}{2.5} \rig
 
 In words: multiply, then round **down** to the nearest 2.5 kg. Example: $p = 0.775$ and $\widehat{1RM} = 98.7$ give $76.5$, so you load **75 kg**.
 
-### 4. Weighted pull-ups (your bodyweight counts)
+### 3. Weighted pull-ups (your bodyweight counts)
 
 ```math
 \widehat{1RM}_{\text{total}} = (BW + w_{\text{added}}) \left( 1 + \frac{r + \text{RIR}}{30} \right)
@@ -171,7 +152,7 @@ If $w_{\text{added}} < 0$, use that much assistance (assisted machine or band) i
 
 Example: $BW = 75$ kg, +10 kg × 6 reps at RIR 0 gives $\widehat{1RM}_{\text{total}} = 85 \times 1.2 = 102$ kg. At $p = 0.80$: $81.6 - 75 = 6.6$, so add **5 kg**.
 
-### 5. Accessory progression (double progression)
+### 4. Accessory progression (double progression)
 
 Stay inside the rep range. When **every** set reaches the top of the range at the target RIR, add weight and start again at the bottom of the range:
 
@@ -183,7 +164,7 @@ w + (2.5 \text{ to } 5)\ \text{kg} & \text{lower body}
 \end{cases}
 ```
 
-### 6. Main-lift autoregulation
+### 5. Main-lift autoregulation
 
 Each week, adjust the e1RM your percentages are based on:
 
@@ -200,17 +181,16 @@ Each week, adjust the e1RM your percentages are based on:
 
 ## Progression rules
 
-- **Main lifts:** follow the month's week-by-week table. From Month 4 on, use the % of your e1RM or tested 1RM, and adjust with rule 6 above.
-- **Accessories and isolation:** double progression (rule 5). Write down every set.
+- **Main lifts:** follow the month's week-by-week table. From Month 4 on, use the % of your e1RM or tested 1RM, and adjust with rule 5 above.
+- **Accessories and isolation:** double progression (rule 4). Write down every set.
 - **Abs:** first add reps or hold time, then add load, then move to the harder variation in the next quarter.
 - **Technique always wins.** A rep with bad form doesn't count toward progression.
 
-## Cardio rules (and why cardio before lifting works here)
+## No cardio: steps instead
 
-- **Keep it Zone 2 most of the year.** Easy cardio barely hurts your strength and doubles as a long warm-up. Hard cardio before lifting would cost you strength, so intervals only show up on **Push day in Months 11-12**. Push day uses no leg lifts, so that's where intervals do the least damage.
-- **Choose low-impact machines:** bike, elliptical, incline walk, rower, stair climber. **Don't run before Legs day**: running's impact and downhill (eccentric) loading tire out the legs you're about to train.
-- **Stay in the zone as you get fitter.** You'll need more incline, speed or resistance over time to keep the same heart rate.
-- **Fuel it.** Eat a meal with carbs and protein 1.5-3 h before training, and drink 500 ml+ of water during the session. 30 min of cardio plus 60 min of lifting is a long session.
+- **Lift fresh.** There's no cardio block, so nothing tires you out before the heavy sets. The 10-min warm-up is all you need.
+- **Walk every day.** 7-10k steps a day (8-10k in Months 11-12) keeps your heart healthy and does the fat-loss work alongside the calorie deficit, without costing you strength.
+- **Fuel it.** Eat a meal with carbs and protein 1.5-3 h before training, and drink 500 ml+ of water during the session.
 
 ## Abs strategy
 
@@ -225,11 +205,12 @@ Every session has **2 ab exercises done as a superset**, about **6 hard sets per
 
 **Visible abs = developed muscle + low body fat.** Abs usually show at about **10-14% body fat (men)** or **18-22% (women)**. The training builds the muscle, and the Month 11-12 calorie deficit brings body fat down so you can see it.
 
-## Warm-up (after cardio, 5-8 min)
+## Warm-up (10 min)
 
-1. **General (one round):** band pull-aparts ×15, scapular push-ups ×10, cat-cow ×8, leg swings ×10/side, glute bridges ×10, wall slides ×10.
-2. **Ramp-up sets, first main lift:** 40-50% ×8 → 60-70% ×5 → 80-85% ×2-3 → working sets.
-3. **Ramp-up sets, second main lift:** 60% ×5 → 80% ×3 → working sets.
+1. **Get warm:** 5 min easy bike, rower or incline walk. It's only to raise your body temperature, so keep it easy.
+2. **Mobility (one round):** band pull-aparts ×15, scapular push-ups ×10, cat-cow ×8, leg swings ×10/side, glute bridges ×10, wall slides ×10.
+3. **Ramp-up sets, first main lift:** 40-50% ×8 → 60-70% ×5 → 80-85% ×2-3 → working sets.
+4. **Ramp-up sets, second main lift:** 60% ×5 → 80% ×3 → working sets.
 
 ## Weekly volume per muscle
 
@@ -255,7 +236,7 @@ BMR = 10\,m + 6.25\,h - 5\,a + s, \qquad s =
 \end{cases}
 ```
 
-Daily energy use with this plan (3 sessions including cardio, plus normal daily steps):
+Daily energy use with this plan (3 lifting sessions, plus 7-10k steps a day):
 
 ```math
 TDEE \approx 1.5 \times BMR
@@ -315,7 +296,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 - **Missed 1 session:** do it on your next training day and keep the Push → Pull → Legs order.
 - **Missed a full week:** repeat the last week you completed.
 - **Sick for 2+ weeks:** take the next flex week early, then restart from the last week you completed with loads 10% lighter.
-- **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the cardio, the main lifts or the abs: those are the core of what you asked for.
+- **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the main lifts or the abs: those are the core of what you asked for.
 
 ## Substitutions (still no squats or deadlifts)
 

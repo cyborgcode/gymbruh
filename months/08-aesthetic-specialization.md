@@ -16,17 +16,9 @@ Specialization month for the V-taper look: extra sets for side delts, upper ches
 | **Compound accessories** | 3×8-12 @ RIR 0-1 · rest 90 s |
 | **Isolation** | 3×10-15 @ RIR 0-1 · rest 60 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | ★ = specialization exercise and gets +1 set (already included below). Rest-pause on the last set of compound accessories (rest 15 s, rep out again, twice). Myo-reps on the last set of isolation work (one set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest). |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 25 min Zone 2, then 5 min Zone 3 (70-80% HRmax, RPE 6) to finish. |
-| B | 30 min Zone 2, elliptical or bike. |
-| C | 30 min Zone 2, incline walk or elliptical. |
 
 ## Main lifts: week by week
 
@@ -93,7 +85,6 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 - **Main lifts:** follow the Week 4 row in the main-lift table.
 - **Everything else:** cut sets in half (usually to **2 sets**). Keep the same reps, drop the load 10-15%, and stop at **RIR 4 or more**.
 - **Abs:** 2 sets each.
-- **Cardio:** the full 30 min, but easy Zone 2 only.
 - The point of a deload is to clear fatigue so you come back stronger. Don't skip it, and don't turn it into a hard week.
 
 ## End-of-month checklist

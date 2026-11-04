@@ -16,17 +16,9 @@ Heavier weights, fewer reps (3-4). This is where the big strength gains come fro
 | **Compound accessories** | 3×6-8 @ RIR 2 · rest 2 min |
 | **Isolation** | 3×10-12 @ RIR 1-2 · rest 60-75 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2, low-impact only. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | None. |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 30 min Zone 2, any machine: bike, stair climber, rower, incline walk. |
-| B | 30 min Zone 2, elliptical or bike. |
-| C | 30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press. |
 
 ## Main lifts: week by week
 
@@ -92,7 +84,6 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 - **Main lifts:** follow the Week 4 row in the main-lift table.
 - **Everything else:** cut sets in half (usually to **2 sets**). Keep the same reps, drop the load 10-15%, and stop at **RIR 4 or more**.
 - **Abs:** 2 sets each.
-- **Cardio:** the full 30 min, but easy Zone 2 only.
 - The point of a deload is to clear fatigue so you come back stronger. Don't skip it, and don't turn it into a hard week.
 
 ## End-of-month checklist

@@ -16,17 +16,9 @@ Final push for definition, then the Week 4 final assessment: strength, photos an
 | **Compound accessories** | 3×12-15 @ RIR 1 · rest 60 s |
 | **Isolation** | 3×15-20 @ RIR 0-1 · rest 30-45 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2 on Pull and Legs days, sprints on Push day (A). In the assessment week, every day is Zone 2. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | Giant-set finish: drop set on the last set of every isolation exercise, short rests. |
 | **Nutrition** | Definition: TDEE − 300-500 kcal, protein 2.0-2.4 g/kg, lose 0.5-1% of body weight per week. 8-10k steps/day. |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | Sprints (bike, rower or air bike): 10 min Zone 2, then 8 × (30 s sprint at about 90% HRmax + 90 s easy), then 4 min easy = 30 min. |
-| B | 30 min Zone 2 (65-70% HRmax), elliptical or bike. |
-| C | 30 min Zone 2 (65-70% HRmax), incline walk or elliptical. |
 
 ## Main lifts: week by week
 
@@ -90,7 +82,7 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 
 ### Week 4: Final assessment
 
-Do 30 min of easy Zone 2 cardio first, then:
+Warm up as usual, then:
 
 1. **Strength:** for each main lift, work up to a heavy **triple at RPE 9** and convert it to an e1RM with the Epley formula. (A true 1RM isn't worth the risk while you're in a calorie deficit.) Compare with Weeks 12, 25 and 43.
 2. **Abs test (Day C, Legs):** max-time hollow body hold, and max strict dragon flags.
@@ -108,7 +100,7 @@ Do 30 min of easy Zone 2 cardio first, then:
 
 Every quarter ends with one flex week. Choose **one** option:
 
-1. **Deload (recommended):** 3 sessions of 30 min easy Zone 2 cardio, then main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
+1. **Deload (recommended):** 3 easy sessions: main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
 2. **Catch-up:** if you missed sessions this quarter, make them up now.
 3. **Full rest or holiday:** no gym, but keep walking 8-10k steps a day.
 

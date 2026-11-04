@@ -116,7 +116,7 @@ export function openWorkout(id) {
       <div class="stat"><span>Duration</span><b>${dur(w.dur)}</b></div>
       <div class="stat"><span>Sets</span><b>${w.sets}</b></div>
       <div class="stat"><span>Volume</span><b>${w.vol ? `${kg(w.vol)} kg` : '–'}</b></div>
-      <div class="stat"><span>Cardio</span><b>${w.cardio ? 'Done' : '–'}</b></div>
+      <div class="stat"><span>Exercises</span><b>${w.ex.length}</b></div>
     </div>
     <div class="detail">${w.ex.map((x) => {
       const weighed = x.sets.some((s) => s.w != null);

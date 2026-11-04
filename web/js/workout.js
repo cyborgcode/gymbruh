@@ -13,6 +13,7 @@ const rerender = () => window.dispatchEvent(new Event('rerender'));
 const kindBadge = (k) => (KIND[k] ? `<span class="badge ${k}">${KIND[k]}</span>` : '');
 const tagCls = (x) => (x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : '');
 const restLabel = (sec) => (sec < 60 ? `${sec}s` : clock(sec));
+const WARMUP = '5 min easy bike or rower, a few mobility drills, then ramp-up sets before each main lift.';
 
 // ------------------------------------------------------------------ Today
 export function renderToday(root) {
@@ -58,7 +59,7 @@ function hero(s, doneToday, last) {
       <div class="hero-top"><span class="pill">Month ${s.month} · ${esc(m.title)}</span>${kindBadge(s.kind)}</div>
       <div class="hero-title">${doneToday ? '<span class="muted">Next up · </span>' : ''}${esc(s.title)}</div>
       <div class="hero-sub">${esc(s.dayName)}</div>
-      <div class="chips"><span>≈ ${dur(s.est * 60)}</span><span>${s.ex.length} exercises</span><span>30 min cardio</span></div>
+      <div class="chips"><span>≈ ${dur(s.est * 60)}</span><span>${s.ex.length} exercises</span><span>10 min warm-up</span></div>
       ${hint ? `<p class="hint">${hint}</p>` : ''}
       ${doneToday
         ? `<button class="btn big" data-act="start">${ICON.play}<span>Start anyway</span></button>`
@@ -73,7 +74,7 @@ function introCard() {
     <section class="card intro">
       <div class="card-title">How it works</div>
       <ol>
-        <li><b>Start</b> today's workout. Every session opens with 30 min of easy cardio.</li>
+        <li><b>Start</b> today's workout. Warm up for about 10 minutes, then work down the list.</li>
         <li>Tap <b>${ICON.timer}</b> after each set: it starts your rest and ticks the set off. Tap an exercise to log a weight if you want to.</li>
         <li>Tap <b>Finish</b>. Everything is marked done and your stats update.</li>
       </ol>
@@ -93,7 +94,7 @@ export function openTerms() {
       <dt>Superset</dt><dd>Do one set of each exercise back to back, then rest.</dd>
       <dt>Top set · Back-off</dt><dd>One heavy set, then lighter sets for volume.</dd>
       <dt>Deload</dt><dd>A planned easy week so you recover and come back stronger.</dd>
-      <dt>Zone 2</dt><dd>Easy cardio: you can still talk in full sentences.</dd>
+      <dt>Ramp-up sets</dt><dd>Lighter sets before your working sets, for example 50% ×8 → 70% ×5 → 85% ×3 of today's weight.</dd>
     </dl>`);
 }
 
@@ -103,7 +104,7 @@ function previewList(s) {
       <div class="card-title row-between"><span>What's in it for me</span><button class="link sm" data-act="terms">Terms</button></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
       <ol class="preview">
-        <li><span class="tag c">C</span><div><b>Cardio · 30 min</b><small>${esc(s.cardio)}</small></div></li>
+        <li><span class="tag c">W</span><div><b>Warm-up · 10 min</b><small>${WARMUP}</small></div></li>
         ${s.ex.map((x) => `<li><span class="tag ${tagCls(x)}">${x.label}</span><div><b>${esc(info(x).name)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)} · rest ${restLabel(x.rest)}</small></div></li>`).join('')}
       </ol>
     </section>`;
@@ -176,7 +177,7 @@ function renderWorkout(root) {
   // Keep the card you had open (e.g. after a look at your stats).
   const openKey = openMemo && openMemo.id === a.start ? openMemo.key : null;
 
-  let rows = cardioRow(s, openKey === 'cardio');
+  let rows = '';
   s.ex.forEach((x, i) => {
     const members = x.group ? s.ex.filter((y) => y.group === x.group) : null;
     if (members && members[0] === x) rows += supersetHead(s, members);
@@ -199,6 +200,7 @@ function renderWorkout(root) {
       <div class="row"><button class="btn sm primary" data-act="finish">Finish it</button><button class="btn sm" data-act="discard">Discard</button></div></div>` : ''}
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
+    <details class="note warm"><summary>Warm-up · 10 min</summary>${WARMUP} <button class="link sm" data-act="terms">What are ramp-up sets?</button></details>
     ${showTip ? `<div class="tip"><p>Tap ${ICON.timer} after each set: it starts your rest and ticks the set off. Tap a card to log a weight (optional).
       <button class="link sm" data-act="terms">What do RIR &amp; % mean?</button></p>
       <button class="icon-btn sm" data-act="hide-tip" aria-label="Hide tip">${ICON.x}</button></div>` : ''}
@@ -214,8 +216,7 @@ function renderWorkout(root) {
     const row = b.closest('.xrow');
     if (act === 'rest') {
       unlockAudio();
-      if (b.dataset.keys === 'cardio') startTimer(+b.dataset.sec, 'Cardio', 'cardio');
-      else startTimer(+b.dataset.sec, tickOff(root, s, b.dataset.keys.split(',').map(Number)));
+      startTimer(+b.dataset.sec, tickOff(root, s, b.dataset.keys.split(',').map(Number)));
     } else if (act === 'sets') setDone(root, s, row, b.dataset.d);
     else if (act === 'hide-tip') { state.hideTip = true; save(); b.closest('.tip').remove(); }
     else if (act === 'toggle') toggleRow(root, row);
@@ -265,12 +266,12 @@ function matchPlan(a, s) {
   if (a.names && a.names.join('|') === names.join('|')) return false;
   if (!a.names) {
     const fits = Array.isArray(a.log) && a.log.length === s.ex.length && s.ex.every((x, i) => a.log[i]?.length === x.sets.length);
-    if (!fits) { a.log = null; a.done = { cardio: a.done?.cardio }; a.per = {}; }
+    if (!fits) { a.log = null; a.done = {}; a.per = {}; }
   } else {
     const from = names.map((n) => a.names.indexOf(n));
     const old = { log: a.log || [], done: a.done || {}, per: a.per || {} };
     a.log = from.map((j) => (j >= 0 ? old.log[j] : null));
-    a.done = { cardio: old.done.cardio };
+    a.done = {};
     a.per = {};
     from.forEach((j, i) => {
       if (j < 0) return;
@@ -309,27 +310,6 @@ function supersetHead(s, members) {
       </div>`;
 }
 
-function cardioRow(s, open = false) {
-  const kind = /Sprint/.test(s.cardio) ? 'Sprints' : /Interval/.test(s.cardio) ? 'Intervals'
-    : /Zone 3/.test(s.cardio) ? 'Zone 2 + Zone 3 finish' : /easy/i.test(s.cardio) ? 'Easy Zone 2' : 'Zone 2';
-  return `
-    <div class="xrow cardio ${open ? 'open' : ''}" data-ex="cardio">
-      <div class="xhead" data-act="toggle">
-        <div class="grow">
-          <div class="xeyebrow"><span class="xtag c">C</span>Before you lift ${stateTags}</div>
-          <div class="xname">Cardio</div>
-          <div class="xchips"><b class="xc main">30 min</b><span class="xc">${kind}</span></div>
-        </div>
-        ${timerButton(1800, 'cardio', 1)}
-      </div>
-      <div class="xbody" ${open ? '' : 'hidden'}>
-        <p class="cue">${esc(s.cardio)}</p>
-        ${setsCtl(1)}
-        <button class="btn sm close-btn" data-act="collapse">Close</button>
-      </div>
-    </div>`;
-}
-
 // "Sets done" inside an opened card, to fix a mis-tap. Finish still marks
 // everything done, so this is only for your own overview.
 function setsCtl(n) {
@@ -339,10 +319,10 @@ function setsCtl(n) {
     <button class="stp" data-act="sets" data-d="1" aria-label="One more set">+</button></div></div>`;
 }
 
-// ---- progress: cardio + every exercise, each counted by its sets
+// ---- progress: every exercise, counted by its sets
 function progress(s) {
   const a = state.active;
-  const list = [{ key: 'cardio', n: 1 }, ...s.ex.map((x, i) => ({ key: String(i), n: x.sets.length }))];
+  const list = s.ex.map((x, i) => ({ key: String(i), n: x.sets.length }));
   list.forEach((b) => { b.d = Math.min(b.n, a.done[b.key] || 0); });
   const next = list.find((b) => b.d < b.n) || null;
   return {
@@ -412,7 +392,7 @@ function tickOff(root, s, idx) {
 
 function setDone(root, s, row, d) {
   const a = state.active, key = row.dataset.ex;
-  const n = key === 'cardio' ? 1 : s.ex[+key].sets.length;
+  const n = s.ex[+key].sets.length;
   const cur = Math.min(n, a.done[key] || 0);
   a.done[key] = d === 't' ? (cur ? 0 : 1) : Math.max(0, Math.min(n, cur + +d));
   save();
@@ -432,19 +412,6 @@ function glideTo(root, key) {
   if (r.top >= top + 4 && r.bottom <= bottom - 4) return;
   window.scrollTo({ top: Math.max(0, scrollY + r.top - top - 10), behavior: 'smooth' });
 }
-
-// The cardio timer ran out (even while the app was closed): cardio is done.
-window.addEventListener('timer-done', (ev) => {
-  const a = state.active;
-  if (!a || ev.detail !== 'cardio' || !plan.byId?.[a.sid]) return;
-  a.done = { ...(a.done || {}), cardio: 1 };
-  save();
-  const root = document.getElementById('view');
-  if (!root.querySelector('.wk-head')) return;
-  const s = plan.byId[a.sid];
-  const p = paint(root, s);
-  if (p.next) glideTo(root, p.next.key);
-});
 
 const STEP = 2.5;
 const fmtW = (v) => fmt1(Math.round(v * 10) / 10);
@@ -650,7 +617,7 @@ function finishSheet(root, s) {
   const sh = sheet(`
     <h3>Finish workout?</h3>
     <p class="muted">${p.next
-      ? `${p.full} of ${p.list.length} ticked off. Finishing marks all ${s.ex.length} exercises and the 30 min cardio as done.`
+      ? `${p.full} of ${p.list.length} ticked off. Finishing marks all ${s.ex.length} exercises as done.`
       : 'Everything is ticked off. Nice work.'}</p>
     <div class="stat-grid">
       ${statBox('Duration', dur(sum.dur))}${statBox('Exercises', s.ex.length)}
@@ -679,7 +646,7 @@ function saveWorkout(root, s, sum) {
   const w = {
     id: Date.now().toString(36),
     sid: s.id, title: s.title, dayName: s.dayName, day: s.day, week: s.week, month: s.month, kind: s.kind,
-    start: a.start, end: a.start + sum.dur * 1000, dur: sum.dur, cardio: true,
+    start: a.start, end: a.start + sum.dur * 1000, dur: sum.dur,
     ex: sum.ex, sets: sum.sets, vol: sum.vol, reps: sum.reps,
   };
   state.workouts.push(w);

@@ -90,6 +90,9 @@ small { display: block; color: var(--muted); font-size: 13px; }
 .badge.test, .badge.final { background: rgba(255, 159, 10, 0.15); color: var(--warn); }
 .note { background: var(--card); border-radius: 14px; padding: 12px 14px; font-size: 14px; color: #d4d4d8; margin: 0 0 12px; }
 details.note summary { font-weight: 600; color: var(--text); list-style: none; cursor: pointer; }
+details.note summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+details.note summary::after { content: ''; width: 7px; height: 7px; flex: none; margin-right: 4px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: translateY(-2px) rotate(45deg); transition: transform 0.2s; }
+details.note[open] summary::after { transform: translateY(2px) rotate(225deg); }
 details.note summary::-webkit-details-marker { display: none; }
 details.note[open] summary { margin-bottom: 6px; }
 .hint { color: var(--muted); font-size: 14px; margin: 10px 0 0; }
@@ -545,7 +548,6 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .xtag { min-width: 26px; height: 22px; padding: 0 6px; border-radius: 7px; display: grid; place-items: center; background: var(--card2); color: var(--muted); font-size: 12px; letter-spacing: 0; }
 .xtag.m { background: var(--accent-soft); color: var(--accent-2); }
 .xtag.x { background: rgba(255, 159, 10, 0.14); color: var(--warn); }
-.xtag.c { background: rgba(191, 90, 242, 0.16); color: #d68cff; }
 .xname { font-size: 18px; font-weight: 700; line-height: 1.25; }
 .xrow.open .xhead .xname { color: var(--text); }
 .xchips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 9px; }

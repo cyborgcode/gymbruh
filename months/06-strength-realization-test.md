@@ -16,17 +16,9 @@ Practise heavy triples, doubles and singles, then test your new maxes in Week 4.
 | **Compound accessories** | 3×6-8 @ RIR 1-2 · rest 2 min |
 | **Isolation** | 3×10-12 @ RIR 1 · rest 60-75 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2, low-impact only. In test week stay at the easy end (60% HRmax). |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | None. |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 30 min Zone 2, any machine: bike, stair climber, rower, incline walk. |
-| B | 30 min Zone 2, elliptical or bike. |
-| C | 30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press. |
 
 ## Main lifts: week by week
 
@@ -89,7 +81,7 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 
 ### Week 4: Test week
 
-Do 30 min of easy Zone 2 cardio first, as always, then test:
+Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 
 | Day | Lift 1 | Lift 2 |
 |---|---|---|
@@ -114,7 +106,7 @@ After testing: **2 sets** of each accessory at RIR 3, and **2 sets** of each abs
 
 Every quarter ends with one flex week. Choose **one** option:
 
-1. **Deload (recommended):** 3 sessions of 30 min easy Zone 2 cardio, then main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
+1. **Deload (recommended):** 3 easy sessions: main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
 2. **Catch-up:** if you missed sessions this quarter, make them up now.
 3. **Full rest or holiday:** no gym, but keep walking 8-10k steps a day.
 

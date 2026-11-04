@@ -16,17 +16,9 @@ Switch to strength. The main lifts move to 5×5 with percentage-based loading. A
 | **Compound accessories** | 3×8-10 @ RIR 2 · rest 2 min |
 | **Isolation** | 3×10-12 @ RIR 2 · rest 60-75 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2, low-impact only. Avoid running and hard leg cardio before heavy lower-body work. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | None. Strength months: save your energy for the main lifts. |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 30 min Zone 2, any machine: bike, stair climber, rower, incline walk. |
-| B | 30 min Zone 2, elliptical or bike. |
-| C | 30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press. |
 
 ## Main lifts: week by week
 

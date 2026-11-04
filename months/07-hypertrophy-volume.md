@@ -16,17 +16,9 @@ Use your new strength to build muscle: higher volume and slow eccentrics. The ac
 | **Compound accessories** | 4×10-12 @ RIR 1-2 · rest 90 s |
 | **Isolation** | 3×12-15 @ RIR 1 · rest 60 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | 3 s lowering on every accessory rep. On the last set of isolation work, finish with lengthened partials (half reps in the stretched position) until RIR 0. |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 25 min Zone 2, then 5 min Zone 3 (70-80% HRmax, RPE 6) to finish. |
-| B | 30 min Zone 2, elliptical or bike. |
-| C | 30 min Zone 2, incline walk or elliptical. |
 
 ## Main lifts: week by week
 

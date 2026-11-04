@@ -257,30 +257,6 @@ DAY_MUSCLES = {
     "C": "quads, glutes, hamstrings, calves",
 }
 
-# ------------------------------------------------------------------ cardio
-Z2 = "Zone 2 (60-70% HRmax, RPE 4-5, you can talk in full sentences)"
-CARDIO_Q1 = dict(A="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.",
-                 B="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.",
-                 C="30 min " + Z2 + ". Incline walk, bike, elliptical or rower.")
-CARDIO_Q2 = dict(A="30 min Zone 2, any machine: bike, stair climber, rower, incline walk.",
-                 B="30 min Zone 2, elliptical or bike.",
-                 C="30 min Zone 2, incline walk or elliptical. Keep it easy on the quads before the leg press.")
-CARDIO_Q3 = dict(A="25 min Zone 2, then 5 min Zone 3 (70-80% HRmax, RPE 6) to finish.",
-                 B="30 min Zone 2, elliptical or bike.",
-                 C="30 min Zone 2, incline walk or elliptical.")
-CARDIO_Z2_ALL = dict(A="30 min Zone 2, any machine.",
-                     B="30 min Zone 2, elliptical or bike.",
-                     C="30 min Zone 2, incline walk or elliptical.")
-CARDIO_PEAK = dict(A="30 min easy Zone 2 (60-65% HRmax), any machine.",
-                   B="30 min easy Zone 2 (60-65% HRmax), elliptical.",
-                   C="30 min easy Zone 2 (60-65% HRmax), incline walk.")
-CARDIO_DEF1 = dict(A="Intervals (bike or rower): 10 min Zone 2, then 6 × (1 min hard at 85-90% HRmax + 2 min easy), then 2 min easy = 30 min.",
-                   B="30 min Zone 2 (65-70% HRmax), elliptical or bike.",
-                   C="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.")
-CARDIO_DEF2 = dict(A="Sprints (bike, rower or air bike): 10 min Zone 2, then 8 × (30 s sprint at about 90% HRmax + 90 s easy), then 4 min easy = 30 min.",
-                   B="30 min Zone 2 (65-70% HRmax), elliptical or bike.",
-                   C="30 min Zone 2 (65-70% HRmax), incline walk or elliptical.")
-
 # ---------------------------------------------------------- nutrition notes
 NUT_GAIN = "Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition)."
 NUT_PEAK = "Maintenance calories (TDEE), protein 1.6-2.2 g/kg. Fuel the heavy lifting."
@@ -291,50 +267,45 @@ BASE_RIR = "Months 1-3 go by effort, not percentages. Pick a weight that leaves 
 
 MONTHS = [
     dict(n=1, slug="01-foundation", title="Foundation", q=1,
-         goal="Learn and groove the technique on the six main lifts, get your body used to 30 min of cardio plus lifting, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.",
+         goal="Learn and groove the technique on the six main lifts, build the habit of 3 sessions a week, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.",
          main=[("3×10", "≈ 60-65%", "RIR 4"), ("3×10", "≈ 65%", "RIR 3"), ("3×10", "≈ 67-70%", "RIR 3"), ("3×10", "≈ 70%", "RIR 2")],
          main_sets=3, main_rest="2 min", base=BASE_RIR,
          C=(3, "12", "RIR 3", "90 s"), I=(3, "12-15", "RIR 3", "60 s"),
          technique="None yet. Own the technique: lower every rep over 2-3 s.",
-         w4="normal", cardio=CARDIO_Q1, cardio_note="Stay at the low end of Zone 2 (60-65% HRmax). The goal is to build the habit.",
-         nutrition=NUT_GAIN,
-         summary=("3×10 @ RIR 4→2", "3×12-15", "Zone 2", "Normal")),
+         w4="normal", nutrition=NUT_GAIN,
+         summary=("3×10 @ RIR 4→2", "3×12-15", "Normal")),
     dict(n=2, slug="02-hypertrophy-1", title="Hypertrophy I", q=1,
          goal="Start the real muscle-building work: more sets on the main lifts and sets taken closer to failure. Week 4 is the first deload.",
          main=[("4×8", "≈ 68-70%", "RIR 3"), ("4×8", "≈ 72%", "RIR 2"), ("4×8", "≈ 74%", "RIR 1-2"), ("2×8", "≈ 60%", "RIR 5 (deload)")],
          main_sets=4, main_rest="2 min", base=BASE_RIR,
          C=(3, "10-12", "RIR 2", "90 s"), I=(3, "12-15", "RIR 2", "60 s"),
          technique="None. Use double progression: add reps each week, then add weight.",
-         w4="deload", cardio=CARDIO_Q1, cardio_note="Zone 2 (60-70% HRmax). As you get fitter, raise the incline or resistance so your heart rate stays in the zone.",
-         nutrition=NUT_GAIN,
-         summary=("4×8 @ RIR 3→1", "3×10-15", "Zone 2", "Deload")),
+         w4="deload", nutrition=NUT_GAIN,
+         summary=("4×8 @ RIR 3→1", "3×10-15", "Deload")),
     dict(n=3, slug="03-hypertrophy-2", title="Hypertrophy II", q=1,
          goal="Heavier hypertrophy work: 6-8 reps on the main lifts and drop sets on isolation work. At the end of the month you estimate your 1RMs, which set your Month 4 percentages.",
          main=[("4×8", "≈ 72%", "RIR 2"), ("4×7", "≈ 75%", "RIR 2"), ("4×6", "≈ 78%", "RIR 1-2"), ("4×6", "≈ 80%", "RIR 1, log it for your e1RM")],
          main_sets=4, main_rest="2 min", base=BASE_RIR + " After Week 4, calculate your e1RM for every main lift with the RIR-adjusted Epley formula in the README.",
          C=(4, "8-10", "RIR 1-2", "90 s"), I=(3, "10-15", "RIR 1", "60 s"),
          technique="Drop set on the LAST set of every isolation exercise: hit the target reps, drop the weight about 25%, then rep out to RIR 0-1.",
-         w4="normal", cardio=CARDIO_Q1, cardio_note="Zone 2 (60-70% HRmax).",
-         nutrition=NUT_GAIN, flex=13,
-         summary=("4×8→4×6 @ RIR 2→1", "4×8-10 / 3×10-15 + drop sets", "Zone 2", "Normal, then Flex wk 13")),
+         w4="normal", nutrition=NUT_GAIN, flex=13,
+         summary=("4×8→4×6 @ RIR 2→1", "4×8-10 / 3×10-15 + drop sets", "Normal, then Flex wk 13")),
     dict(n=4, slug="04-strength-accumulation", title="Strength I: Accumulation", q=2,
          goal="Switch to strength. The main lifts move to 5×5 with percentage-based loading. Accessories stay at 8-12 reps so you keep building muscle.",
          main=[("5×5", "75%", "RIR 3"), ("5×5", "77.5%", "RIR 2-3"), ("5×5", "80%", "RIR 2"), ("5×5", "82.5%", "RIR 1")],
          main_sets=5, main_rest="3 min", base="Percentages are of the e1RM you calculated from Month 3, Week 4.",
          C=(3, "8-10", "RIR 2", "2 min"), I=(3, "10-12", "RIR 2", "60-75 s"),
          technique="None. Strength months: save your energy for the main lifts.",
-         w4="normal", cardio=CARDIO_Q2, cardio_note="Zone 2, low-impact only. Avoid running and hard leg cardio before heavy lower-body work.",
-         nutrition=NUT_GAIN,
-         summary=("5×5 @ 75→82.5%", "3×8-12", "Zone 2 (low-impact)", "Normal")),
+         w4="normal", nutrition=NUT_GAIN,
+         summary=("5×5 @ 75→82.5%", "3×8-12", "Normal")),
     dict(n=5, slug="05-strength-intensification", title="Strength II: Intensification", q=2,
          goal="Heavier weights, fewer reps (3-4). This is where the big strength gains come from. Week 4 is a deload.",
          main=[("5×4", "82.5%", "RIR 2"), ("5×3", "85%", "RIR 2"), ("4×3", "87.5%", "RIR 1-2"), ("3×3", "70%", "RIR 4+ (deload)")],
          main_sets=5, main_rest="3 min", base="Percentages are of your Month 3 e1RM. If Month 4 felt easy, add 2.5% to the e1RM (autoregulation rule, README).",
          C=(3, "6-8", "RIR 2", "2 min"), I=(3, "10-12", "RIR 1-2", "60-75 s"),
          technique="None.",
-         w4="deload", cardio=CARDIO_Q2, cardio_note="Zone 2, low-impact only.",
-         nutrition=NUT_GAIN,
-         summary=("5×4→4×3 @ 82.5→87.5%", "3×6-12", "Zone 2 (low-impact)", "Deload")),
+         w4="deload", nutrition=NUT_GAIN,
+         summary=("5×4→4×3 @ 82.5→87.5%", "3×6-12", "Deload")),
     dict(n=6, slug="06-strength-realization-test", title="Strength III: Realization & Test", q=2,
          goal="Practise heavy triples, doubles and singles, then test your new maxes in Week 4. The tested numbers set your percentages for the whole of Q3.",
          main=[("1×3 then 3×5", "87.5% then 77.5%", "Top set RPE 8"), ("1×2 then 3×4", "90% then 80%", "Top set RPE 8"),
@@ -342,27 +313,24 @@ MONTHS = [
          main_sets=4, main_rest="3-4 min", base="Percentages are of your current e1RM (Month 3 e1RM, plus any autoregulation bumps).",
          C=(3, "6-8", "RIR 1-2", "2 min"), I=(3, "10-12", "RIR 1", "60-75 s"),
          technique="None.",
-         w4="test", cardio=CARDIO_Q2, cardio_note="Zone 2, low-impact only. In test week stay at the easy end (60% HRmax).",
-         nutrition=NUT_GAIN, flex=26,
-         summary=("Top set + back-offs, then TEST", "3×6-12", "Zone 2 (low-impact)", "Test, then Flex wk 26")),
+         w4="test", nutrition=NUT_GAIN, flex=26,
+         summary=("Top set + back-offs, then TEST", "3×6-12", "Test, then Flex wk 26")),
     dict(n=7, slug="07-hypertrophy-volume", title="Hypertrophy III: Volume", q=3,
          goal="Use your new strength to build muscle: higher volume and slow eccentrics. The accessory list shifts toward V-taper aesthetics (upper chest, side delts, lats, arms).",
          main=[("4×10", "67.5%", "RIR 2"), ("4×9", "70%", "RIR 2"), ("4×8", "72.5%", "RIR 1-2"), ("4×8", "75%", "RIR 1")],
          main_sets=4, main_rest="2 min", base="Percentages are of the 1RM you tested in Week 25.",
          C=(4, "10-12", "RIR 1-2", "90 s"), I=(3, "12-15", "RIR 1", "60 s"),
          technique="3 s lowering on every accessory rep. On the last set of isolation work, finish with lengthened partials (half reps in the stretched position) until RIR 0.",
-         w4="normal", cardio=CARDIO_Q3, cardio_note="Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3.",
-         nutrition=NUT_GAIN,
-         summary=("4×10→4×8 @ 67.5→75%", "4×10-12 / 3×12-15", "Zone 2 + Zone 3 finisher (Push)", "Normal")),
+         w4="normal", nutrition=NUT_GAIN,
+         summary=("4×10→4×8 @ 67.5→75%", "4×10-12 / 3×12-15", "Normal")),
     dict(n=8, slug="08-aesthetic-specialization", title="Aesthetic Specialization (V-Taper)", q=3,
          goal="Specialization month for the V-taper look: extra sets for side delts, upper chest and lats, plus intensity techniques. The main lifts drop to 3×6, which is enough to keep your strength.",
          main=[("3×6", "75%", "RIR 3"), ("3×6", "77.5%", "RIR 2-3"), ("3×6", "80%", "RIR 2"), ("2×6", "65%", "RIR 4+ (deload)")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 25.",
          C=(3, "8-12", "RIR 0-1", "90 s"), I=(3, "10-15", "RIR 0-1", "60 s"),
          technique="★ = specialization exercise and gets +1 set (already included below). Rest-pause on the last set of compound accessories (rest 15 s, rep out again, twice). Myo-reps on the last set of isolation work (one set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest).",
-         spec=True, w4="deload", cardio=CARDIO_Q3, cardio_note="Zone 2 on Pull and Legs days. On Push day (A), finish with 5 min of Zone 3.",
-         nutrition=NUT_GAIN,
-         summary=("3×6 @ 75→80% (maintain)", "+1 set V-taper, myo-reps", "Zone 2 + Zone 3 finisher (Push)", "Deload")),
+         spec=True, w4="deload", nutrition=NUT_GAIN,
+         summary=("3×6 @ 75→80% (maintain)", "+1 set V-taper, myo-reps", "Deload")),
     dict(n=9, slug="09-powerbuilding", title="Powerbuilding", q=3,
          goal="Strength and size together: one heavy top set followed by volume back-off sets. This bridges the aesthetics block into the strength peak.",
          main=[("1×5 then 3×8", "82.5% then 70%", "Top set RPE 8"), ("1×4 then 3×7", "85% then 72.5%", "Top set RPE 8"),
@@ -370,36 +338,32 @@ MONTHS = [
          main_sets=4, main_rest="3 min (top set), 2 min (back-offs)", base="Percentages are of the Week 25 1RM. If the top set feels RPE 7 or easier, add 2.5% next week.",
          C=(3, "8-10", "RIR 1", "90 s"), I=(3, "12-15", "RIR 1", "60 s"),
          technique="Drop set on the last set of every isolation exercise.",
-         w4="normal", cardio=CARDIO_Z2_ALL, cardio_note="Zone 2 on every day. Protect the heavy top sets.",
-         nutrition=NUT_GAIN, flex=39,
-         summary=("Top set + back-offs", "3×8-15 + drop sets", "Zone 2", "Normal, then Flex wk 39")),
+         w4="normal", nutrition=NUT_GAIN, flex=39,
+         summary=("Top set + back-offs", "3×8-15 + drop sets", "Normal, then Flex wk 39")),
     dict(n=10, slug="10-strength-peak", title="Strength Peak & Test", q=4,
          goal="Peak your strength: low reps at high intensity, with accessory volume cut back so you're fresh. Week 4 is test week, aim for PRs on all six lifts.",
          main=[("5×3", "85%", "RIR 2"), ("4×2", "90%", "RIR 1-2"), ("1×1 then 2×2", "95% then 85%", "Single RPE 8.5-9"), ("TEST", "See test protocol below", "PR attempts")],
          main_sets=4, main_rest="3-4 min", base="Percentages are of the higher of: your Week 25 test, or the e1RM from your Month 9, Week 4 top set.",
          C=(3, "6-8", "RIR 2", "2 min"), I=(2, "10-12", "RIR 2", "60 s"),
          technique="None. Accessory volume is cut back on purpose so you peak.",
-         w4="test", cardio=CARDIO_PEAK, cardio_note="Easy Zone 2 only (60-65% HRmax). Cardio must not eat into your recovery this month.",
-         nutrition=NUT_PEAK,
-         summary=("5×3 → singles, then TEST", "3×6-8 / 2×10-12", "Easy Zone 2", "Test")),
+         w4="test", nutrition=NUT_PEAK,
+         summary=("5×3 → singles, then TEST", "3×6-8 / 2×10-12", "Test")),
     dict(n=11, slug="11-definition-1", title="Definition I: Lean Out", q=4,
-         goal="Reveal the work. Calorie deficit, supersets and shorter rests, and interval cardio on Push day. Heavy 3×5 main lifts keep your strength while you diet.",
+         goal="Reveal the work. Calorie deficit, supersets and shorter rests, and 8-10k steps a day. Heavy 3×5 main lifts keep your strength while you diet.",
          main=[("3×5", "77.5%", "RIR 3"), ("3×5", "80%", "RIR 2"), ("3×5", "82.5%", "RIR 2"), ("2×5", "65%", "RIR 4+ (deload)")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 43.",
          C=(3, "10-12", "RIR 1", "60 s"), I=(3, "15", "RIR 1", "30-45 s"),
          technique="Antagonist supersets and tri-sets with short rest (30-45 s isolation, 60 s compounds). Keep the heavy main work exactly as written.",
-         w4="deload", cardio=CARDIO_DEF1, cardio_note="Zone 2 on Pull and Legs days, intervals on Push day (A). In the deload week, every day is Zone 2.",
-         nutrition=NUT_CUT,
-         summary=("3×5 @ 77.5→82.5%", "3×10-15, short rest", "Zone 2 + intervals (Push)", "Deload")),
+         w4="deload", nutrition=NUT_CUT,
+         summary=("3×5 @ 77.5→82.5%", "3×10-15, short rest", "Deload")),
     dict(n=12, slug="12-definition-2-final", title="Definition II: Final Assessment", q=4,
          goal="Final push for definition, then the Week 4 final assessment: strength, photos and measurements. Compare everything with Month 1.",
          main=[("3×6", "75%", "RIR 2"), ("3×5", "80%", "RIR 2"), ("3×4", "82.5%", "RIR 2"), ("FINAL", "Work up to a heavy triple", "RPE 9, then Epley e1RM")],
          main_sets=3, main_rest="2-3 min", base="Percentages are of the 1RM you tested in Week 43.",
          C=(3, "12-15", "RIR 1", "60 s"), I=(3, "15-20", "RIR 0-1", "30-45 s"),
          technique="Giant-set finish: drop set on the last set of every isolation exercise, short rests.",
-         w4="final", cardio=CARDIO_DEF2, cardio_note="Zone 2 on Pull and Legs days, sprints on Push day (A). In the assessment week, every day is Zone 2.",
-         nutrition=NUT_CUT, flex=52,
-         summary=("3×6→3×4, then FINAL test", "3×12-20 + drop sets", "Zone 2 + sprints (Push)", "Final, then Flex wk 52")),
+         w4="final", nutrition=NUT_CUT, flex=52,
+         summary=("3×6→3×4, then FINAL test", "3×12-20 + drop sets", "Final, then Flex wk 52")),
 ]
 
 # week numbers: 4 per month + flex week after each quarter
@@ -461,7 +425,7 @@ def nav(m):
 
 TEST_PROTOCOL = """### Week 4: Test week
 
-Do 30 min of easy Zone 2 cardio first, as always, then test:
+Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 
 | Day | Lift 1 | Lift 2 |
 |---|---|---|
@@ -478,7 +442,7 @@ After testing: **2 sets** of each accessory at RIR 3, and **2 sets** of each abs
 
 FINAL_PROTOCOL = """### Week 4: Final assessment
 
-Do 30 min of easy Zone 2 cardio first, then:
+Warm up as usual, then:
 
 1. **Strength:** for each main lift, work up to a heavy **triple at RPE 9** and convert it to an e1RM with the Epley formula. (A true 1RM isn't worth the risk while you're in a calorie deficit.) Compare with Weeks 12, 25 and 43.
 2. **Abs test (Day C, Legs):** max-time hollow body hold, and max strict dragon flags.
@@ -491,7 +455,6 @@ DELOAD_TEXT = """### Week 4: Deload
 - **Main lifts:** follow the Week 4 row in the main-lift table.
 - **Everything else:** cut sets in half (usually to **2 sets**). Keep the same reps, drop the load 10-15%, and stop at **RIR 4 or more**.
 - **Abs:** 2 sets each.
-- **Cardio:** the full 30 min, but easy Zone 2 only.
 - The point of a deload is to clear fatigue so you come back stronger. Don't skip it, and don't turn it into a hard week.
 """
 
@@ -513,7 +476,7 @@ def flex_text(m):
 
 Every quarter ends with one flex week. Choose **one** option:
 
-1. **Deload (recommended):** 3 sessions of 30 min easy Zone 2 cardio, then main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
+1. **Deload (recommended):** 3 easy sessions: main lifts **2×5 at 50-60%**, 1 easy set of each accessory, and 2 sets of each abs exercise.
 2. **Catch-up:** if you missed sessions this quarter, make them up now.
 3. **Full rest or holiday:** no gym, but keep walking 8-10k steps a day.
 
@@ -544,16 +507,9 @@ def month_md(m):
     L.append(f"| **Compound accessories** | {c[0]}×{c[1]} @ {c[2]} · rest {c[3]} |")
     L.append(f"| **Isolation** | {i[0]}×{i[1]} @ {i[2]} · rest {i[3]} |")
     L.append("| **Abs** | 2 exercises every session, done as a superset (see each day) |")
-    L.append(f"| **Cardio** | 30 min before every session: {m['cardio_note']} |")
+    L.append("| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |")
     L.append(f"| **Intensity technique** | {m['technique']} |")
     L.append(f"| **Nutrition** | {m['nutrition']} |")
-    L.append("")
-    L.append("## Cardio: 30 min before every session")
-    L.append("")
-    L.append("| Day | Cardio |")
-    L.append("|---|---|")
-    for d in "ABC":
-        L.append(f"| {d} | {m['cardio'][d]} |")
     L.append("")
     L.append("## Main lifts: week by week")
     L.append("")
@@ -624,12 +580,12 @@ def volume_table():
 
 
 def overview_table():
-    L = ["| Month | Weeks | Phase | Main lifts | Accessories | Cardio | Week 4 |",
-         "|---|---|---|---|---|---|---|"]
+    L = ["| Month | Weeks | Phase | Main lifts | Accessories | Week 4 |",
+         "|---|---|---|---|---|---|"]
     for m in MONTHS:
         w0, w1 = WEEK[m["n"]]
-        a, b, c, d = m["summary"]
-        L.append(f"| [**{m['n']}**](months/{m['slug']}.md) | {w0}-{w1} | {m['title']} | {a} | {b} | {c} | {d} |")
+        a, b, d = m["summary"]
+        L.append(f"| [**{m['n']}**](months/{m['slug']}.md) | {w0}-{w1} | {m['title']} | {a} | {b} | {d} |")
     return "\n".join(L)
 
 
@@ -699,9 +655,8 @@ LIFT_KEYS = {"Barbell Bench Press": "bench", "Leg Press": "legpress", "Barbell H
              "Barbell Row": "row", "Standing Overhead Press": "ohp",
              PULLUP_Q1["name"]: "pullup", PULLUP["name"]: "pullup"}
 TEST_RM = {"bench": "1RM", "legpress": "5RM", "hipthrust": "5RM", "row": "5RM", "ohp": "3RM", "pullup": "3RM"}
-EASY_CARDIO = "30 min easy Zone 2 (60-65% HRmax), any low-impact machine."
 KIND_NOTES = {
-    "deload": "Deload week: main lifts as written. Everything else is cut to 2 sets, about 10-15% lighter, stopping at RIR 4+. Keep the cardio easy.",
+    "deload": "Deload week: main lifts as written. Everything else is cut to 2 sets, about 10-15% lighter, stopping at RIR 4+.",
     "test": "Test week: find your new maxes. Ramp up: bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempts. Rest 3-5 min between heavy attempts. Use a spotter or safeties.",
     "final": "Final assessment: work up to a heavy triple at RPE 9 on each main lift. Take progress photos and measurements this week.",
     "flex": "Flex week: an easy deload (recommended), a catch-up week, or full rest. Skip these sessions if you're taking the week off.",
@@ -773,10 +728,9 @@ def app_session(m, k, day, wk, kind):
     note = KIND_NOTES.get(kind)
     if kind == "final" and day == "C":
         note += " Abs test today: max hollow body hold and max strict dragon flags."
-    cardio = EASY_CARDIO if kind != "normal" else m["cardio"][day]
     return dict(id=f"w{wk:02d}-{day}", week=wk, month=m["n"], day=day, kind=kind,
                 title=f"Week {wk} · Day {day}", dayName=DAY_NAMES[day].split(": ", 1)[1],
-                cardio=cardio, note=note, technique=m["technique"] if kind == "normal" else None,
+                note=note, technique=m["technique"] if kind == "normal" else None,
                 est=estimate_minutes(exs), ex=exs)
 
 
@@ -799,7 +753,7 @@ def exercise_id(e):
 
 
 def estimate_minutes(exs):
-    total, seen = 36.0, set()  # 30 min cardio + ~6 min warm-up
+    total, seen = 10.0, set()  # 10 min warm-up
     for x in exs:
         if x["group"]:
             if x["group"] in seen:

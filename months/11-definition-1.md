@@ -6,7 +6,7 @@
 
 ## Goal
 
-Reveal the work. Calorie deficit, supersets and shorter rests, and interval cardio on Push day. Heavy 3×5 main lifts keep your strength while you diet.
+Reveal the work. Calorie deficit, supersets and shorter rests, and 8-10k steps a day. Heavy 3×5 main lifts keep your strength while you diet.
 
 ## This month at a glance
 
@@ -16,17 +16,9 @@ Reveal the work. Calorie deficit, supersets and shorter rests, and interval card
 | **Compound accessories** | 3×10-12 @ RIR 1 · rest 60 s |
 | **Isolation** | 3×15 @ RIR 1 · rest 30-45 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Zone 2 on Pull and Legs days, intervals on Push day (A). In the deload week, every day is Zone 2. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | Antagonist supersets and tri-sets with short rest (30-45 s isolation, 60 s compounds). Keep the heavy main work exactly as written. |
 | **Nutrition** | Definition: TDEE − 300-500 kcal, protein 2.0-2.4 g/kg, lose 0.5-1% of body weight per week. 8-10k steps/day. |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | Intervals (bike or rower): 10 min Zone 2, then 6 × (1 min hard at 85-90% HRmax + 2 min easy), then 2 min easy = 30 min. |
-| B | 30 min Zone 2 (65-70% HRmax), elliptical or bike. |
-| C | 30 min Zone 2 (65-70% HRmax), incline walk or elliptical. |
 
 ## Main lifts: week by week
 
@@ -93,7 +85,6 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 - **Main lifts:** follow the Week 4 row in the main-lift table.
 - **Everything else:** cut sets in half (usually to **2 sets**). Keep the same reps, drop the load 10-15%, and stop at **RIR 4 or more**.
 - **Abs:** 2 sets each.
-- **Cardio:** the full 30 min, but easy Zone 2 only.
 - The point of a deload is to clear fatigue so you come back stronger. Don't skip it, and don't turn it into a hard week.
 
 ## End-of-month checklist

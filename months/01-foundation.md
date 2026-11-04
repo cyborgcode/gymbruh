@@ -6,7 +6,7 @@
 
 ## Goal
 
-Learn and groove the technique on the six main lifts, get your body used to 30 min of cardio plus lifting, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.
+Learn and groove the technique on the six main lifts, build the habit of 3 sessions a week, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.
 
 ## This month at a glance
 
@@ -16,17 +16,9 @@ Learn and groove the technique on the six main lifts, get your body used to 30 m
 | **Compound accessories** | 3×12 @ RIR 3 · rest 90 s |
 | **Isolation** | 3×12-15 @ RIR 3 · rest 60 s |
 | **Abs** | 2 exercises every session, done as a superset (see each day) |
-| **Cardio** | 30 min before every session: Stay at the low end of Zone 2 (60-65% HRmax). The goal is to build the habit. |
+| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |
 | **Intensity technique** | None yet. Own the technique: lower every rep over 2-3 s. |
 | **Nutrition** | Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition). |
-
-## Cardio: 30 min before every session
-
-| Day | Cardio |
-|---|---|
-| A | 30 min Zone 2 (60-70% HRmax, RPE 4-5, you can talk in full sentences). Incline walk, bike, elliptical or rower. |
-| B | 30 min Zone 2 (60-70% HRmax, RPE 4-5, you can talk in full sentences). Incline walk, bike, elliptical or rower. |
-| C | 30 min Zone 2 (60-70% HRmax, RPE 4-5, you can talk in full sentences). Incline walk, bike, elliptical or rower. |
 
 ## Main lifts: week by week
 
