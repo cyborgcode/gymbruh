@@ -1,6 +1,6 @@
 // Settings sheet: colour theme, plan position, offline status, backup, reset.
-import { state, save, plan, replaceState, BACKUP_KEY } from './store.js';
-import { sheet, toast, dkey, ICON } from './util.js';
+import { state, save, plan, replaceState, BACKUP_KEY, mode, setMode } from './store.js';
+import { sheet, toast, dkey, ICON, esc } from './util.js';
 import { ACCENTS, BACKGROUNDS, applyTheme } from './theme.js';
 
 const rerender = () => window.dispatchEvent(new Event('rerender'));
@@ -16,6 +16,15 @@ function body() {
   const nextWeek = plan.sessions.find((s) => !state.status[s.id])?.week || 1;
   return `
     <h3>Settings</h3>
+
+    <div class="field">
+      <span>Girl mode</span>
+      <button class="mode-switch ${mode === 'girl' ? 'on' : ''}" data-act="mode" role="switch" aria-checked="${mode === 'girl'}">
+        <div class="grow"><b>12-month sculpt plan</b><small>Glutes, shape, posture and strength, in violet</small></div>
+        <span class="switch" aria-hidden="true"><i></i></span>
+      </button>
+      <small>Each mode keeps its own progress, history and colors on this phone. Switching never deletes anything.</small>
+    </div>
 
     <div class="field">
       <span>Start the plan at week</span>
@@ -61,7 +70,7 @@ function body() {
       </div>
     </div>
 
-    <p class="muted small center">GymBruh · 12-month strength &amp; aesthetics plan</p>`;
+    <p class="muted small center">GymBruh · ${esc(plan.name || '')}</p>`;
 }
 
 function refresh(sh) {
@@ -102,6 +111,13 @@ function wire(sh) {
       return;
     }
     const act = b.dataset.act;
+    if (act === 'mode') {
+      const on = !b.classList.contains('on');
+      b.classList.toggle('on', on);
+      b.setAttribute('aria-checked', on);
+      setTimeout(() => setMode(on ? 'girl' : 'main'), 220); // let the switch slide first
+      return;
+    }
     if (act === 'jump') {
       const wk = +sh.el.querySelector('#startWeek').value;
       for (const s of plan.sessions) {
@@ -116,7 +132,7 @@ function wire(sh) {
     if (act === 'sample-off') removeSample(sh);
     if (act === 'export') await exportData();
     if (act === 'reset') {
-      if (!confirm('Delete all workouts and progress on this phone?')) return;
+      if (!confirm(`Delete all workouts and progress for the ${plan.name || 'plan'} on this phone?`)) return;
       if (!confirm('Are you sure? This cannot be undone.')) return;
       localStorage.removeItem(BACKUP_KEY);
       replaceState({});

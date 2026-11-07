@@ -4,6 +4,7 @@
 export const ACCENTS = {
   blue: ['Blue', '#0a84ff'],
   indigo: ['Indigo', '#5e5ce6'],
+  violet: ['Violet', '#8b5cf6'],
   purple: ['Purple', '#bf5af2'],
   pink: ['Pink', '#ff375f'],
   red: ['Red', '#ff453a'],

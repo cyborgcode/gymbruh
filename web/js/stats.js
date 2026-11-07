@@ -11,8 +11,8 @@ const GROUPS = {
   Arms: ['Biceps', 'Triceps'], Legs: ['Quads', 'Hamstrings', 'Glutes', 'Calves'],
 };
 const AXES = ['Back', 'Chest', 'Core', 'Shoulders', 'Arms', 'Legs']; // hexagon, clockwise from top-left
-const LIFTS = [['bench', 'Bench Press'], ['legpress', 'Leg Press'], ['hipthrust', 'Hip Thrust'],
-  ['row', 'Barbell Row'], ['ohp', 'Overhead Press'], ['pullup', 'Pull-up (added kg)']];
+// Main lifts for strength trends come from the plan (each mode has its own).
+const lifts = () => plan.lifts || [];
 
 const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0, barSel: null, daySel: null };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
@@ -444,7 +444,7 @@ function spark(points) {
 }
 
 function strength(list) {
-  const rows = LIFTS.map(([key, name]) => {
+  const rows = lifts().map(([key, name]) => {
     const pts = [];
     for (const w of list) {
       let best = 0;

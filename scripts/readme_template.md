@@ -34,12 +34,13 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
 - **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
-- **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
+- **Girl mode:** a toggle at the top of Settings switches the whole app to the **12-month sculpt plan** (3 days a week, about 60 min: glutes, shape, posture and strength, in four 13-week phases with an easy test week at the end of each) and a violet theme. Each mode keeps its own progress, history and colors on the phone, and switching never deletes anything.
+- **Settings:** girl mode, a color theme (10 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
 - **Works offline and stays private:** after the first open with internet, everything (workouts, timers, weight logging, stats, history) runs with no connection, and Settings → Offline shows "Ready to use offline". Your data is stored only on your phone. Use Settings → Export for a backup.
 
 **Install on iPhone:** open the site in Safari → **Share** → **Add to Home Screen**.
 
-The app has no build step, and Vercel serves the `web/` folder as-is (see [`vercel.json`](vercel.json)). To change the plan, edit [`scripts/generate.py`](scripts/generate.py), then run `python3 scripts/generate.py`. That rewrites this README, the month files, the tracker and `web/plan.json` together.
+The app has no build step, and Vercel serves the `web/` folder as-is (see [`vercel.json`](vercel.json)). To change the plan, edit [`scripts/generate.py`](scripts/generate.py) (or [`scripts/sculpt.py`](scripts/sculpt.py) for girl mode), then run `python3 scripts/generate.py`. That rewrites this README, the month files, the tracker, `web/plan.json` and `web/plan-girl.json` together.
 
 ## Weekly schedule
 
