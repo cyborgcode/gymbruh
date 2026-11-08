@@ -1,25 +1,8 @@
 // App state (saved to localStorage on this device) and the static plan.
 import { e1rm } from './util.js';
 
-// Two modes, each with its own plan, data and colors: the main plan, and
-// girl mode (the 12-month sculpt plan, violet by default). The mode is
-// remembered on this phone; switching reloads the app into the other one.
-const MODE_KEY = 'gymbruh:mode';
-export const mode = (() => {
-  try { return localStorage.getItem(MODE_KEY) === 'girl' ? 'girl' : 'main'; } catch (e) { return 'main'; }
-})();
-const GIRL = mode === 'girl';
-const KEY = GIRL ? 'gymbruh:girl:v1' : 'gymbruh:v1';
-const PLAN_URL = GIRL ? '/plan-girl.json' : '/plan.json';
+const KEY = 'gymbruh:v1';
 export const BACKUP_KEY = 'gymbruh:before-sample';
-
-export function setMode(next) {
-  try {
-    localStorage.setItem(MODE_KEY, next);
-    sessionStorage.setItem('gymbruh:switched', next);
-  } catch (e) { return; }
-  location.reload();
-}
 const blank = () => ({
   v: 1,
   status: {},    // sessionId -> 'done' | 'skipped'
@@ -28,7 +11,7 @@ const blank = () => ({
   timer: null,   // running rest timer
   hideInstall: false,
   sample: false, // true while sample data is loaded
-  theme: { accent: GIRL ? 'violet' : 'blue', bg: 'dark' },
+  theme: { accent: 'blue', bg: 'dark' },
 });
 
 export const state = (() => {
@@ -58,8 +41,8 @@ export function replaceState(next) {
 export const plan = { muscles: [], months: [], exercises: {}, sessions: [], byId: {} };
 
 export async function loadPlan() {
-  const res = await fetch(PLAN_URL);
-  if (!res.ok) throw new Error(`${PLAN_URL} ${res.status}`);
+  const res = await fetch('/plan.json');
+  if (!res.ok) throw new Error(`plan.json ${res.status}`);
   const data = await res.json();
   Object.assign(plan, data);
   data.sessions.forEach((s, i) => { s.idx = i; plan.byId[s.id] = s; });

@@ -98,7 +98,7 @@ small { display: block; color: var(--muted); font-size: 13px; }
 .pill .ic { width: 16px; height: 16px; }
 .pill.ok { background: var(--accent-soft); color: var(--accent); }
 .badge { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; background: var(--card2); color: var(--muted); vertical-align: middle; }
-.badge.deload, .badge.flex, .badge.easy { background: rgba(191, 90, 242, 0.16); color: #d68cff; }
+.badge.deload, .badge.flex { background: rgba(191, 90, 242, 0.16); color: #d68cff; }
 .badge.test, .badge.final { background: rgba(255, 159, 10, 0.15); color: var(--warn); }
 .note { background: var(--card); border-radius: 14px; padding: 12px 14px; font-size: 14px; color: #d4d4d8; margin: 0 0 12px; }
 details.note summary { font-weight: 600; color: var(--text); list-style: none; cursor: pointer; }
@@ -643,12 +643,3 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .ssgroup::before { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--warn); }
 .ssgroup.done .ss-head small { opacity: 0.45; }
 .ssgroup.done .ss-title { color: rgba(255, 159, 10, 0.55); }
-
-/* ---------- settings: girl mode switch */
-.mode-switch { display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; padding: 12px 14px; border-radius: 14px; background: var(--card2); }
-.mode-switch b { display: block; font-size: 15px; }
-.mode-switch small { margin-top: 2px; }
-.switch { flex: none; width: 51px; height: 31px; border-radius: 16px; background: rgba(120, 120, 128, 0.36); position: relative; transition: background 0.2s; }
-.switch i { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); transition: transform 0.2s; }
-.mode-switch.on .switch { background: var(--accent); }
-.mode-switch.on .switch i { transform: translateX(20px); }

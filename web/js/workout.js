@@ -8,12 +8,12 @@ import { startTimer, clearTimer } from './timer.js';
 import { weekStrip, openWorkout } from './stats.js';
 import { openSettings, sampleBanner } from './settings.js';
 
-const KIND = { deload: 'Deload', test: 'Test week', final: 'Final assessment', flex: 'Flex week', easy: 'Easy week' };
+const KIND = { deload: 'Deload', test: 'Test week', final: 'Final assessment', flex: 'Flex week' };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const kindBadge = (k) => (KIND[k] ? `<span class="badge ${k}">${KIND[k]}</span>` : '');
 const tagCls = (x) => (x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : '');
 const restLabel = (sec) => (sec < 60 ? `${sec}s` : clock(sec));
-const warmup = () => esc(plan.warmup || '');
+const WARMUP = '5 min easy bike or rower, a few mobility drills, then ramp-up sets before each main lift.';
 
 // ------------------------------------------------------------------ Today
 export function renderToday(root) {
@@ -95,7 +95,6 @@ export function openTerms() {
       <dt>Top set · Back-off</dt><dd>One heavy set, then lighter sets for volume.</dd>
       <dt>Deload</dt><dd>A planned easy week so you recover and come back stronger.</dd>
       <dt>Ramp-up sets</dt><dd>Lighter sets before your working sets, for example 50% ×8 → 70% ×5 → 85% ×3 of today's weight.</dd>
-      ${(plan.terms || []).map(([term, text]) => `<dt>${esc(term)}</dt><dd>${esc(text)}</dd>`).join('')}
     </dl>`);
 }
 
@@ -105,7 +104,7 @@ function previewList(s) {
       <div class="card-title row-between"><span>What's in it for me</span><button class="link sm" data-act="terms">Terms</button></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
       <ol class="preview">
-        <li><span class="tag c">W</span><div><b>Warm-up · 10 min</b><small>${warmup()}</small></div></li>
+        <li><span class="tag c">W</span><div><b>Warm-up · 10 min</b><small>${WARMUP}</small></div></li>
         ${s.ex.map((x) => `<li><span class="tag ${tagCls(x)}">${x.label}</span><div><b>${esc(info(x).name)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)} · rest ${restLabel(x.rest)}</small></div></li>`).join('')}
       </ol>
     </section>`;
@@ -122,7 +121,7 @@ function doneCard(w) {
 
 function planDoneCard() {
   return `<section class="card hero"><div class="hero-title">Plan complete</div>
-    <p class="hint">${esc(plan.doneText || 'All 52 weeks are done.')}</p></section>`;
+    <p class="hint">All 52 weeks are done. Check your stats, then start Year 2 from Month 4 with new numbers (Settings → Start at week 14).</p></section>`;
 }
 
 function installBanner() {
@@ -201,7 +200,7 @@ function renderWorkout(root) {
       <div class="row"><button class="btn sm primary" data-act="finish">Finish it</button><button class="btn sm" data-act="discard">Discard</button></div></div>` : ''}
     ${s.note ? `<p class="note">${kindBadge(s.kind)} ${esc(s.note)}</p>` : ''}
     ${s.technique && !s.technique.startsWith('None') ? `<details class="note"><summary>This month: ${esc(m.title)}</summary>${esc(s.technique)}</details>` : ''}
-    <details class="note warm"><summary>Warm-up · 10 min</summary>${warmup()} <button class="link sm" data-act="terms">What are ramp-up sets?</button></details>
+    <details class="note warm"><summary>Warm-up · 10 min</summary>${WARMUP} <button class="link sm" data-act="terms">What are ramp-up sets?</button></details>
     ${showTip ? `<div class="tip"><p>Tap ${ICON.timer} after each set: it starts your rest and ticks the set off. Tap a card to log a weight (optional).
       <button class="link sm" data-act="terms">What do RIR &amp; % mean?</button></p>
       <button class="icon-btn sm" data-act="hide-tip" aria-label="Hide tip">${ICON.x}</button></div>` : ''}

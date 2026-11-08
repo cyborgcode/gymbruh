@@ -2,8 +2,7 @@
 """Single source of truth for the plan.
 
 Writes the month-by-month markdown, the README, the tracker CSV and the
-web app's workout data (web/plan.json, plus web/plan-girl.json for girl
-mode from scripts/sculpt.py). Run from anywhere:
+web app's workout data (web/plan.json). Run from anywhere:
 
     python3 scripts/generate.py
 """
@@ -12,9 +11,6 @@ import json
 import re
 import sys
 from pathlib import Path
-
-sys.dont_write_bytecode = True  # no __pycache__ next to the scripts
-import sculpt  # noqa: E402
 
 OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parent.parent
 
@@ -785,15 +781,7 @@ def app_plan():
     months = [dict(n=m["n"], title=m["title"], quarter=m["q"], weeks=list(WEEK[m["n"]]), goal=m["goal"],
                    technique=m["technique"], nutrition=m["nutrition"], base=m["base"],
                    planned={k: round(v, 1) for k, v in weekly_volume(m).items()}) for m in MONTHS]
-    return dict(
-        name="12-month strength & aesthetics plan",
-        warmup="5 min easy bike or rower, a few mobility drills, then ramp-up sets before each main lift.",
-        lifts=[["bench", "Bench Press"], ["legpress", "Leg Press"], ["hipthrust", "Hip Thrust"],
-               ["row", "Barbell Row"], ["ohp", "Overhead Press"], ["pullup", "Pull-up (added kg)"]],
-        terms=[],
-        doneText="All 52 weeks are done. Check your stats, then start Year 2 from Month 4 with new numbers "
-                 "(Settings → Start the plan at week 14).",
-        muscles=MUSCLES, months=months, exercises=EXERCISES, sessions=sessions)
+    return dict(muscles=MUSCLES, months=months, exercises=EXERCISES, sessions=sessions)
 
 
 def main():
@@ -806,9 +794,6 @@ def main():
     (OUT / "web").mkdir(exist_ok=True)
     (OUT / "web" / "plan.json").write_text(
         json.dumps(app_plan(), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
-    # Girl mode: the 12-Month Sculpt plan (scripts/sculpt.py).
-    (OUT / "web" / "plan-girl.json").write_text(
-        json.dumps(sculpt.build(), ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -136,14 +136,6 @@ async function boot() {
   route();
   tick();
   setInterval(() => { tick(); updateElapsed(); }, 500);
-  // Just switched modes in Settings: say so.
-  try {
-    const switched = sessionStorage.getItem('gymbruh:switched');
-    if (switched) {
-      sessionStorage.removeItem('gymbruh:switched');
-      toast(switched === 'girl' ? 'Girl mode on' : 'Girl mode off');
-    }
-  } catch (e) { /* ignore */ }
 }
 
 boot();
