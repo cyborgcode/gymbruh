@@ -1,15 +1,15 @@
 # GymBruh: 12-Month Strength & Aesthetics Plan
 
-A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **no squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
+A 52-week gym program: **3 days a week** (Push / Pull / Legs, with every muscle trained twice a week), **no cardio**, **no barbell squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
 
 **Live app: [gymbruh-orcin.vercel.app](https://gymbruh-orcin.vercel.app)** · an offline iPhone web app that opens on today's workout, with rest timers, optional weight logging and progress stats. To install it, open the link in Safari, then tap **Share** → **Add to Home Screen**.
 
 | Your requirement | How the plan meets it |
 |---|---|
 | No cardio | Sessions start with a 10-min warm-up instead of a cardio block, so you lift fresh and sessions take about 1 h to 1 h 30. Walking 7-10k steps a day covers heart health and helps with fat loss. |
-| No squats | Quads are trained with the leg press, lunges, step-ups and leg extensions. |
+| No barbell squats | There's never a bar on your back. Quads and glutes are trained with the leg press, the hack squat machine, dumbbell lunges and split squats, and leg extensions. |
 | No deadlifts | The posterior chain is trained with hip thrusts, back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
-| 3 days per week | **Push / Pull / Legs**: Push (chest, shoulders, triceps), Pull (back, rear delts, biceps), Legs (quads, glutes, hamstrings, calves). Side delts get work on Push and Pull days, and abs every session. |
+| 3 days per week | **Push / Pull / Legs, with every muscle trained twice a week.** Each day has its main focus, then a short light block for the muscles you train hard next session: Push + light Pull, Pull + light Legs, Legs + light Push. Abs every session. |
 | Works your abs | 2 ab exercises every session (≈ 18 hard sets a week). They progress from knee raises and planks to dragon flags, ab wheel from the feet and L-sits. |
 | Strength | Six tracked main lifts, percentage-based periodization, two test weeks and a final assessment. |
 | Aesthetics | V-taper focus (upper chest, side delts, lats, arms, abs) with balanced legs, a specialization month and a definition phase. |
@@ -27,7 +27,7 @@ A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **
 
 The plan also runs as a web app (in [`web/`](web/)) that you install on your iPhone's home screen.
 
-- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done. The pinned header shows how much is ticked off, and the next exercise is marked **Up next**.
+- **Today:** opens on your next workout as a compact list. Tap **Start**, follow it, then tap **Finish**, which marks every exercise done. The pinned header shows how much is ticked off, the next exercise is marked **Up next**, and each day's light block has its own labelled card.
 - **Weights (optional):** tap an exercise to open it and set the weight with **− / +** (2.5 kg steps), or tap the number to type. One weight covers all sets, and **Last 60 kg** / **Suggested** fill it in with one tap. Use **Different weight per set** when you need it (top-set weeks open that way automatically). Bodyweight exercises have nothing to log. Tap **Close** when you're done.
 - **Rest timer:** each exercise has a ⏱ button with its suggested rest time. Tap it after each set: it ticks the set off (the dots under the button) and a popup counts down, beeps, and closes by itself. −15 / +15 adjust it, and **Hide** shrinks it to a small pill so you can keep using the workout. The screen stays on while it runs (where iOS allows it).
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
@@ -45,7 +45,7 @@ The app has no build step, and Vercel serves the `web/` folder as-is (see [`verc
 
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
 |---|---|---|---|---|---|---|
-| **Push** (A) | Rest | **Pull** (B) | Rest | **Legs** (C) | Rest | Rest |
+| **Push** + light Pull (A) | Rest | **Pull** + light Legs (B) | Rest | **Legs** + light Push (C) | Rest | Rest |
 
 Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between sessions when you can, and never train 3 days in a row. On rest days, walk 7-10k steps.
 
@@ -54,11 +54,26 @@ Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between
 | Block | Time | What you do |
 |---|---|---|
 | 1. Warm-up | 10 min | Easy bike or rower, mobility, ramp-up sets ([details](#warm-up-10-min)) |
-| 2. Main lifts | 20-30 min | 2 heavy compound lifts |
-| 3. Accessories | 20-30 min | Supersets, to save time |
-| 4. Abs | 8-10 min | 2 exercises, done as a superset |
+| 2. Main lifts | 20-30 min | 2 heavy compound lifts for the day's focus |
+| 3. Accessories | 12-18 min | For the day's focus: one compound move, then a superset |
+| 4. Light block | 8-12 min | A superset for the muscles you train hard next session: at most 3 sets, 2-3 reps left in the tank |
+| 5. Abs | 8-10 min | 2 exercises, done as a superset |
 
-**Total: about 1 h to 1 h 30** (leg day in the strength months is the longest).
+**Total: about 1 h to 1 h 25** (the strength months are the longest).
+
+## Why every muscle is trained twice a week
+
+A plain Push / Pull / Legs week trains each muscle once. This plan keeps the three days and adds a **light block** to each one, so every muscle gets a heavy day and a light day:
+
+| Day | Heavy (main focus) | Light block |
+|---|---|---|
+| A · Push | Chest, shoulders, triceps | Back, biceps |
+| B · Pull | Back, rear delts, biceps | Quads, hamstrings, glutes, calves |
+| C · Legs | Quads, glutes, hamstrings, calves | Chest, side delts, triceps |
+
+- **Better sets.** Past about 6-8 hard sets for one muscle in a session, extra sets add less and less. Spreading the week's sets over two days keeps more of them useful, with the same weekly total and the same session length.
+- **More practice.** Strength is also a skill. Two exposures a week build it faster than one.
+- **Fresh for the heavy day.** The light block is at most 3 sets per exercise at RIR 2-3 (RIR 3 in Month 1) with no finishers, and it comes at least two days before that muscle's heavy day.
 
 ---
 
@@ -94,14 +109,14 @@ The six main lifts stay the same all year so you can track your strength. Access
 |---|---|---|
 | Barbell Bench Press | A · Push | Chest size and upper-body pressing strength |
 | Standing Overhead Press | A · Push | Shoulder size and pressing strength |
+| Weighted Pull-up | B · Pull | Lat width, the core of the V-taper. It goes first on Pull day, while you're fresh. |
 | Barbell Row | B · Pull | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
-| Weighted Pull-up | B · Pull | Lat width, the core of the V-taper |
-| Leg Press | C · Legs | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
+| Leg Press | C · Legs | Heavy quad and glute work with no barbell on your spine. It replaces the barbell squat. |
 | Barbell Hip Thrust | C · Legs | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
 
 ### Not in this plan (by request)
 
-- **Squats, all variations:** back, front, goblet, hack, Smith, belt, box, split / Bulgarian split, pistol, sissy.
+- **Barbell squats:** back, front, box, Zercher and overhead squats, and Smith-machine squats. Squat movements with no bar on your back are in the plan: the hack squat machine, dumbbell lunges and Bulgarian split squats.
 - **Deadlifts, all variations:** conventional, sumo, Romanian, stiff-leg, trap-bar, single-leg, rack pulls. Good mornings are out too.
 
 ---
@@ -114,6 +129,7 @@ The six main lifts stay the same all year so you can track your strength. Access
 | **RPE** | Rate of perceived exertion, where RPE = 10 − RIR. |
 | **1RM / e1RM** | One-rep max / *estimated* one-rep max (from the formula below) |
 | **Superset** | Exercises with the same number (4a/4b) are done back to back, then you rest. |
+| **Light block** | Superset 5 of every day: a few easier sets (RIR 2-3, no finishers) for the muscles you train hard next session, so every muscle is worked twice a week. |
 | **Drop set** | Finish the set, drop the weight about 25%, and keep going to RIR 0-1. |
 | **Rest-pause** | Finish the set, rest 15 s, rep out again, and repeat once more. |
 | **Myo-reps** | One set to RIR 1, then 3-4 mini-sets of 3-5 reps with 15 s rest between them. |
@@ -214,7 +230,7 @@ Every session has **2 ab exercises done as a superset**, about **6 hard sets per
 
 ## Weekly volume per muscle
 
-Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for. With Push / Pull / Legs, each muscle gets its week's sets in one focused session (side delts and abs are spread over several days).
+Hard sets per muscle in a normal (non-deload) week of each month. Secondary muscles count as half a set (for example, one bench set = 1 chest + 0.5 triceps + 0.5 shoulders). About **10-20 weekly sets** per muscle is the usual target for growth. Shoulders and abs sit at the top of that range on purpose, for the V-taper and the abs you asked for. Each muscle gets most of its weekly sets on its own day and the rest in a light block on another day, so it's trained twice a week (shoulders and abs three times).
 
 {{VOLUME}}
 
@@ -296,19 +312,21 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 - **Missed 1 session:** do it on your next training day and keep the Push → Pull → Legs order.
 - **Missed a full week:** repeat the last week you completed.
 - **Sick for 2+ weeks:** take the next flex week early, then restart from the last week you completed with loads 10% lighter.
-- **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the main lifts or the abs: those are the core of what you asked for.
+- **Short on time:** drop superset 5 (the light block). Never drop the main lifts or the abs: those are the core of what you asked for.
 
-## Substitutions (still no squats or deadlifts)
+## Substitutions (still no barbell squats or deadlifts)
 
 | If you can't do… | Use instead |
 |---|---|
 | Leg Press | Single-leg leg press · dumbbell reverse lunge · high-box step-up |
+| Hack Squat | Pendulum or belt-squat machine · heels-elevated goblet squat · single-leg leg press |
+| Bulgarian Split Squat | Dumbbell reverse lunge · high-box step-up |
 | Barbell Hip Thrust | Hip-thrust machine · Smith machine hip thrust · single-leg dumbbell hip thrust · glute bridge |
 | Barbell Row | Chest-supported T-bar row · seal row · machine row |
 | Standing Overhead Press | Seated dumbbell shoulder press · machine shoulder press |
 | Pull-up | Assisted pull-up · band-assisted pull-up · lat pulldown |
 | Bench Press | Dumbbell bench press · machine chest press |
-| Dips | Machine dip · decline dumbbell press · close-grip push-up |
+| Seated Cable Row | Machine row · chest-supported dumbbell row |
 | Leg curls | Assisted Nordic curl · Swiss-ball leg curl · slider leg curl |
 | 45° Back Extension | Reverse hyperextension · cable pull-through |
 | Ab wheel | Barbell rollout · stability-ball rollout · TRX fallout |

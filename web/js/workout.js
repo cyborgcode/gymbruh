@@ -11,7 +11,7 @@ import { openSettings, sampleBanner } from './settings.js';
 const KIND = { deload: 'Deload', test: 'Test week', final: 'Final assessment', flex: 'Flex week' };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const kindBadge = (k) => (KIND[k] ? `<span class="badge ${k}">${KIND[k]}</span>` : '');
-const tagCls = (x) => (x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : '');
+const tagCls = (x) => (x.slot === 'M' ? 'm' : x.slot === 'X' ? 'x' : x.light ? 'c' : '');
 const restLabel = (sec) => (sec < 60 ? `${sec}s` : clock(sec));
 const WARMUP = '5 min easy bike or rower, a few mobility drills, then ramp-up sets before each main lift.';
 
@@ -49,6 +49,15 @@ export function renderToday(root) {
   };
 }
 
+// What a session trains: its heavy focus and its light block.
+function focusLines(s) {
+  if (!s.focus) return '';
+  return `<div class="focus">
+      <div><span class="fl heavy">Heavy</span><span>${esc(s.focus)}</span></div>
+      <div><span class="fl">Light</span><span>${esc(s.lightFocus)}</span></div>
+    </div>`;
+}
+
 function hero(s, doneToday, last) {
   const m = monthOf(s);
   let hint = '';
@@ -56,9 +65,9 @@ function hero(s, doneToday, last) {
   else if (last && daysBetween(last.start, new Date()) === 1) hint = 'You trained yesterday. A rest day between sessions is ideal, but go for it if you feel fresh.';
   return `
     <section class="card hero">
-      <div class="hero-top"><span class="pill">Month ${s.month} · ${esc(m.title)}</span>${kindBadge(s.kind)}</div>
-      <div class="hero-title">${doneToday ? '<span class="muted">Next up · </span>' : ''}${esc(s.title)}</div>
-      <div class="hero-sub">${esc(s.dayName)}</div>
+      <div class="hero-top"><span class="pill">Week ${s.week}</span><span class="pill">Month ${s.month} · ${esc(m.title)}</span>${kindBadge(s.kind)}</div>
+      <div class="hero-title">${doneToday ? '<span class="muted">Next up · </span>' : ''}${esc(s.dayName)}</div>
+      ${focusLines(s)}
       <div class="chips"><span>≈ ${dur(s.est * 60)}</span><span>${s.ex.length} exercises</span><span>10 min warm-up</span></div>
       ${hint ? `<p class="hint">${hint}</p>` : ''}
       ${doneToday
@@ -92,21 +101,40 @@ export function openTerms() {
       <dt>%</dt><dd>Share of your one-rep max. <b>≈ 65%</b> is only a guide: pick a weight that matches the RIR.</dd>
       <dt>e1RM</dt><dd>Your estimated one-rep max, worked out from the weights you log. It powers the suggested weights.</dd>
       <dt>Superset</dt><dd>Do one set of each exercise back to back, then rest.</dd>
+      <dt>Light block</dt><dd>The last superset before abs. It works the muscles you train hard next session with a few easier sets (stop 2-3 reps early), so every muscle is trained twice a week.</dd>
       <dt>Top set · Back-off</dt><dd>One heavy set, then lighter sets for volume.</dd>
       <dt>Deload</dt><dd>A planned easy week so you recover and come back stronger.</dd>
       <dt>Ramp-up sets</dt><dd>Lighter sets before your working sets, for example 50% ×8 → 70% ×5 → 85% ×3 of today's weight.</dd>
     </dl>`);
 }
 
+// A session in blocks, in the order you do them.
+const BLOCKS = {
+  main: ['Main lifts', ''],
+  acc: ['Accessories', ''],
+  light: ['Light block', "next session's muscles, kept easy"],
+  abs: ['Abs', ''],
+};
+const blockOf = (x) => (x.slot === 'M' ? 'main' : x.slot === 'X' ? 'abs' : x.light ? 'light' : 'acc');
+
 function previewList(s) {
+  const groups = [];
+  for (const x of s.ex) {
+    const key = blockOf(x);
+    if (!groups.length || groups.at(-1).key !== key) groups.push({ key, ex: [] });
+    groups.at(-1).ex.push(x);
+  }
+  const row = (x) => `<li><span class="tag ${tagCls(x)}">${x.label}</span><div><b>${esc(info(x).name)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)} · rest ${restLabel(x.rest)}</small></div></li>`;
   return `
     <section class="card">
       <div class="card-title row-between"><span>What's in it for me</span><button class="link sm" data-act="terms">Terms</button></div>
       ${s.note ? `<p class="note">${esc(s.note)}</p>` : ''}
-      <ol class="preview">
-        <li><span class="tag c">W</span><div><b>Warm-up · 10 min</b><small>${WARMUP}</small></div></li>
-        ${s.ex.map((x) => `<li><span class="tag ${tagCls(x)}">${x.label}</span><div><b>${esc(info(x).name)}${x.spec ? ' <span class="star">★</span>' : ''}</b><small>${esc(x.rx)} · rest ${restLabel(x.rest)}</small></div></li>`).join('')}
-      </ol>
+      <div class="preview">
+        <ol class="pv-list"><li><span class="tag c">W</span><div><b>Warm-up · 10 min</b><small>${WARMUP}</small></div></li></ol>
+        ${groups.map((g) => `
+        <div class="pv-head">${BLOCKS[g.key][0]}${BLOCKS[g.key][1] ? `<small>${BLOCKS[g.key][1]}</small>` : ''}</div>
+        <ol class="pv-list">${g.ex.map(row).join('')}</ol>`).join('')}
+      </div>
     </section>`;
 }
 
@@ -114,7 +142,7 @@ function doneCard(w) {
   return `
     <button class="card done-card" data-act="open-workout" data-wid="${w.id}">
       <div class="done-icon">${ICON.check}</div>
-      <div class="grow"><b>Done today · ${esc(w.title)}</b><small>${dur(w.dur)} · ${w.ex.length} exercises${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
+      <div class="grow"><b>Done today · ${esc(w.dayName)}</b><small>${dur(w.dur)} · ${w.ex.length} exercises${w.vol ? ` · ${kg(w.vol)} kg` : ''}</small></div>
       ${ICON.chevR}
     </button>`;
 }
@@ -188,7 +216,7 @@ function renderWorkout(root) {
 
   root.innerHTML = `
     <header class="top sticky wk-head">
-      <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2 clamp2">${esc(s.dayName)}</h1></div>
+      <div class="grow"><div class="eyebrow">Week ${s.week} · Month ${s.month}</div><h1 class="h2 clamp2">${esc(s.dayName)}</h1></div>
       <div class="wk-side">
         <div class="elapsed" id="elapsed">${clock((Date.now() - a.start) / 1000)}</div>
         <small class="wk-count"></small>
@@ -302,10 +330,13 @@ function chips(rx) {
 function supersetHead(s, members) {
   const rounds = Math.max(...members.map((y) => y.sets.length));
   const idx = members.map((y) => s.ex.indexOf(y));
+  const kind = blockOf(members[0]);
+  const title = kind === 'light' ? 'Light block' : kind === 'abs' ? 'Abs' : 'Superset';
+  const sub = kind === 'light' ? "Next session's muscles, kept easy" : 'One set of each, then rest';
   return `
-    <div class="ssgroup" data-members="${idx.join(',')}">
+    <div class="ssgroup ${kind}" data-members="${idx.join(',')}">
       <div class="ss-head">
-        <div class="grow"><div class="ss-title">Superset · ${rounds} rounds ${stateTags}</div><small>One set of each, then rest</small></div>
+        <div class="grow"><div class="ss-title">${title} · ${rounds} rounds ${stateTags}</div><small>${sub}</small></div>
         ${timerButton(members[0].rest, idx.join(','), rounds)}
       </div>`;
 }
@@ -645,7 +676,7 @@ function saveWorkout(root, s, sum) {
   }).filter(Boolean);
   const w = {
     id: Date.now().toString(36),
-    sid: s.id, title: s.title, dayName: s.dayName, day: s.day, week: s.week, month: s.month, kind: s.kind,
+    sid: s.id, title: s.title, dayName: s.dayName, short: s.short, day: s.day, week: s.week, month: s.month, kind: s.kind,
     start: a.start, end: a.start + sum.dur * 1000, dur: sum.dur,
     ex: sum.ex, sets: sum.sets, vol: sum.vol, reps: sum.reps,
   };
@@ -660,7 +691,7 @@ function saveWorkout(root, s, sum) {
     <section class="complete">
       <div class="big-check">${ICON.check}</div>
       <h1>Workout complete</h1>
-      <p class="muted">${esc(s.title)} · ${esc(s.dayName)}</p>
+      <p class="muted">${esc(s.dayName)} · Week ${s.week}</p>
       <div class="stat-grid">
         ${statBox('Duration', dur(w.dur))}${statBox('Exercises', s.ex.length)}
         ${statBox('Sets', w.sets)}${statBox('Volume', w.vol ? `${kg(w.vol)} kg` : '–')}
@@ -672,7 +703,7 @@ function saveWorkout(root, s, sum) {
           : d > 0 ? `<span class="up">↑ ${fmt1(d)} kg</span>` : d < 0 ? `<span class="down">↓ ${fmt1(-d)} kg</span>` : '<span class="muted">same as last</span>';
         return `<div class="chg"><span>${esc(c.n)}</span><b>${fmt1(c.top)} kg</b>${tag}</div>`;
       }).join('')}</div>` : ''}
-      ${next ? `<p class="muted">Next up: <b>${esc(next.title)}</b> · ${esc(next.dayName)}</p>` : ''}
+      ${next ? `<p class="muted">Next up: <b>${esc(next.dayName)}</b> · Week ${next.week}</p>` : ''}
       <a class="btn primary big" href="#/stats">See your stats</a>
       <button class="btn ghost" data-act="home">Back to Today</button>
     </section>`;
@@ -728,7 +759,7 @@ function monthBlock(m, open, next) {
       ${weeks.map((wk) => {
         const list = sess.filter((s) => s.week === wk);
         return `<div class="wk-row"><span class="wk-n">Week ${wk} ${kindBadge(list[0].kind)}</span><div class="wk-days">${list
-          .map((s) => `<button class="dchip ${state.status[s.id] || ''} ${next && next.id === s.id ? 'next' : ''}" data-sid="${s.id}" aria-label="${esc(s.title)}">${s.day}</button>`)
+          .map((s) => `<button class="dchip ${state.status[s.id] || ''} ${next && next.id === s.id ? 'next' : ''}" data-sid="${s.id}" aria-label="${esc(s.title)}">${esc(s.short || s.day)}</button>`)
           .join('')}</div></div>`;
       }).join('')}
     </details>`;
@@ -748,7 +779,7 @@ export function renderSession(root, id) {
   root.innerHTML = `
     <header class="top">
       <button class="icon-btn" data-act="back" aria-label="Back">${ICON.back}</button>
-      <div class="grow"><div class="eyebrow">${esc(s.title)} · Month ${s.month}</div><h1 class="h2">${esc(s.dayName)}</h1></div>
+      <div class="grow"><div class="eyebrow">Week ${s.week} · Month ${s.month}</div><h1 class="h2">${esc(s.dayName)}</h1></div>
     </header>
     <div class="row-wrap">${status}${kindBadge(s.kind)}<span class="pill">≈ ${dur(s.est * 60)}</span></div>
     ${previewList(s)}

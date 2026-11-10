@@ -141,7 +141,6 @@ details.note[open] summary { margin-bottom: 6px; }
 
 .hero-top { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
 .hero-title { font-size: 28px; font-weight: 800; letter-spacing: -0.02em; }
-.hero-sub { font-size: 17px; color: var(--muted); margin-top: 2px; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
 .chips span { background: var(--card2); border-radius: 10px; padding: 6px 10px; font-size: 13px; font-weight: 600; }
 .install { display: flex; align-items: center; gap: 12px; background: var(--accent-soft); color: var(--accent-2); }
@@ -150,10 +149,10 @@ details.note[open] summary { margin-bottom: 6px; }
 .done-card b { color: var(--accent); }
 .done-icon { width: 40px; height: 40px; border-radius: 50%; background: var(--accent); color: var(--accent-ink); display: grid; place-items: center; flex: none; }
 
-.preview { list-style: none; margin: 0; padding: 0; }
-.preview li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--line); }
-.preview li:first-child { border-top: 0; padding-top: 0; }
-.preview b { font-weight: 600; font-size: 15px; }
+.pv-list { list-style: none; margin: 0; padding: 0; }
+.pv-list li { display: flex; gap: 12px; align-items: flex-start; padding: 10px 0; border-top: 1px solid var(--line); }
+.pv-list li:first-child { border-top: 0; padding-top: 0; }
+.pv-list b { font-weight: 600; font-size: 15px; }
 .tag { flex: none; min-width: 32px; height: 28px; padding: 0 6px; border-radius: 9px; background: var(--card2); display: grid; place-items: center; font-size: 13px; font-weight: 700; color: var(--muted); }
 .tag.m { background: var(--accent-soft); color: var(--accent); }
 .tag.x { background: rgba(255, 159, 10, 0.14); color: var(--warn); }
@@ -405,7 +404,7 @@ svg text { font-family: inherit; }
 .cal-foot b { color: var(--text); font-size: 15px; }
 .list-head { display: flex; justify-content: space-between; align-items: baseline; margin: 18px 4px 10px; font-size: 17px; }
 .wk-title { display: flex; flex-direction: column; margin-bottom: 12px; }
-.wk-title b { font-size: 18px; text-transform: uppercase; letter-spacing: 0.01em; }
+.wk-title b { font-size: 18px; }
 .wk-title span { color: var(--muted); font-size: 14px; }
 .wk-stats { display: grid; grid-template-columns: repeat(3, 1fr); }
 .wk-stats > div { padding: 0 10px; border-left: 1px solid var(--line); }
@@ -643,3 +642,22 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .ssgroup::before { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--warn); }
 .ssgroup.done .ss-head small { opacity: 0.45; }
 .ssgroup.done .ss-title { color: rgba(255, 159, 10, 0.55); }
+
+/* ---------- Push / Pull / Legs naming, session blocks, light block */
+/* What a session trains (Today): heavy focus, then the light block. */
+.focus { display: grid; gap: 7px; margin-top: 10px; font-size: 15px; color: var(--muted); }
+.focus > div { display: flex; align-items: baseline; gap: 9px; }
+.fl { flex: none; min-width: 50px; text-align: center; padding: 3px 0; border-radius: 7px; background: rgba(191, 90, 242, 0.16); color: #d68cff; font-size: 11px; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+.fl.heavy { background: var(--accent-soft); color: var(--accent-2); }
+/* Session preview: one short list per block. */
+.pv-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; margin: 16px 0 10px; padding-top: 14px; border-top: 1px solid var(--line); font-size: 11px; font-weight: 800; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
+.pv-head small { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; }
+/* Plan: day chips read Push / Pull / Legs. */
+.wk-days .dchip { width: 50px; font-size: 13px; }
+.wk-n { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 6px; }
+.wk-n .badge { margin-left: 0; }
+/* Light block: same purple as the other "easier" things (deload, flex week). */
+.ssgroup.light::before { background: var(--purple); }
+.ssgroup.light .ss-title { color: #d68cff; }
+.ssgroup.light .xtag { background: rgba(191, 90, 242, 0.16); color: #d68cff; }
+.ssgroup.light.done .ss-title { color: rgba(214, 140, 255, 0.55); }
