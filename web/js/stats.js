@@ -44,10 +44,6 @@ export function weekStrip(asCard = true) {
 }
 
 // ------------------------------------------------------------------ History
-// "Push" / "Pull" / "Legs" for a saved workout (older ones only have a day letter).
-const shortOf = (w) => w.short || (/^(Push|Pull|Legs)\b/.exec(w.dayName || '') || [])[1] || w.day || '';
-const weekOf = (w) => (w.week ? `Week ${w.week}` : w.title || '');
-
 export function renderHistory(root) {
   const list = workouts();
   const now = new Date();
@@ -63,7 +59,7 @@ export function renderHistory(root) {
     const k = dkey(new Date(cm.getFullYear(), cm.getMonth(), d));
     const ws = byDay[k];
     cells += `<button class="cday ${ws ? 'has' : ''} ${k === dkey(now) ? 'today' : ''} ${k === ui.selDay ? 'sel' : ''}" data-day="${k}">
-      <b>${d}</b><small>${ws ? (ws.length > 1 ? `${ws.length}×` : esc(shortOf(ws[0]))) : ''}</small></button>`;
+      <b>${d}</b><small>${ws ? ws.map((w) => w.day).join('') : ''}</small></button>`;
   }
   const monthList = list.filter((w) => { const d = new Date(w.start); return d.getMonth() === cm.getMonth() && d.getFullYear() === cm.getFullYear(); });
   const shown = ui.selDay ? byDay[ui.selDay] || [] : monthList;
@@ -102,7 +98,7 @@ export function renderHistory(root) {
 
 const workoutCard = (w) => `
   <button class="card wk" data-wid="${w.id}">
-    <div class="wk-title"><b>${esc(w.dayName)}</b><span>${esc(weekOf(w))}</span></div>
+    <div class="wk-title"><b>${esc(w.title)}</b><span>${esc(w.dayName)}</span></div>
     <div class="wk-stats">
       <div><b>${timeStr(w.start)}</b><span>${shortDate(w.start)}</span></div>
       <div><b>${clock(w.dur)}</b><span>Duration</span></div>
@@ -114,8 +110,8 @@ export function openWorkout(id) {
   const w = state.workouts.find((x) => x.id === id);
   if (!w) return;
   const sh = sheet(`
-    <h3>${esc(w.dayName)}</h3>
-    <p class="muted">${esc(weekOf(w))} · ${dateStr(w.start)} · ${timeStr(w.start)}</p>
+    <h3>${esc(w.title)}</h3>
+    <p class="muted">${esc(w.dayName)} · ${dateStr(w.start)} · ${timeStr(w.start)}</p>
     <div class="stat-grid">
       <div class="stat"><span>Duration</span><b>${dur(w.dur)}</b></div>
       <div class="stat"><span>Sets</span><b>${w.sets}</b></div>
@@ -281,7 +277,7 @@ function heatmap(list) {
   let caption = '<span class="muted">Tap a square to see that day.</span>';
   if (ui.daySel) {
     const ws = byDay[ui.daySel] || [];
-    caption = `<b>${dateStr(fromKey(ui.daySel))}</b> · ${ws.length ? ws.map((w) => `${esc(w.dayName)} · ${dur(w.dur)}`).join(', ') : 'rest day'}`;
+    caption = `<b>${dateStr(fromKey(ui.daySel))}</b> · ${ws.length ? ws.map((w) => `${esc(w.title)} · ${dur(w.dur)}`).join(', ') : 'rest day'}`;
   }
   return `${s}</svg>
     <div class="chart-caption">${caption}</div>

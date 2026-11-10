@@ -33,8 +33,8 @@ ROW = ex("Barbell Row", "M", {"Back": 1, "Biceps": .5},
          "Unrack from safeties at knee height so you never pull the bar off the floor. Torso 30-45°, brace, pull to the lower ribs.")
 OHP = ex("Standing Overhead Press", "M", {"Shoulders": 1, "Triceps": .5},
          "Squeeze glutes and abs, bar travels straight up, push your head through at lockout.")
-PULLUP_Q1 = ex("Pull-up", "M", {"Back": 1, "Biceps": .5},
-               "Dead hang to chin over the bar. Can't hit the reps? Use the assisted machine or a band. Add weight once 3×10 is easy.")
+PULLUP_Q1 = ex("Pull-up (add weight once 3×10 is easy)", "M", {"Back": 1, "Biceps": .5},
+               "Dead hang to chin over the bar. Can't hit the reps? Use the assisted machine or a band.")
 PULLUP = ex("Weighted Pull-up", "M", {"Back": 1, "Biceps": .5},
             "Load with a dip belt. The % covers bodyweight + added weight (see the pull-up formula in the README).")
 
@@ -54,41 +54,26 @@ EZ_CURL = ex("EZ-Bar Curl", "I", {"Biceps": 1}, "Elbows still, no hip swing, 2-3
 SKULL = ex("EZ-Bar Skull Crusher", "I", {"Triceps": 1}, "Lower the bar behind your head, elbows pointing at the ceiling.")
 OH_CABLE_EXT = ex("Overhead Cable Triceps Extension", "I", {"Triceps": 1},
                   "Deep stretch behind the head. This trains the long head, the biggest part of the arm.")
-BACK_EXT = ex("45° Back Extension", "C", {"Glutes": 1, "Hamstrings": 1},
-              "Hinge at the hips until you feel the hamstrings stretch, then squeeze the glutes to come up. Stop when your body is straight. Hold a plate once 12 reps are easy.")
+DIPS_W = ex("Weighted Dips", "C", {"Chest": 1, "Triceps": .5, "Shoulders": .5},
+            "Lean forward slightly to work the chest. Only go as deep as your shoulders are comfortable.")
+BACK_EXT = ex("45° Back Extension", "C", {"Glutes": 1, "Hamstrings": .5},
+              "Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy.")
 NEUTRAL_PD = ex("Neutral-Grip Lat Pulldown", "C", {"Back": 1, "Biceps": .5},
                 "Close neutral handle, pull to the upper chest, lean back slightly.")
 
 HAMMER = ex("Hammer Curl", "I", {"Biceps": 1}, "Neutral grip trains the brachialis for thicker arms.")
 PEC_DECK = ex("Pec Deck Fly", "I", {"Chest": 1}, "Slight bend in the elbows, deep stretch, squeeze 1 s with the hands together.")
-HACK = ex("Hack Squat", "C", {"Quads": 1, "Glutes": .5},
-          "A machine, so there's no bar on your back. Feet shoulder-width, lower under control until your thighs pass parallel, then drive up through the whole foot.")
-BSS = ex("Bulgarian Split Squat (dumbbells)", "C", {"Quads": 1, "Glutes": .5},
-         "Back foot on a bench, weight on the front leg. Lower until the back knee nearly touches the floor. Lean forward a little for more glutes.")
-CABLE_ROW = ex("Seated Cable Row", "C", {"Back": 1, "Biceps": .5},
-               "Sit tall, pull the handle to your belly button, squeeze the shoulder blades, then let the arms stretch fully forward.")
-DB_BENCH = ex("Dumbbell Bench Press", "C", {"Chest": 1, "Triceps": .5, "Shoulders": .5},
-              "Flat bench, deep stretch at the bottom, press up and slightly together.")
 
-# Push / Pull / Legs with every muscle trained twice a week.
-# Day A = Push + light Pull, Day B = Pull + light Legs, Day C = Legs + light Push.
-# Every day has the same shape:
-#   1, 2   the two main lifts for the day's focus
-#   3      a compound accessory for the focus
-#   4a/4b  a superset for the focus
-#   5a...  the LIGHT BLOCK: a superset for the muscles trained hard NEXT
-#          session (at most 3 sets, 2-3 reps in reserve, no finishers)
-#   6a/6b  abs
-# Supersets pair muscles that don't compete.
-LIGHT_GROUP = "5"
-
+# Push / Pull / Legs. Day A = Push, Day B = Pull, Day C = Legs.
+# Supersets pair muscles that don't compete (side delts with triceps,
+# rear delts with biceps, quads with hamstrings, calves with everything).
 Q1 = {
     "A": [
         ("1", BENCH), ("2", OHP),
         ("3", ex("Incline Dumbbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
                  "Upper-chest builder. Elbows at about 45°, deep stretch at the bottom.", spec=True)),
-        ("4a", CABLE_LAT), ("4b", OH_CABLE_EXT),
-        ("5a", CABLE_ROW), ("5b", INC_CURL),
+        ("4a", CABLE_LAT), ("4b", ROPE_PD),
+        ("5a", PEC_DECK), ("5b", OH_CABLE_EXT),
         ("6a", ex("Hanging Knee Raise", "X", {"Abs": 1},
                   "No swinging. Curl the pelvis up at the top (posterior tilt).",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -97,11 +82,11 @@ Q1 = {
                   abs_rx=["3×12", "3×15", "4×12 (heavier)"])),
     ],
     "B": [
-        ("1", PULLUP_Q1), ("2", ROW),
+        ("1", ROW), ("2", PULLUP_Q1),
         ("3", ex("Lat Pulldown (wide grip)", "C", {"Back": 1, "Biceps": .5},
                  "Chest up, drive the elbows down to your ribs, control the way up.", spec=True)),
-        ("4a", FACE_PULL), ("4b", HAMMER),
-        ("5a", LEG_EXT), ("5b", BACK_EXT), ("5c", CALF_SE),
+        ("4a", FACE_PULL), ("4b", INC_CURL),
+        ("5a", DB_LAT), ("5b", HAMMER),
         ("6a", ex("Kneeling Ab Wheel Rollout", "X", {"Abs": 1},
                   "Ribs down, glutes tight. Roll out only as far as your lower back stays flat.",
                   abs_rx=["3×6-8 (partial range)", "3×8-10", "3×10-12 (full range)"])),
@@ -111,9 +96,10 @@ Q1 = {
     ],
     "C": [
         ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", HACK),
-        ("4a", SEATED_CURL), ("4b", CALF_ST),
-        ("5a", PEC_DECK), ("5b", DB_LAT), ("5c", ROPE_PD),
+        ("3", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
+                 "Long stride, slight forward lean, back knee lightly touches the floor.")),
+        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_ST),
+        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_SE),
         ("6a", ex("Reverse Crunch", "X", {"Abs": 1},
                   "Curl the hips off the bench toward your chest, lower slowly.",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -127,8 +113,10 @@ Q2 = {
         ("1", BENCH), ("2", OHP),
         ("3", ex("Incline Barbell Press (30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
                  "Bar to the upper chest, elbows slightly tucked.", spec=True)),
-        ("4a", CABLE_LAT), ("4b", SKULL),
-        ("5a", NEUTRAL_PD), ("5b", HAMMER),
+        ("4a", CABLE_LAT),
+        ("4b", ex("Straight-Bar Triceps Pushdown", "I", {"Triceps": 1}, "Elbows pinned, full lockout, slow return.")),
+        ("5a", ex("Cable Crossover", "I", {"Chest": 1}, "Hands meet in front of the lower chest, slow stretch on the way back.")),
+        ("5b", SKULL),
         ("6a", ex("Hanging Leg Raise (straight legs)", "X", {"Abs": 1},
                   "Legs straight, raise to hip height or higher, no swinging.",
                   abs_rx=["3×8", "3×10", "3×12"])),
@@ -137,12 +125,12 @@ Q2 = {
                   abs_rx=["3×10 (heavy)", "4×10", "4×8 (heavier)"])),
     ],
     "B": [
-        ("1", PULLUP), ("2", ROW),
+        ("1", ROW), ("2", PULLUP),
         ("3", ex("Chest-Supported Row (T-bar or dumbbell)", "C", {"Back": 1, "Biceps": .5},
                  "Chest on the pad, squeeze the shoulder blades. No load on the lower back.")),
         ("4a", ex("Reverse Pec Deck", "I", {"Shoulders": 1}, "Arms long, sweep wide, squeeze the rear delts.")),
-        ("4b", EZ_CURL),
-        ("5a", LEG_EXT), ("5b", BACK_EXT), ("5c", CALF_ST),
+        ("4b", HAMMER),
+        ("5a", DB_LAT), ("5b", EZ_CURL),
         ("6a", ex("Ab Wheel Rollout (kneeling, full range)", "X", {"Abs": 1},
                   "Full extension, ribs down, glutes tight, no sagging.",
                   abs_rx=["3×10", "3×12", "4×10 + 2 s pause at full extension"])),
@@ -154,9 +142,8 @@ Q2 = {
         ("1", LEGPRESS), ("2", HIPTHRUST),
         ("3", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Step back, keep the front shin close to vertical. Easier on the knees than forward lunges.")),
-        ("4a", LYING_CURL), ("4b", CALF_SE),
-        ("5a", DB_BENCH), ("5b", DB_LAT),
-        ("5c", ex("Straight-Bar Triceps Pushdown", "I", {"Triceps": 1}, "Elbows pinned, full lockout, slow return.")),
+        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_SE),
+        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_ST),
         ("6a", ex("Incline Reverse Crunch", "X", {"Abs": 1},
                   "Head at the top of an incline bench, curl the hips up and over.",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -173,10 +160,11 @@ Q3 = {
         ("4a", ex("Cable Y-Raise", "I", {"Shoulders": 1},
                   "Cable low, sweep the arm up in a Y in front of the body. Targets the side delts.", spec=True)),
         ("4b", ex("Overhead Rope Triceps Extension", "I", {"Triceps": 1}, "Face away from the stack, deep stretch.")),
-        ("5a", ex("Straight-Arm Cable Pulldown", "I", {"Back": 1},
-                  "Arms nearly straight, sweep the bar down to your thighs. Isolates the lats for width.", spec=True)),
-        ("5b", ex("Bayesian Cable Curl", "I", {"Biceps": 1},
-                  "Face away from a low cable with the arm behind the body for a full stretch.")),
+        ("5a", ex("Low-to-High Cable Fly", "I", {"Chest": 1},
+                  "Cables low, sweep the hands up to chin height. Targets the upper chest.", spec=True)),
+        ("5b", ex("Single-Arm Cable Pushdown", "I", {"Triceps": 1}, "Reverse or neutral grip, full lockout.")),
+        ("5c", ex("Lean-Away Cable Lateral Raise", "I", {"Shoulders": 1},
+                  "Hold the post and lean away. Keeps tension on the delt at the bottom.", spec=True)),
         ("6a", ex("Toes-to-Bar (or Hanging Leg Raise)", "X", {"Abs": 1},
                   "Controlled. Use the lats to stay still and curl the pelvis up.",
                   abs_rx=["3×6", "3×8", "3×10"])),
@@ -184,12 +172,15 @@ Q3 = {
                   abs_rx=["3×10", "3×12", "4×10"])),
     ],
     "B": [
-        ("1", PULLUP), ("2", ROW),
+        ("1", ROW), ("2", PULLUP),
         ("3", ex("Wide-Grip Lat Pulldown", "C", {"Back": 1, "Biceps": .5},
                  "Width builder. Pull the elbows down and out, squeeze the lats at the bottom.", spec=True)),
-        ("4a", ex("Rear-Delt Cable Fly", "I", {"Shoulders": 1}, "Cross the cables, sweep the arms wide at shoulder height.")),
-        ("4b", ex("Preacher Curl", "I", {"Biceps": 1}, "Full stretch at the bottom, don't let the elbows lift.")),
-        ("5a", LEG_EXT), ("5b", BACK_EXT), ("5c", CALF_SE),
+        ("4a", ex("Straight-Arm Cable Pulldown", "I", {"Back": 1},
+                  "Arms nearly straight, sweep the bar down to your thighs. Isolates the lats for width.", spec=True)),
+        ("4b", ex("Bayesian Cable Curl", "I", {"Biceps": 1},
+                  "Face away from a low cable with the arm behind the body for a full stretch.")),
+        ("5a", ex("Rear-Delt Cable Fly", "I", {"Shoulders": 1}, "Cross the cables, sweep the arms wide at shoulder height.")),
+        ("5b", ex("Preacher Curl", "I", {"Biceps": 1}, "Full stretch at the bottom, don't let the elbows lift.")),
         ("6a", ex("Ab Wheel Rollout (from feet, shortened range)", "X", {"Abs": 1},
                   "Roll toward a wall or up an incline to limit the range. Not ready? Kneeling with a 3 s pause.",
                   abs_rx=["3×4-5", "3×5-6", "3×6-8"])),
@@ -198,13 +189,10 @@ Q3 = {
     ],
     "C": [
         ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", BSS),
-        ("4a", SEATED_CURL), ("4b", CALF_ST),
-        ("5a", ex("Low-to-High Cable Fly", "I", {"Chest": 1},
-                  "Cables low, sweep the hands up to chin height. Targets the upper chest.", spec=True)),
-        ("5b", ex("Lean-Away Cable Lateral Raise", "I", {"Shoulders": 1},
-                  "Hold the post and lean away. Keeps tension on the delt at the bottom.", spec=True)),
-        ("5c", ex("Single-Arm Cable Pushdown", "I", {"Triceps": 1}, "Reverse or neutral grip, full lockout.")),
+        ("3", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
+                 "Box a bit above knee height for more glute. Control the way down.")),
+        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_SE),
+        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_ST),
         ("6a", ex("Dragon Flag Negative", "X", {"Abs": 1},
                   "Grip the bench behind your head, body rigid, lower over 5 s.",
                   abs_rx=["3×3 (5 s down)", "3×4 (5 s down)", "3×5 (5 s down)"])),
@@ -218,19 +206,19 @@ Q4 = {
         ("1", BENCH), ("2", OHP),
         ("3", ex("Low-Incline Barbell Press (15-30°)", "C", {"Chest": 1, "Shoulders": .5, "Triceps": .5},
                  "Bar to the upper chest, 1 s pause on the chest.", spec=True)),
-        ("4a", CABLE_LAT), ("4b", SKULL),
-        ("5a", ex("Machine Chest-Supported Row", "C", {"Back": 1, "Biceps": .5}, "Full stretch forward, squeeze at the back.")),
-        ("5b", INC_CURL),
+        ("4a", CABLE_LAT), ("4b", ROPE_PD),
+        ("5a", DIPS_W), ("5b", SKULL),
         ("6a", ex("Weighted Hanging Leg Raise", "X", {"Abs": 1}, "Light dumbbell between the feet, no swinging.",
                   abs_rx=["3×8 (light DB)", "3×10", "3×12"])),
         ("6b", ex("Heavy Cable Crunch", "X", {"Abs": 1}, "Heavy and strict, full spinal flexion.",
                   abs_rx=["4×8", "3×12-15", "3×15 + drop set"])),
     ],
     "B": [
-        ("1", PULLUP), ("2", ROW),
+        ("1", ROW), ("2", PULLUP),
         ("3", NEUTRAL_PD),
-        ("4a", FACE_PULL), ("4b", EZ_CURL),
-        ("5a", LEG_EXT), ("5b", BACK_EXT), ("5c", CALF_ST),
+        ("4a", FACE_PULL), ("4b", INC_CURL),
+        ("5a", ex("Machine Chest-Supported Row", "C", {"Back": 1, "Biceps": .5}, "Full stretch forward, squeeze at the back.")),
+        ("5b", EZ_CURL), ("5c", DB_LAT),
         ("6a", ex("Ab Wheel Rollout (from feet)", "X", {"Abs": 1},
                   "Full range from the feet if you've earned it. Otherwise kneeling with a 3 s pause.",
                   abs_rx=["3×5", "3×6-8", "3×8"])),
@@ -240,11 +228,10 @@ Q4 = {
     ],
     "C": [
         ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", HACK),
-        ("4a", LYING_CURL), ("4b", CALF_SE),
-        ("5a", ex("Machine Chest Press", "C", {"Chest": 1, "Triceps": .5, "Shoulders": .5},
-                  "Set the seat so the handles line up with mid-chest. Deep stretch, smooth press.")),
-        ("5b", DB_LAT), ("5c", ROPE_PD),
+        ("3", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
+                 "Front foot on a 5-10 cm plate for a deeper stretch.")),
+        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_ST),
+        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_SE),
         ("6a", ex("Dragon Flag", "X", {"Abs": 1}, "Full rep: lower under control, raise back up as one rigid piece.",
                   abs_rx=["3×3-5", "3×5", "3×5-6"])),
         ("6b", ex("L-Sit Hold (dip bars or parallettes)", "X", {"Abs": 1}, "Shoulders pushed down, legs straight (tuck if needed).",
@@ -260,32 +247,15 @@ QUARTER_NAMES = {
     4: "Peak & Reveal: Strength Peak & Definition",
 }
 DAY_NAMES = {
-    "A": "Day A: Push + light Pull",
-    "B": "Day B: Pull + light Legs",
-    "C": "Day C: Legs + light Push",
+    "A": "Day A: Push",
+    "B": "Day B: Pull",
+    "C": "Day C: Legs",
 }
-DAY_SHORT = {"A": "Push", "B": "Pull", "C": "Legs"}
-DAY_FOCUS = {  # trained hard that day
-    "A": "Chest, shoulders, triceps",
-    "B": "Back, rear delts, biceps",
-    "C": "Quads, glutes, hamstrings, calves",
+DAY_MUSCLES = {
+    "A": "chest, shoulders, triceps",
+    "B": "back, rear delts, biceps",
+    "C": "quads, glutes, hamstrings, calves",
 }
-DAY_LIGHT = {  # the light block: next session's muscles
-    "A": "Back, biceps",
-    "B": "Quads, hamstrings, glutes, calves",
-    "C": "Chest, side delts, triceps",
-}
-DAY_MUSCLES = {d: f"{DAY_FOCUS[d].lower()} · light block: {DAY_LIGHT[d].lower()}" for d in "ABC"}
-
-# Every day must follow the shape above (the app and the tables rely on it).
-for _q, _days in QUARTERS.items():
-    for _d, _rows in _days.items():
-        _labels = [lab for lab, _ in _rows]
-        assert _labels[:3] == ["1", "2", "3"] and _labels[-2:] == ["6a", "6b"], (_q, _d, _labels)
-        for _lab, _e in _rows:
-            _want = {"1": "M", "2": "M", "3": "C", "4": "CI", "5": "CI", "6": "X"}[_lab[0]]
-            assert _e["slot"] in _want, (_q, _d, _lab, _e["name"])
-        assert any(lab.startswith(LIGHT_GROUP) for lab in _labels), (_q, _d)
 
 # ---------------------------------------------------------- nutrition notes
 NUT_GAIN = "Lean gain: TDEE + 200-300 kcal, protein 1.6-2.2 g/kg. Starting with higher body fat? Eat at maintenance (recomposition)."
@@ -412,35 +382,12 @@ def month_in_q(m):
     return (m["n"] - 1) % 3
 
 
-def is_light(label):
-    return label.startswith(LIGHT_GROUP)
-
-
-def light_effort(m):
-    """Effort in the light block. Month 1 is already RIR 3 everywhere."""
-    return "RIR 3" if m["n"] == 1 else "RIR 2-3"
-
-
-LIGHT_RULE = " The light block (superset 5) gets no finishers: stop 2-3 reps short there."
-
-
-def technique_text(m):
-    t = m["technique"]
-    return t if t.startswith("None") else t + LIGHT_RULE
-
-
-def rx(m, e, label=""):
-    """Return (sets_int, sets_reps_str, effort, rest) for a non-main exercise.
-
-    Superset 5 is the light block (the muscles trained hard next session):
-    at most 3 sets and 2-3 reps in reserve, whatever the month asks elsewhere.
-    """
+def rx(m, e):
+    """Return (sets_int, sets_reps_str, effort, rest) for a non-main exercise."""
     if e["slot"] == "X":
         s = e["abs_rx"][month_in_q(m)]
         return int(s.split("×")[0]), s, "Strict; stop 1-2 reps (or 5-10 s) short of failure", "45-60 s after the superset"
     sets, reps, effort, rest = m[e["slot"]]
-    if is_light(label):
-        sets, effort = min(sets, 3), light_effort(m)
     if m.get("spec") and e["spec"]:
         sets += 1
     return sets, f"{sets}×{reps}", effort, rest
@@ -458,7 +405,7 @@ def weekly_volume(m):
     vol = {k: 0.0 for k in MUSCLES}
     for day in "ABC":
         for label, e in QUARTERS[m["q"]][day]:
-            sets = m["main_sets"] if e["slot"] == "M" else rx(m, e, label)[0]
+            sets = m["main_sets"] if e["slot"] == "M" else rx(m, e)[0]
             for mus, f in e["muscles"].items():
                 vol[mus] += sets * f
     return vol
@@ -483,14 +430,14 @@ Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 | Day | Lift 1 | Lift 2 |
 |---|---|---|
 | A (Push) | Bench Press: **1RM** (spotter or safety bars) | Overhead Press: **3RM** |
-| B (Pull) | Weighted Pull-up: **3RM** (bodyweight + added) | Barbell Row: **5RM** (strict, from safeties) |
+| B (Pull) | Barbell Row: **5RM** (strict, from safeties) | Weighted Pull-up: **3RM** (bodyweight + added) |
 | C (Legs) | Leg Press: **5RM** | Hip Thrust: **5RM** |
 
 - **Warm-up ladder for a 1RM:** empty bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempt 1 (~95-97%) → attempt 2 (~100-102%) → optional attempt 3 (PR). Rest 3-5 min between heavy attempts.
 - **For 3RM/5RM tests:** ramp in 4-6 sets with fewer reps each time, up to a weight you can do for the target reps at RPE 9.5-10.
 - Convert every 3RM/5RM to an e1RM with the Epley formula ([README](../README.md#the-maths)).
 
-After testing: **2 sets** of each accessory (light block included) at RIR 3, and **2 sets** of each abs exercise. Nothing more.
+After testing: **2 sets** of each accessory at RIR 3, and **2 sets** of each abs exercise. Nothing more.
 """
 
 FINAL_PROTOCOL = """### Week 4: Final assessment
@@ -559,15 +506,14 @@ def month_md(m):
     c, i = m["C"], m["I"]
     L.append(f"| **Compound accessories** | {c[0]}×{c[1]} @ {c[2]} · rest {c[3]} |")
     L.append(f"| **Isolation** | {i[0]}×{i[1]} @ {i[2]} · rest {i[3]} |")
-    L.append(f"| **Light block** (superset 5) | The muscles you train hard next session: same reps, at most 3 sets, {light_effort(m)} |")
     L.append("| **Abs** | 2 exercises every session, done as a superset (see each day) |")
     L.append("| **Warm-up** | 10 min before every session: easy bike or rower, mobility, ramp-up sets ([details](../README.md#warm-up-10-min)) |")
-    L.append(f"| **Intensity technique** | {technique_text(m)} |")
+    L.append(f"| **Intensity technique** | {m['technique']} |")
     L.append(f"| **Nutrition** | {m['nutrition']} |")
     L.append("")
     L.append("## Main lifts: week by week")
     L.append("")
-    L.append("Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Pull-up, Barbell Row** (Pull), **Leg Press, Hip Thrust** (Legs).")
+    L.append("Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).")
     L.append("")
     L.append("| Week | Sets × Reps | Load (% of 1RM) | Effort |")
     L.append("|---|---|---|---|")
@@ -594,18 +540,15 @@ def month_md(m):
                 name += " ★"
             if e["slot"] == "X":
                 name = "Abs: " + name
-            elif is_light(label):
-                name = "Light: " + name
             if e["slot"] == "M":
                 L.append(f"| {label} | **{name}** (main) | Main-lift table | Main-lift table | {m['main_rest']} | {e['cue']} |")
             else:
-                _, sr, eff, rest = rx(m, e, label)
+                _, sr, eff, rest = rx(m, e)
                 if is_superset(label) and e["slot"] != "X":
                     rest = group_rest[label[:-1]] + " after the superset"
                 L.append(f"| {label} | {name} | {sr} | {eff} | {rest} | {e['cue']} |")
         L.append("")
-    L.append("> Exercises with the same number and a letter (4a/4b, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest. "
-             "Superset 5 is the **light block**: it trains the muscles you work hard next session, so stop 2-3 reps short.")
+    L.append("> Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.")
     L.append("")
     L.append({"deload": DELOAD_TEXT, "test": TEST_PROTOCOL, "final": FINAL_PROTOCOL, "normal": NORMAL_W4}[m["w4"]])
     L.append("## End-of-month checklist")
@@ -652,7 +595,7 @@ def day_template_table():
     for q in (1, 2, 3, 4):
         cells = []
         for d in "ABC":
-            names = [f"{lab}. {e['name']}" + (" (light)" if is_light(lab) else "") for lab, e in QUARTERS[q][d]]
+            names = [f"{lab}. {e['name']}" for lab, e in QUARTERS[q][d]]
             cells.append("<br>".join(names))
         L.append(f"| **Q{q}**<br>{QUARTER_NAMES[q]} | " + " | ".join(cells) + " |")
     return "\n".join(L)
@@ -670,7 +613,7 @@ def readme():
 
 # ------------------------------------------------------------------ tracker
 MAIN_BY_DAY = {"A": ["Barbell Bench Press", "Standing Overhead Press"],
-               "B": ["Pull-up (total load = BW + added)", "Barbell Row"],
+               "B": ["Barbell Row", "Pull-up (total load = BW + added)"],
                "C": ["Leg Press", "Barbell Hip Thrust"]}
 
 
@@ -764,7 +707,7 @@ def app_session(m, k, day, wk, kind):
                 sets, summary = app_main_sets(m, k, lift)
             rest = rest_sec(m["main_rest"])
         else:
-            n, sr, eff, _ = rx(m, e, label)
+            n, sr, eff, _ = rx(m, e)
             reps = sr.split("×", 1)[1]
             if e["slot"] == "X":
                 eff, rest = "Strict", 60
@@ -782,15 +725,12 @@ def app_session(m, k, day, wk, kind):
         exs.append(dict(e=exercise_id(e), label=label, slot=e["slot"], group=group, rest=rest,
                         spec=bool(m.get("spec") and e["spec"] and kind == "normal"),
                         rx=summary, sets=sets))
-        if is_light(label):
-            exs[-1]["light"] = True
     note = KIND_NOTES.get(kind)
     if kind == "final" and day == "C":
         note += " Abs test today: max hollow body hold and max strict dragon flags."
     return dict(id=f"w{wk:02d}-{day}", week=wk, month=m["n"], day=day, kind=kind,
-                title=f"Week {wk} · {DAY_SHORT[day]}", short=DAY_SHORT[day],
-                dayName=DAY_NAMES[day].split(": ", 1)[1], focus=DAY_FOCUS[day], lightFocus=DAY_LIGHT[day],
-                note=note, technique=technique_text(m) if kind == "normal" else None,
+                title=f"Week {wk} · Day {day}", dayName=DAY_NAMES[day].split(": ", 1)[1],
+                note=note, technique=m["technique"] if kind == "normal" else None,
                 est=estimate_minutes(exs), ex=exs)
 
 
@@ -839,7 +779,7 @@ def app_plan():
             for day in "ABC":
                 sessions.append(app_session(m, 0, day, m["flex"], "flex"))
     months = [dict(n=m["n"], title=m["title"], quarter=m["q"], weeks=list(WEEK[m["n"]]), goal=m["goal"],
-                   technique=technique_text(m), nutrition=m["nutrition"], base=m["base"],
+                   technique=m["technique"], nutrition=m["nutrition"], base=m["base"],
                    planned={k: round(v, 1) for k, v in weekly_volume(m).items()}) for m in MONTHS]
     return dict(muscles=MUSCLES, months=months, exercises=EXERCISES, sessions=sessions)
 
