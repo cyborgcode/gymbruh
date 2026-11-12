@@ -33,7 +33,7 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
-- **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
+- **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, plus a front and back muscle map you can tap, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
 - **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
 - **Works offline and stays private:** after the first open with internet, everything (workouts, timers, weight logging, stats, history) runs with no connection, and Settings → Offline shows "Ready to use offline". Your data is stored only on your phone. Use Settings → Export for a backup.
 
@@ -314,6 +314,10 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 | Ab wheel | Barbell rollout · stability-ball rollout · TRX fallout |
 | Hanging leg raise | Captain's chair leg raise · lying leg raise |
 | Dragon flag | Lying leg raise with a slow negative · hollow body rocks |
+
+## Credits
+
+- Muscle map artwork: [react-native-body-highlighter](https://github.com/HichamELBSI/react-native-body-highlighter) by ELABBASSI Hicham, MIT License (notice in [`web/js/bodymap.js`](web/js/bodymap.js)).
 
 ## Safety
 

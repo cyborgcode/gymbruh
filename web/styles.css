@@ -643,3 +643,18 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .ssgroup::before { content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px; border-radius: 0 3px 3px 0; background: var(--warn); }
 .ssgroup.done .ss-head small { opacity: 0.45; }
 .ssgroup.done .ss-title { color: rgba(255, 159, 10, 0.55); }
+
+/* ---------- muscle map (Stats -> Balance): front and back body */
+.bmap { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.bmap figure { margin: 0; }
+.bmap svg { width: 100%; height: auto; display: block; }
+.bmap figcaption { text-align: center; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
+.bmap path[data-m] { cursor: pointer; transition: fill 0.2s; }
+.bmap path.sel { stroke: var(--text); stroke-width: 2; vector-effect: non-scaling-stroke; }
+.bm-n { fill: color-mix(in srgb, var(--lv0) 55%, var(--card)); }
+.bm-hair { fill: color-mix(in srgb, var(--lv0) 88%, var(--text)); }
+.bm-o { fill: none; stroke: color-mix(in srgb, var(--line) 82%, var(--text)); stroke-width: 1.5; vector-effect: non-scaling-stroke; pointer-events: none; }
+.bm-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 12px; margin-top: 10px; }
+.bm-cap { margin: 0; font-size: 13px; color: var(--muted); }
+.bm-cap b { color: var(--text); }
+.bm-foot .legend { margin-top: 0; }

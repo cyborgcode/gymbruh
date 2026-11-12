@@ -5,6 +5,7 @@ import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
   timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast,
 } from './util.js';
+import { bodyMap } from './bodymap.js';
 
 const GROUPS = {
   Back: ['Back'], Chest: ['Chest'], Core: ['Abs'], Shoulders: ['Shoulders'],
@@ -14,7 +15,7 @@ const AXES = ['Back', 'Chest', 'Core', 'Shoulders', 'Arms', 'Legs']; // hexagon,
 const LIFTS = [['bench', 'Bench Press'], ['legpress', 'Leg Press'], ['hipthrust', 'Hip Thrust'],
   ['row', 'Barbell Row'], ['ohp', 'Overhead Press'], ['pullup', 'Pull-up (added kg)']];
 
-const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0, barSel: null, daySel: null };
+const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0, barSel: null, daySel: null, bodySel: null };
 const rerender = () => window.dispatchEvent(new Event('rerender'));
 const inRange = (list, from, to) => list.filter((w) => w.start >= +from && w.start < +to);
 const total = (list, k) => list.reduce((a, w) => a + (w[k] || 0), 0);
@@ -180,7 +181,7 @@ export function renderStats(root) {
     ${Object.entries(CARDS).map(([k, f]) => `<section class="card" data-card="${k}">${f(list)}</section>`).join('')}`;
 
   root.onclick = (ev) => {
-    const b = ev.target.closest('[data-seg],[data-act],[data-bar],[data-day]');
+    const b = ev.target.closest('[data-seg],[data-act],[data-bar],[data-day],[data-m]');
     const cardEl = b && b.closest('[data-card]');
     if (!cardEl) return;
     if (b.dataset.seg) {
@@ -190,6 +191,7 @@ export function renderStats(root) {
     else if (b.dataset.act === 'wnext') ui.weekOff = Math.min(0, ui.weekOff + 1);
     else if (b.dataset.bar != null) ui.barSel = +b.dataset.bar;
     else if (b.dataset.day) ui.daySel = ui.daySel === b.dataset.day ? null : b.dataset.day;
+    else if (b.dataset.m) ui.bodySel = ui.bodySel === b.dataset.m ? null : b.dataset.m;
     else return;
     // Redraw only this card and keep it exactly where it was on screen. The
     // page keeps its height so a shorter card can't yank you upward.
@@ -394,6 +396,11 @@ function balance(list) {
     ${label}
     ${radar(groupSets(ms), prev ? groupSets(muscleSets(prev)) : null)}
     <div class="legend center"><i class="dot cur"></i>${ui.period === 'week' && ui.weekOff === 0 ? 'This week' : 'Current'}${prev ? `<i class="dot prev"></i>${vs}` : ''}</div>
+    ${bodyMap(ms, (v) => level(v, maxM), ui.bodySel)}
+    <div class="bm-foot">
+      <p class="bm-cap">${ui.bodySel ? `<b>${ui.bodySel}</b> · ${fmt1(ms[ui.bodySel] || 0)} sets` : 'Tap a muscle to see its sets.'}</p>
+      <div class="legend"><span>Less</span>${[0, 1, 2, 3, 4].map((l) => `<i class="lv${l}"></i>`).join('')}<span>More</span></div>
+    </div>
     ${cur.length ? '' : '<p class="muted center">No workouts in this period yet.</p>'}
     <div class="cmp-grid">
       ${card('Workouts', cur.length, prev?.length, (v) => String(v))}
