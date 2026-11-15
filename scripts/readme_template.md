@@ -34,6 +34,7 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
 - **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, plus a front and back muscle map you can tap, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
+- **Look:** an iOS 26 "Liquid Glass" style. The tab bar floats as a glass capsule: tap a tab, or hold the bar and slide along it to move the glass lens and open the tab you let go on. Buttons are glass capsules (the main action is filled with your accent color), and sheets and the rest timer are frosted glass.
 - **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
 - **Works offline and stays private:** after the first open with internet, everything (workouts, timers, weight logging, stats, history) runs with no connection, and Settings → Offline shows "Ready to use offline". Your data is stored only on your phone. Use Settings → Export for a backup.
 
@@ -317,6 +318,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 
 ## Credits
 
+- Look and feel: modelled on [Glisse](https://github.com/0kzh/glisse) by Kelvin Zhang (MIT License), an iOS 26 Liquid Glass component library. GymBruh rebuilds its look in plain CSS so it also works in Safari; no Glisse code is bundled.
 - Muscle map artwork: [react-native-body-highlighter](https://github.com/HichamELBSI/react-native-body-highlighter) by ELABBASSI Hicham, MIT License (notice in [`web/js/bodymap.js`](web/js/bodymap.js)).
 
 ## Safety

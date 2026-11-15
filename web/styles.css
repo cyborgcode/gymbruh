@@ -658,3 +658,118 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .bm-cap { margin: 0; font-size: 13px; color: var(--muted); }
 .bm-cap b { color: var(--text); }
 .bm-foot .legend { margin-top: 0; }
+
+/* =====================================================================
+   Liquid Glass, after Glisse (github.com/0kzh/glisse, MIT): a floating
+   glass tab bar with a sliding lens, pill-shaped glass controls with a lit
+   rim, glass sheets and timer. CSS only, so it also works in Safari.
+   ===================================================================== */
+:root {
+  /* glass tinted from the theme's own surfaces */
+  --g-glass: color-mix(in srgb, var(--card2) 62%, transparent);
+  --g-glass-hi: color-mix(in srgb, color-mix(in srgb, var(--card2), #fff 16%) 70%, transparent);
+  --g-blur: blur(12px) saturate(1.6);
+  --g-sel: rgb(255 255 255 / 0.145);
+  --g-thumb: rgb(235 235 245 / 0.26);
+  --g-surface: color-mix(in srgb, var(--sheet) 84%, transparent);
+  /* the lit rim: a light top edge and a hairline all round */
+  --g-rim: inset 0 1px 0 rgb(255 255 255 / 0.13), inset 0 0 0 0.5px rgb(255 255 255 / 0.1);
+  --g-rim-gradient: linear-gradient(150deg, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.07) 32%, rgb(255 255 255 / 0.03) 62%, rgb(255 255 255 / 0.2));
+  /* floating tab bar: 62 px tall, sitting just above the home indicator */
+  --tb-h: 62px;
+  --tb-gap: max(12px, calc(var(--safe-b) - 8px));
+  /* everything that clears the tab bar uses --tab + --safe-b */
+  --tab: calc(var(--tb-gap) + var(--tb-h) - var(--safe-b));
+}
+/* A gradient rim drawn as a 1 px ring (for the big glass surfaces). */
+.g-ring::before, #tabbar::before, .t-card::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
+  background: var(--g-rim-gradient);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+
+/* ---------- tab bar: a floating glass capsule, a lens behind the selected tab */
+#tabbar {
+  left: 50%; right: auto; bottom: var(--tb-gap); width: min(calc(100% - 40px), 320px); height: var(--tb-h);
+  transform: translateX(-50%); padding: 4px; border: 0; border-radius: 999px; justify-content: stretch; gap: 0;
+  background: color-mix(in srgb, var(--card2) 70%, transparent);
+  backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8);
+  box-shadow: 0 10px 34px rgb(0 0 0 / 0.5); touch-action: none; user-select: none; -webkit-user-select: none;
+}
+#tabbar a { flex: 1; max-width: none; z-index: 1; justify-content: center; gap: 1px; padding: 0; border-radius: 999px;
+  color: var(--text); font-size: 10px; font-weight: 500; -webkit-touch-callout: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; transition: color 0.2s; }
+#tabbar a.on { color: var(--accent); }
+#tabbar .ic { width: 26px; height: 26px; }
+#tabbar a.live::after { top: 5px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--card2) 90%, #000); }
+.tb-lens {
+  position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4); border-radius: 999px;
+  background: var(--g-sel); pointer-events: none;
+  /* translate (not transform) so the lift's scale doesn't stretch the offset */
+  translate: calc(100% * var(--i, 0)) 0;
+  transition: translate 0.5s cubic-bezier(0.3, 1.45, 0.45, 1), scale 0.25s ease, background-color 0.2s;
+}
+/* Held: the lens lifts, grows a little and turns to clear glass; it follows your finger. */
+#tabbar[data-lifted] .tb-lens {
+  scale: 1.14 1.2; background: rgb(255 255 255 / 0.07); transition: scale 0.18s ease, background-color 0.15s;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), inset 0 0 0 1px rgb(255 255 255 / 0.18), 0 8px 22px rgb(0 0 0 / 0.35);
+  backdrop-filter: blur(1px) brightness(1.18) saturate(1.6); -webkit-backdrop-filter: blur(1px) brightness(1.18) saturate(1.6);
+}
+#tabbar[data-dragging] .tb-lens { transition: scale 0.18s ease, background-color 0.15s; }
+
+/* ---------- buttons: capsules of glass; the main action is filled */
+.btn, .btn.big, .btn.sm { border-radius: 999px; }
+.btn { background: var(--g-glass); box-shadow: var(--g-rim); backdrop-filter: var(--g-blur); -webkit-backdrop-filter: var(--g-blur); transition: background-color 0.2s, transform 0.12s; }
+.btn:active { background: var(--g-glass-hi); }
+.btn.big:not(.primary) { border: 0; }
+.btn.primary, .btn.done-btn {
+  background: var(--accent); color: var(--accent-ink);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 0 0 0.5px rgb(255 255 255 / 0.18), 0 8px 22px color-mix(in srgb, var(--accent) 28%, transparent);
+}
+.btn.primary:active, .btn.done-btn:active { background: color-mix(in srgb, var(--accent) 85%, #000); }
+.btn.ghost { background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.btn.danger { background: var(--g-glass); color: var(--danger); }
+.icon-btn, .icon-btn.sm { border-radius: 50%; background: var(--g-glass); box-shadow: var(--g-rim); backdrop-filter: var(--g-blur); -webkit-backdrop-filter: var(--g-blur); }
+.icon-btn:active { background: var(--g-glass-hi); }
+.chip, .xc, .xchips .xmeta span, .dchip { border-radius: 999px; }
+.chip { box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--accent) 35%, transparent); }
+
+/* ---------- segmented controls: a glass track, a light thumb */
+.seg { border-radius: 999px; padding: 3px; background: var(--g-glass); box-shadow: var(--g-rim); }
+.seg button { border-radius: 999px; color: var(--text); font-weight: 500; transition: background-color 0.25s, color 0.25s; }
+.seg button.on { background: var(--g-thumb); color: #fff; font-weight: 600; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18); }
+
+/* ---------- inputs, steppers, timer buttons: capsules */
+.in, select { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
+.in:focus { background: var(--g-glass-hi); border-color: var(--accent); }
+.stepper .stp, .stepper.sm .stp, .sd-ctl .stp { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
+.stepper .stp:active { background: var(--g-glass-hi); }
+.tround-ic { box-shadow: var(--g-rim); }
+.xrow.next .tround-ic, .ssgroup.next .ss-head .tround-ic { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 6px 18px var(--accent-fill); }
+.bgopt { border-radius: 20px; }
+
+/* ---------- cards: a hairline of light at the edge */
+.card { border-radius: 22px; box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.06); }
+
+/* ---------- sheets: a floating glass panel, rounded on every corner */
+.sheet {
+  left: 8px; right: 8px; bottom: max(8px, calc(var(--safe-b) - 20px)); max-width: 544px;
+  border-radius: 34px; padding-bottom: 22px; max-height: calc(100% - var(--safe-t) - 40px);
+  background: var(--g-surface); backdrop-filter: blur(30px) saturate(1.9); -webkit-backdrop-filter: blur(30px) saturate(1.9);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 0 0 0.5px rgb(255 255 255 / 0.12), 0 18px 50px rgb(0 0 0 / 0.5);
+  transform: translateY(calc(100% + 40px));
+}
+.sheet-bg { background: rgb(0 0 0 / 0.42); }
+.stat { border-radius: 18px; background: color-mix(in srgb, var(--card2) 70%, transparent); }
+
+/* ---------- rest timer: a glass card; capsule buttons */
+#timer { background: rgb(0 0 0 / 0.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); }
+.t-card { position: relative; border: 0; border-radius: 38px; background: var(--g-surface); backdrop-filter: blur(30px) saturate(1.9); -webkit-backdrop-filter: blur(30px) saturate(1.9); box-shadow: 0 24px 60px rgb(0 0 0 / 0.55); }
+.t-hide, .t-btns button { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
+.t-btns .t-skip { background: var(--accent); color: var(--accent-ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28); }
+#timer.mini .t-mini { border: 0; background: color-mix(in srgb, var(--card2) 72%, transparent); box-shadow: var(--g-rim), 0 10px 28px rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8); }
+
+/* ---------- toast: a glass capsule */
+#toast { border: 0; border-radius: 999px; padding: 12px 18px; background: color-mix(in srgb, var(--card2) 74%, transparent);
+  box-shadow: var(--g-rim), 0 10px 28px rgb(0 0 0 / 0.5); backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8); }

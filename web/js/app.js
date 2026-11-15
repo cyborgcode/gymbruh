@@ -14,11 +14,67 @@ const tabbar = document.getElementById('tabbar');
 const TABS = [['today', 'Today'], ['plan', 'Plan'], ['history', 'History'], ['stats', 'Stats']];
 const ROUTES = { today: renderToday, plan: renderPlan, history: renderHistory, stats: renderStats };
 
-tabbar.innerHTML = TABS.map(([k, label]) => `<a href="#/${k}" data-tab="${k}">${ICON[k]}<span>${label}</span></a>`).join('');
+tabbar.innerHTML = TABS.map(([k, label]) => `<a href="#/${k}" data-tab="${k}" draggable="false">${ICON[k]}<span>${label}</span></a>`).join('');
+
+// Liquid Glass tab bar (after Glisse): a lens sits behind the selected tab and
+// springs to the next one. Hold and drag along the bar: the lens lifts, follows
+// your finger, and opens the tab you let go on.
+const lens = document.createElement('span');
+lens.className = 'tb-lens';
+tabbar.prepend(lens);
+const tabIndex = (name) => Math.max(0, TABS.findIndex(([k]) => k === name));
+let lensDrag = null, swallowClick = false;
+function lensAt(x) {
+  const r = tabbar.getBoundingClientRect(), w = (r.width - 8) / TABS.length;
+  return Math.max(0, Math.min(TABS.length - 1, (x - r.left - 4 - w / 2) / w));
+}
+tabbar.addEventListener('pointerdown', (ev) => {
+  if (ev.button) return;
+  lensDrag = { id: ev.pointerId, x0: ev.clientX, moved: false };
+  tabbar.setAttribute('data-lifted', '');
+});
+// Move and release are watched on the whole window, so a fast swipe that
+// leaves the bar still ends the drag.
+window.addEventListener('pointermove', (ev) => {
+  if (!lensDrag || ev.pointerId !== lensDrag.id) return;
+  if (!lensDrag.moved && Math.abs(ev.clientX - lensDrag.x0) < 8) return;
+  if (!lensDrag.moved) {
+    lensDrag.moved = true;
+    tabbar.setAttribute('data-dragging', '');
+    try { tabbar.setPointerCapture(ev.pointerId); } catch (e) { /* ignore */ }
+  }
+  tabbar.style.setProperty('--i', lensAt(ev.clientX).toFixed(3));
+});
+function endLensDrag(ev, cancelled) {
+  if (!lensDrag || ev.pointerId !== lensDrag.id) return;
+  const moved = lensDrag.moved;
+  lensDrag = null;
+  tabbar.removeAttribute('data-lifted');
+  tabbar.removeAttribute('data-dragging');
+  if (!moved) return; // a plain tap: the link's own click opens the tab
+  swallowClick = true; // the click after a drag would land on whichever tab you started on
+  setTimeout(() => { swallowClick = false; }, 400);
+  const name = TABS[Math.round(lensAt(ev.clientX))][0];
+  if (!cancelled && `#/${name}` !== location.hash) location.hash = `#/${name}`;
+  else tabbar.style.setProperty('--i', tabIndex(currentTab));
+}
+// Links are draggable by default, and starting a link drag cancels the pointer.
+tabbar.addEventListener('dragstart', (ev) => ev.preventDefault());
+window.addEventListener('pointerup', (ev) => endLensDrag(ev, false));
+window.addEventListener('pointercancel', (ev) => endLensDrag(ev, true));
+tabbar.addEventListener('click', (ev) => {
+  if (!swallowClick) return;
+  swallowClick = false;
+  ev.preventDefault();
+  ev.stopImmediatePropagation();
+}, true);
+let currentTab = 'today';
 
 function route() {
   const [, name = 'today', arg] = (location.hash || '#/today').split('/');
   const tab = name === 'session' ? 'plan' : ROUTES[name] ? name : 'today';
+  currentTab = tab;
+  tabbar.style.setProperty('--i', tabIndex(tab));
   tabbar.querySelectorAll('a').forEach((a) => {
     const on = a.dataset.tab === tab;
     a.classList.toggle('on', on);
