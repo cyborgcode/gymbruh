@@ -33,8 +33,8 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 - **Help & safety nets:** a one-time "How it works" card, a **Terms** guide (RIR, RPE, %, e1RM, supersets, deloads) one tap away, **Undo** after skipping, discarding or deleting, and a finish screen that shows which weights went up since last time.
 - **Plan:** every week and session of the year, showing which are done, skipped or next.
 - **History:** a calendar with your workout days marked A/B/C, plus duration and volume for each workout.
-- **Stats:** totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps), muscle balance (radar, plus a front and back muscle map you can tap, compared with the previous period or, for the current week, the same days of last week), fatigue, strength trends (e1RM of the main lifts) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
-- **Look:** an iOS 26 "Liquid Glass" style. The tab bar floats as a glass capsule: tap a tab, or hold the bar and slide along it to move the glass lens and open the tab you let go on. Buttons are glass capsules (the main action is filled with your accent color), and sheets and the rest timer are frosted glass.
+- **Stats:** opens on muscle balance (radar, plus a front and back muscle map you can tap, compared with the previous period or, for the current week, the same days of last week), with fatigue and strength trends (e1RM of the main lifts) one tap away. Below it: totals, week streak, rest days, a 26-week activity heatmap, weekly charts (workouts, duration, volume, reps) and planned vs done weekly sets per muscle. Tap a bar or a heatmap square to see that week or day.
+- **Look:** iOS 26 Liquid Glass, using [Glisse](https://github.com/0kzh/glisse)'s own glass. The tab bar floats as a glass capsule: tap a tab, or hold the bar and slide along it. The selection lifts into a lens that follows your finger and opens the tab you let go on. Buttons are glass capsules with a lit rim; they grow under your finger and spring back, and the main action is filled with your accent color. The Week / 30d / 90d switches in Stats work like the tab bar, and sheets and the rest timer are frosted glass.
 - **Settings:** a color theme (9 accent colors, Dark / Black / Midnight backgrounds), start at any week, offline status, export/import, and reset.
 - **Works offline and stays private:** after the first open with internet, everything (workouts, timers, weight logging, stats, history) runs with no connection, and Settings → Offline shows "Ready to use offline". Your data is stored only on your phone. Use Settings → Export for a backup.
 
@@ -347,7 +347,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 
 ## Credits
 
-- Look and feel: modelled on [Glisse](https://github.com/0kzh/glisse) by Kelvin Zhang (MIT License), an iOS 26 Liquid Glass component library. GymBruh rebuilds its look in plain CSS so it also works in Safari; no Glisse code is bundled.
+- Liquid Glass: [Glisse](https://github.com/0kzh/glisse) 0.6.0 by Kelvin Zhang, MIT License. Its glass (rim light, press, lens, tab bar and segmented control) is bundled in [`web/js/glisse.js`](web/js/glisse.js) and [`web/glisse.css`](web/glisse.css), each with the license notice, and [`web/js/glass.js`](web/js/glass.js) puts it on the app's controls. [`scripts/vendor_glisse.py`](scripts/vendor_glisse.py) rebuilds both files from the Glisse package.
 - Muscle map artwork: [react-native-body-highlighter](https://github.com/HichamELBSI/react-native-body-highlighter) by ELABBASSI Hicham, MIT License (notice in [`web/js/bodymap.js`](web/js/bodymap.js)).
 
 ## Safety

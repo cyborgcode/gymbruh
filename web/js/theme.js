@@ -2,7 +2,7 @@
 // (tints, heatmap levels, text on buttons) is derived from one hex value.
 
 export const ACCENTS = {
-  blue: ['Blue', '#0a84ff'],
+  blue: ['Blue', '#0091ff'],
   indigo: ['Indigo', '#5e5ce6'],
   purple: ['Purple', '#bf5af2'],
   pink: ['Pink', '#ff375f'],

@@ -6,6 +6,7 @@ import { tick } from './timer.js';
 import { ICON, dkey, toast } from './util.js';
 import { applyTheme } from './theme.js';
 import { removeSample } from './settings.js';
+import { initGlass, tabBar } from './glass.js';
 
 applyTheme(state.theme);
 
@@ -14,68 +15,18 @@ const tabbar = document.getElementById('tabbar');
 const TABS = [['today', 'Today'], ['plan', 'Plan'], ['history', 'History'], ['stats', 'Stats']];
 const ROUTES = { today: renderToday, plan: renderPlan, history: renderHistory, stats: renderStats };
 
-tabbar.innerHTML = TABS.map(([k, label]) => `<a href="#/${k}" data-tab="${k}" draggable="false">${ICON[k]}<span>${label}</span></a>`).join('');
-
-// Liquid Glass tab bar (after Glisse): a lens sits behind the selected tab and
-// springs to the next one. Hold and drag along the bar: the lens lifts, follows
-// your finger, and opens the tab you let go on.
-const lens = document.createElement('span');
-lens.className = 'tb-lens';
-tabbar.prepend(lens);
+// The tab bar is Glisse's (see glass.js): a glass capsule whose selection
+// springs between tabs, follows a drag along the bar, and lifts into a lens
+// while held. Its tabs are links, so letting go on one opens it.
+initGlass();
+const tabs = tabBar(tabbar, TABS.map(([k, label]) => ({ key: k, label, icon: ICON[k], href: `#/${k}` })));
 const tabIndex = (name) => Math.max(0, TABS.findIndex(([k]) => k === name));
-let lensDrag = null, swallowClick = false;
-function lensAt(x) {
-  const r = tabbar.getBoundingClientRect(), w = (r.width - 8) / TABS.length;
-  return Math.max(0, Math.min(TABS.length - 1, (x - r.left - 4 - w / 2) / w));
-}
-tabbar.addEventListener('pointerdown', (ev) => {
-  if (ev.button) return;
-  lensDrag = { id: ev.pointerId, x0: ev.clientX, moved: false };
-  tabbar.setAttribute('data-lifted', '');
-});
-// Move and release are watched on the whole window, so a fast swipe that
-// leaves the bar still ends the drag.
-window.addEventListener('pointermove', (ev) => {
-  if (!lensDrag || ev.pointerId !== lensDrag.id) return;
-  if (!lensDrag.moved && Math.abs(ev.clientX - lensDrag.x0) < 8) return;
-  if (!lensDrag.moved) {
-    lensDrag.moved = true;
-    tabbar.setAttribute('data-dragging', '');
-    try { tabbar.setPointerCapture(ev.pointerId); } catch (e) { /* ignore */ }
-  }
-  tabbar.style.setProperty('--i', lensAt(ev.clientX).toFixed(3));
-});
-function endLensDrag(ev, cancelled) {
-  if (!lensDrag || ev.pointerId !== lensDrag.id) return;
-  const moved = lensDrag.moved;
-  lensDrag = null;
-  tabbar.removeAttribute('data-lifted');
-  tabbar.removeAttribute('data-dragging');
-  if (!moved) return; // a plain tap: the link's own click opens the tab
-  swallowClick = true; // the click after a drag would land on whichever tab you started on
-  setTimeout(() => { swallowClick = false; }, 400);
-  const name = TABS[Math.round(lensAt(ev.clientX))][0];
-  if (!cancelled && `#/${name}` !== location.hash) location.hash = `#/${name}`;
-  else tabbar.style.setProperty('--i', tabIndex(currentTab));
-}
-// Links are draggable by default, and starting a link drag cancels the pointer.
-tabbar.addEventListener('dragstart', (ev) => ev.preventDefault());
-window.addEventListener('pointerup', (ev) => endLensDrag(ev, false));
-window.addEventListener('pointercancel', (ev) => endLensDrag(ev, true));
-tabbar.addEventListener('click', (ev) => {
-  if (!swallowClick) return;
-  swallowClick = false;
-  ev.preventDefault();
-  ev.stopImmediatePropagation();
-}, true);
-let currentTab = 'today';
 
 function route() {
   const [, name = 'today', arg] = (location.hash || '#/today').split('/');
   const tab = name === 'session' ? 'plan' : ROUTES[name] ? name : 'today';
-  currentTab = tab;
-  tabbar.style.setProperty('--i', tabIndex(tab));
-  tabbar.querySelectorAll('a').forEach((a) => {
+  tabs.select(tabIndex(tab));
+  tabbar.querySelectorAll('a[data-tab]').forEach((a) => {
     const on = a.dataset.tab === tab;
     a.classList.toggle('on', on);
     if (on) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current');
@@ -95,6 +46,9 @@ let renderedDay = '';
 // Tapping the tab you're already on reloads it and scrolls to the top
 // (otherwise e.g. the "Workout complete" screen could never be left via the tab).
 tabbar.addEventListener('click', (ev) => {
+  // The bar opens a tab itself when you let go on it, and cancels the browser's
+  // own click that follows, which is not another tap.
+  if (ev.defaultPrevented) return;
   const a = ev.target.closest('a[data-tab]');
   if (!a || a.getAttribute('href') !== location.hash) return;
   ev.preventDefault();
@@ -174,6 +128,11 @@ function registerOffline() {
     location.reload();
   });
   navigator.serviceWorker.register('/sw.js').then((reg) => reg.update()).catch(() => {});
+  // If this page loaded just as the offline copy finished installing, it can
+  // be left out of the worker's control until the next launch: ask to be taken in.
+  navigator.serviceWorker.ready.then((reg) => {
+    if (!navigator.serviceWorker.controller && reg.active) reg.active.postMessage('claim');
+  }).catch(() => {});
   // Ask iOS to keep the offline copy and your workouts even when storage is low.
   if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
 }

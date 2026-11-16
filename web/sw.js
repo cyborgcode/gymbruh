@@ -3,10 +3,10 @@
 // breaks layouts after an update on a patchy connection). A new release
 // installs all files at once in the background; the page then reloads once.
 // Bump CACHE on every release so phones pick up the new version.
-const CACHE = 'gymbruh-v27';
+const CACHE = 'gymbruh-v28';
 const SHELL = [
-  '/', '/index.html', '/styles.css', '/plan.json', '/manifest.webmanifest',
-  '/js/app.js', '/js/store.js', '/js/util.js', '/js/timer.js', '/js/workout.js', '/js/stats.js', '/js/settings.js', '/js/theme.js', '/js/bodymap.js',
+  '/', '/index.html', '/glisse.css', '/styles.css', '/plan.json', '/manifest.webmanifest',
+  '/js/app.js', '/js/store.js', '/js/util.js', '/js/timer.js', '/js/workout.js', '/js/stats.js', '/js/settings.js', '/js/theme.js', '/js/bodymap.js', '/js/glass.js', '/js/glisse.js',
   '/icons/apple-touch-icon.png', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/icon-maskable-512.png',
 ];
 
@@ -25,6 +25,12 @@ self.addEventListener('activate', (event) => {
       .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
       .then(() => self.clients.claim()),
   );
+});
+
+// A page that loaded just as this worker was activating can miss the claim
+// above; it asks again once it sees the worker is ready (see app.js).
+self.addEventListener('message', (event) => {
+  if (event.data === 'claim') self.clients.claim();
 });
 
 self.addEventListener('fetch', (event) => {

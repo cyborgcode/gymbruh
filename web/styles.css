@@ -5,11 +5,11 @@
   --line: #2b2b30;
   --text: #f5f5f7;
   --muted: #9a9aa3;
-  --accent: #0a84ff;
+  --accent: #0091ff;
   --accent-2: #4ea3ff;
   --accent-ink: #ffffff;
-  --accent-soft: rgba(10, 132, 255, 0.15);
-  --accent-fill: rgba(10, 132, 255, 0.3);
+  --accent-soft: rgba(0, 145, 255, 0.15);
+  --accent-fill: rgba(0, 145, 255, 0.3);
   --sheet: #1a1a1d;
   --bar: rgba(18, 18, 20, 0.88);
   --blur: rgba(10, 10, 11, 0.86);
@@ -20,7 +20,7 @@
   --lv1: #0d2c50;
   --lv2: #11498a;
   --lv3: #1567c6;
-  --lv4: #0a84ff;
+  --lv4: #0091ff;
   --r: 20px;
   --tab: 58px;
   --safe-t: env(safe-area-inset-top, 0px);
@@ -110,17 +110,16 @@ details.note[open] summary { margin-bottom: 6px; }
 .hint { color: var(--muted); font-size: 14px; margin: 10px 0 0; }
 .star { color: var(--warn); font-size: 12px; font-weight: 700; white-space: nowrap; }
 
-.btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; border-radius: 14px; background: var(--card2); font-weight: 600; text-decoration: none; color: var(--text); width: 100%; }
-.btn.primary { background: var(--accent); color: var(--accent-ink); }
-.btn.big { min-height: 56px; font-size: 18px; border-radius: 16px; margin-top: 16px; }
+.btn { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 18px; font-weight: 600; text-decoration: none; color: var(--text); width: 100%; }
+.btn.big { min-height: 56px; font-size: 18px; margin-top: 16px; }
 .btn.ghost { background: none; color: var(--muted); margin-top: 6px; }
-.btn.danger { background: rgba(255, 69, 58, 0.14); color: var(--danger); margin-top: 8px; }
+.btn.danger { margin-top: 8px; }
 .btn.sm { min-height: 40px; width: auto; padding: 0 16px; font-size: 15px; }
-.btn:active, .icon-btn:active, .tbtn:active, .dchip:active, .cday:active { transform: scale(0.96); }
+.tbtn:active, .dchip:active, .cday:active { transform: scale(0.96); }
 .link { color: var(--accent); font-weight: 600; font-size: 15px; padding: 10px 0; }
 .link.center { display: block; width: 100%; color: var(--muted); }
-.icon-btn { width: 44px; height: 44px; border-radius: 14px; background: var(--card); display: grid; place-items: center; flex: none; }
-.icon-btn.sm { width: 36px; height: 36px; border-radius: 12px; background: var(--card2); }
+.icon-btn { width: 44px; height: 44px; display: grid; place-items: center; flex: none; }
+.icon-btn.sm { width: 36px; height: 36px; }
 .icon-btn.sm .ic { width: 18px; height: 18px; }
 
 /* ---------- progress */
@@ -186,15 +185,14 @@ details.note[open] summary { margin-bottom: 6px; }
 .kg { position: relative; display: block; }
 .kg span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 13px; color: var(--muted); pointer-events: none; }
 .in {
-  width: 100%; height: 44px; border-radius: 12px; border: 1.5px solid transparent; background: var(--card2);
+  width: 100%; height: 44px; border: 0;
   color: var(--text); font: 600 17px/1 inherit; font-family: inherit; text-align: left; padding: 0 34px 0 12px;
   -webkit-appearance: none; appearance: none; outline: none;
 }
 .in::placeholder { color: #5f5f67; font-weight: 500; }
-.in:focus { border-color: var(--accent); }
 .cue { background: var(--card2); border-radius: 12px; padding: 10px 12px; font-size: 14px; margin: 10px 0 0; color: #d4d4d8; }
 .ex-hint { font-size: 13px; color: var(--muted); margin: 8px 2px 0; }
-.btn.done-btn { margin-top: 10px; background: var(--accent); color: var(--accent-ink); width: 100%; min-height: 44px; }
+.btn.done-btn { margin-top: 10px; width: 100%; min-height: 44px; }
 .ssgroup { margin: 4px 0 10px; }
 .ssgroup .xrow { margin-bottom: 6px; box-shadow: inset 3px 0 0 var(--warn); }
 .ssgroup .xrow.open { box-shadow: inset 3px 0 0 var(--warn), 0 0 0 1.5px var(--accent) inset; }
@@ -210,42 +208,29 @@ details.note[open] summary { margin-bottom: 6px; }
 #timer {
   position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 24px;
   grid-template-columns: minmax(0, 340px); justify-content: center;
-  background: rgba(0, 0, 0, 0.62); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  background: rgb(0 0 0 / 0.5);
   animation: fade-in 0.2s ease-out;
 }
 #timer[hidden] { display: none; }
 .t-card {
-  width: 100%; background: var(--sheet); border: 1px solid var(--line); border-radius: 30px;
-  padding: 22px 20px 20px; text-align: center; box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
+  width: 100%; padding: 22px 20px 20px; text-align: center;
   animation: pop-in 0.22s cubic-bezier(0.2, 0.9, 0.3, 1.2);
 }
 .t-top { display: flex; align-items: center; gap: 10px; }
 .t-label { flex: 1; min-width: 0; text-align: left; font-size: 13px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.t-hide { flex: none; height: 34px; padding: 0 14px; border-radius: 11px; background: var(--card2); font-size: 14px; font-weight: 700; color: var(--text); }
+.t-hide { flex: none; height: 34px; padding: 0 14px; font-size: 14px; font-weight: 700; color: var(--text); }
 .t-ring { position: relative; width: 220px; height: 220px; margin: 14px auto 18px; }
 .t-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .t-track { fill: none; stroke: var(--card2); stroke-width: 9; }
 .t-prog { fill: none; stroke: var(--accent); stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 0.5s linear; }
 .t-time { position: absolute; inset: 0; display: grid; place-items: center; font-size: 58px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
 .t-btns { display: grid; grid-template-columns: 1fr 1.2fr 1fr; gap: 8px; }
-.t-btns button { height: 52px; border-radius: 16px; background: var(--card2); font-weight: 700; font-size: 17px; }
-.t-btns .t-skip { background: var(--accent-soft); color: var(--accent-2); }
+.t-btns button { height: 52px; font-weight: 700; font-size: 17px; }
 #timer.over .t-time { color: var(--accent-2); }
 #timer.over .t-card { animation: pulse 0.5s ease-in-out 2; }
 @keyframes pulse { 50% { transform: scale(1.04); } }
 @keyframes fade-in { from { opacity: 0; } }
 @keyframes pop-in { from { transform: scale(0.9); opacity: 0; } }
-
-/* ---------- tab bar */
-#tabbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; display: flex; justify-content: space-around;
-  padding: 6px 8px calc(var(--safe-b) + 4px);
-  background: var(--bar); border-top: 1px solid var(--line);
-  backdrop-filter: saturate(160%) blur(20px); -webkit-backdrop-filter: saturate(160%) blur(20px);
-}
-#tabbar a { flex: 1; max-width: 120px; display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 4px 0; color: var(--muted); text-decoration: none; font-size: 11px; font-weight: 600; }
-#tabbar a.on { color: var(--accent); }
-#tabbar .ic { width: 26px; height: 26px; }
 
 /* ---------- plan */
 .legend-row { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); margin-top: 10px; }
@@ -286,13 +271,12 @@ details.note[open] summary { margin-bottom: 6px; }
 .field > span { display: block; font-weight: 600; margin-bottom: 8px; }
 .field .row { display: flex; gap: 8px; }
 .field small { margin-top: 6px; }
-select { flex: 1; height: 40px; border-radius: 12px; background: var(--card2); color: var(--text); border: 0; padding: 0 12px; font: inherit; font-size: 16px; }
+select { flex: 1; height: 40px; color: var(--text); border: 0; padding: 0 14px; font: inherit; font-size: 16px; }
 #toast {
   position: fixed; left: 50%; z-index: 60; bottom: calc(var(--tab) + var(--safe-b) + 14px);
   transform: translate(-50%, 24px); opacity: 0; pointer-events: none; transition: transform 0.22s, opacity 0.22s;
   display: flex; align-items: center; gap: 14px; max-width: calc(100% - 32px); width: max-content;
-  background: var(--card2); color: var(--text); padding: 12px 16px; border-radius: 16px; border: 1px solid var(--line);
-  font-size: 15px; font-weight: 600; box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+  color: var(--text); padding: 12px 18px; font-size: 15px; font-weight: 600;
 }
 #toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #toast button { flex: none; color: var(--accent-2); font-weight: 700; padding: 4px 2px; }
@@ -340,9 +324,6 @@ svg text { font-family: inherit; }
 .dot.fatigued { background: var(--danger); }
 .dot.planbox { background: transparent; box-shadow: 0 0 0 1.5px #55555c inset; }
 
-.seg { display: flex; background: var(--card2); border-radius: 13px; padding: 3px; gap: 2px; margin-bottom: 12px; }
-.seg button { flex: 1; min-height: 36px; border-radius: 10px; font-size: 14px; font-weight: 600; color: var(--muted); padding: 0 4px; }
-.seg button.on { background: var(--bg); color: var(--text); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4); }
 .bars { width: 100%; height: auto; display: block; }
 .bars .grid { stroke: var(--line); stroke-dasharray: 3 4; }
 .bars .axis { fill: var(--muted); font-size: 10px; }
@@ -417,9 +398,6 @@ svg text { font-family: inherit; }
 .d-sets { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
 .d-sets span { background: var(--card2); border-radius: 8px; padding: 4px 8px; font-size: 13px; font-variant-numeric: tabular-nums; }
 
-@media (min-width: 600px) {
-  #tabbar { justify-content: center; gap: 24px; }
-}
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
@@ -442,11 +420,6 @@ svg text { font-family: inherit; }
 .xhead:active .grow { opacity: 0.6; }
 .done-card { display: flex; align-items: center; gap: 14px; text-align: left; color: var(--text); }
 .done-card > .ic { color: var(--muted); width: 18px; height: 18px; }
-#tabbar a { position: relative; }
-#tabbar a.live::after {
-  content: ''; position: absolute; top: 2px; left: calc(50% + 10px); width: 9px; height: 9px; border-radius: 50%;
-  background: var(--accent); box-shadow: 0 0 0 2px var(--bg); animation: live 1.6s ease-in-out infinite;
-}
 @keyframes live { 50% { opacity: 0.35; } }
 .sample-banner {
   display: flex; align-items: center; gap: 8px; margin: -4px 0 12px; padding: 8px 12px; border-radius: 12px;
@@ -479,13 +452,11 @@ body.typing .top.sticky { position: relative; }
 }
 #timer.mini .t-card { display: none; }
 #timer.mini .t-mini {
-  pointer-events: auto; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 24px;
-  background: var(--sheet); border: 1px solid var(--line); box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5); color: var(--text);
-  font-size: 15px; font-weight: 600;
+  pointer-events: auto; display: flex; align-items: center; gap: 8px; height: 48px; padding: 0 18px;
+  color: var(--text); font-size: 15px; font-weight: 600;
 }
 #timer.mini .t-mini .ic { width: 18px; height: 18px; color: var(--accent-2); }
 #timer.mini .t-mini b { font-size: 18px; font-variant-numeric: tabular-nums; color: var(--accent-2); }
-#timer.mini.over .t-mini { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 #timer.mini.over .t-mini b, #timer.mini.over .t-mini .ic { color: var(--accent-ink); }
 body:has(#timer.mini:not([hidden])) #view { padding-bottom: calc(var(--tab) + var(--safe-b) + 90px); }
 body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab) + var(--safe-b) + 84px); }
@@ -495,16 +466,16 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .wl-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 8px; font-size: 15px; font-weight: 600; }
 .wl-head small { display: inline; margin-left: 4px; font-size: 13px; font-weight: 500; }
 .stepper { display: grid; grid-template-columns: 52px minmax(0, 1fr) 52px; gap: 8px; align-items: center; }
-.stepper .stp { height: 52px; border-radius: 14px; background: var(--card2); color: var(--text); font-size: 26px; font-weight: 500; line-height: 1; }
+.stepper .stp { height: 52px; color: var(--text); font-size: 26px; font-weight: 500; line-height: 1; }
 .kgbox { position: relative; display: block; }
 .kgbox span { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 14px; color: var(--muted); pointer-events: none; }
 .stepper .in { height: 52px; padding: 0 30px; text-align: center; font-size: 22px; font-weight: 700; }
 .stepper.sm { grid-template-columns: 38px 62px 38px; gap: 6px; }
-.stepper.sm .stp { height: 42px; border-radius: 11px; font-size: 22px; }
+.stepper.sm .stp { height: 42px; font-size: 22px; }
 .stepper.sm .in { height: 42px; padding: 0 4px; font-size: 17px; }
 .wlog .wrow { grid-template-columns: 18px minmax(0, 1fr) auto; }
 .chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-.chip { height: 36px; padding: 0 14px; border-radius: 11px; background: var(--accent-soft); color: var(--accent-2); font-size: 14px; font-weight: 600; }
+.chip { height: 36px; padding: 0 14px; color: var(--accent-2); font-size: 14px; font-weight: 600; }
 .stp:active, .chip:active { transform: scale(0.94); }
 .link.sm { display: inline-block; padding: 10px 0 0; font-size: 14px; }
 .wl-head .link.sm { padding: 0; }
@@ -542,7 +513,6 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .chg .up { color: var(--accent-2); font-weight: 700; }
 .chg .down { color: #ff7b72; font-weight: 700; }
 .chg .pr { color: var(--accent-ink); background: var(--accent); border-radius: 8px; padding: 2px 8px; font-size: 12px; font-weight: 800; }
-.btn.big:not(.primary) { border: 1.5px solid var(--line); }
 
 /* ---------- offline status */
 .offline-status { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: 12px; background: rgba(255, 159, 10, 0.12); color: var(--warn); font-size: 14px; font-weight: 600; }
@@ -568,10 +538,9 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .xc.main { color: var(--text); font-size: 15px; font-weight: 800; }
 .xchips .xmeta .today-w { background: var(--accent-soft); color: var(--accent-2); }
 .tround { flex: none; display: flex; flex-direction: column; align-items: center; gap: 5px; color: var(--accent-2); }
-.tround-ic { width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: var(--accent-soft); transition: transform 0.12s; }
+.tround-ic { width: 48px; height: 48px; display: grid; place-items: center; }
 .tround-ic .ic { width: 22px; height: 22px; }
 .tround small { font-size: 12px; font-weight: 700; color: var(--accent-2); font-variant-numeric: tabular-nums; }
-.tround:active .tround-ic { transform: scale(0.9); }
 
 /* superset: one card, both exercises inside, one timer */
 .ssgroup { background: var(--card); border-radius: var(--r); padding: 4px 14px; margin: 0 0 10px; box-shadow: inset 3px 0 0 var(--warn); }
@@ -602,13 +571,12 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 /* First workouts only: a short tip you can close. */
 .tip { display: flex; align-items: flex-start; gap: 10px; background: var(--card); border-radius: 14px; padding: 10px 10px 10px 14px; margin: 0 0 10px; }
 .tip p { margin: 0; flex: 1; line-height: 1.45; }
-.tip .icon-btn.sm { width: 30px; height: 30px; border-radius: 10px; }
+.tip .icon-btn.sm { width: 30px; height: 30px; }
 .tip .icon-btn.sm .ic { width: 15px; height: 15px; color: var(--muted); }
 
 /* Timers are quiet; the one for the card that's up next is filled. */
-.tround-ic { background: var(--card2); color: var(--accent-2); }
+.tround-ic { color: var(--accent-2); }
 .tround small { color: var(--muted); }
-.xrow.next .tround-ic, .ssgroup.next .ss-head .tround-ic { background: var(--accent); color: var(--accent-ink); box-shadow: 0 6px 18px var(--accent-fill); }
 .xrow.next .tround small, .ssgroup.next .ss-head .tround small { color: var(--accent-2); }
 .tdots { display: flex; justify-content: center; gap: 3px; min-height: 6px; }
 .tdots i { width: 6px; height: 6px; border-radius: 50%; background: var(--line); transition: background 0.2s; }
@@ -631,7 +599,7 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .sets-done { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 12px; padding: 6px 6px 6px 12px; border-radius: 12px; background: var(--card2); }
 .sets-done > span { font-size: 14px; font-weight: 600; color: var(--muted); }
 .sd-ctl { display: flex; align-items: center; gap: 4px; }
-.sd-ctl .stp { width: 40px; height: 36px; border-radius: 10px; background: var(--card); font-size: 22px; line-height: 1; color: var(--text); }
+.sd-ctl .stp { width: 40px; height: 36px; font-size: 22px; line-height: 1; color: var(--text); }
 .sd-ctl b { min-width: 58px; text-align: center; font-variant-numeric: tabular-nums; }
 .sd-toggle { height: 34px; background: var(--card); color: var(--text); }
 .sd-toggle.on { background: var(--accent-soft); color: var(--accent-2); }
@@ -659,117 +627,106 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .bm-cap b { color: var(--text); }
 .bm-foot .legend { margin-top: 0; }
 
+
 /* =====================================================================
-   Liquid Glass, after Glisse (github.com/0kzh/glisse, MIT): a floating
-   glass tab bar with a sliding lens, pill-shaped glass controls with a lit
-   rim, glass sheets and timer. CSS only, so it also works in Safari.
+   Liquid Glass. The glass is Glisse's own (glisse.css and js/glisse.js,
+   github.com/0kzh/glisse, MIT): its tokens, material, rim light, press and
+   tab bar. These rules put it on the app's controls and place the tab bar.
    ===================================================================== */
 :root {
-  /* glass tinted from the theme's own surfaces */
-  --g-glass: color-mix(in srgb, var(--card2) 62%, transparent);
-  --g-glass-hi: color-mix(in srgb, color-mix(in srgb, var(--card2), #fff 16%) 70%, transparent);
-  --g-blur: blur(12px) saturate(1.6);
-  --g-sel: rgb(255 255 255 / 0.145);
-  --g-thumb: rgb(235 235 245 / 0.26);
-  --g-surface: color-mix(in srgb, var(--sheet) 84%, transparent);
-  /* the lit rim: a light top edge and a hairline all round */
-  --g-rim: inset 0 1px 0 rgb(255 255 255 / 0.13), inset 0 0 0 0.5px rgb(255 255 255 / 0.1);
-  --g-rim-gradient: linear-gradient(150deg, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.07) 32%, rgb(255 255 255 / 0.03) 62%, rgb(255 255 255 / 0.2));
-  /* floating tab bar: 62 px tall, sitting just above the home indicator */
-  --tb-h: 62px;
+  --lg-fill: var(--accent); /* Glisse's accent is the theme's */
+  /* The tab bar is Glisse's icon bar: four 72 x 52 tabs inset 4px, so 296 x 60. */
+  --tb-h: 60px;
   --tb-gap: max(12px, calc(var(--safe-b) - 8px));
   /* everything that clears the tab bar uses --tab + --safe-b */
   --tab: calc(var(--tb-gap) + var(--tb-h) - var(--safe-b));
 }
-/* A gradient rim drawn as a 1 px ring (for the big glass surfaces). */
-.g-ring::before, #tabbar::before, .t-card::before {
-  content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none;
-  background: var(--g-rim-gradient);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
 
-/* ---------- tab bar: a floating glass capsule, a lens behind the selected tab */
-#tabbar {
-  left: 50%; right: auto; bottom: var(--tb-gap); width: min(calc(100% - 40px), 320px); height: var(--tb-h);
-  transform: translateX(-50%); padding: 4px; border: 0; border-radius: 999px; justify-content: stretch; gap: 0;
-  background: color-mix(in srgb, var(--card2) 70%, transparent);
-  backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8);
-  box-shadow: 0 10px 34px rgb(0 0 0 / 0.5); touch-action: none; user-select: none; -webkit-user-select: none;
+/* ---------- glass controls: the same declarations as Glisse's .lg-glass.
+   Keep this list in step with GLASS_SEL in js/glass.js, which paints each
+   one's rim light (--lg-rim) to its exact size. --g-fill is what the glass
+   is filled with at rest, and --g-lit while pressed or under a mouse. */
+:where(.btn:not(.ghost), .icon-btn, .stp, .chip, .tround-ic, .in, select, .t-hide, .t-btns button, .t-mini, #toast) { position: relative; }
+.btn:not(.ghost), .icon-btn, .stp, .chip, .tround-ic, .in, select, .t-hide, .t-btns button, .t-mini, #toast {
+  --g-fill: var(--lg-glass); --g-lit: var(--lg-glass-active); --g-hover: var(--lg-glass-active);
+  border: 0; border-radius: 999px;
+  background-color: var(--g-fill); background-image: var(--lg-rim, none); background-size: 100% 100%;
+  -webkit-backdrop-filter: blur(var(--lg-blur, 3px)) var(--lg-filter, saturate(1.5));
+  backdrop-filter: blur(var(--lg-blur, 3px)) var(--lg-filter, saturate(1.5));
+  box-shadow: inset 0 0 0 0.5px var(--lg-edge), 0 1px 3px var(--lg-drop);
 }
-#tabbar a { flex: 1; max-width: none; z-index: 1; justify-content: center; gap: 1px; padding: 0; border-radius: 999px;
-  color: var(--text); font-size: 10px; font-weight: 500; -webkit-touch-callout: none; -webkit-user-drag: none; user-select: none; -webkit-user-select: none; transition: color 0.2s; }
-#tabbar a.on { color: var(--accent); }
-#tabbar .ic { width: 26px; height: 26px; }
-#tabbar a.live::after { top: 5px; box-shadow: 0 0 0 2px color-mix(in srgb, var(--card2) 90%, #000); }
-.tb-lens {
-  position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 4px; width: calc((100% - 8px) / 4); border-radius: 999px;
-  background: var(--g-sel); pointer-events: none;
-  /* translate (not transform) so the lift's scale doesn't stretch the offset */
-  translate: calc(100% * var(--i, 0)) 0;
-  transition: translate 0.5s cubic-bezier(0.3, 1.45, 0.45, 1), scale 0.25s ease, background-color 0.2s;
-}
-/* Held: the lens lifts, grows a little and turns to clear glass; it follows your finger. */
-#tabbar[data-lifted] .tb-lens {
-  scale: 1.14 1.2; background: rgb(255 255 255 / 0.07); transition: scale 0.18s ease, background-color 0.15s;
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), inset 0 0 0 1px rgb(255 255 255 / 0.18), 0 8px 22px rgb(0 0 0 / 0.35);
-  backdrop-filter: blur(1px) brightness(1.18) saturate(1.6); -webkit-backdrop-filter: blur(1px) brightness(1.18) saturate(1.6);
-}
-#tabbar[data-dragging] .tb-lens { transition: scale 0.18s ease, background-color 0.15s; }
+/* Once the rim is painted, the edge line is in it, under the light. */
+.btn[data-rim], .icon-btn[data-rim], .stp[data-rim], .chip[data-rim], .tround-ic[data-rim], .in[data-rim], select[data-rim],
+.t-hide[data-rim], .t-btns button[data-rim], .t-mini[data-rim], #toast[data-rim] { box-shadow: 0 1px 3px var(--lg-drop); }
 
-/* ---------- buttons: capsules of glass; the main action is filled */
-.btn, .btn.big, .btn.sm { border-radius: 999px; }
-.btn { background: var(--g-glass); box-shadow: var(--g-rim); backdrop-filter: var(--g-blur); -webkit-backdrop-filter: var(--g-blur); transition: background-color 0.2s, transform 0.12s; }
-.btn:active { background: var(--g-glass-hi); }
-.btn.big:not(.primary) { border: 0; }
-.btn.primary, .btn.done-btn {
-  background: var(--accent); color: var(--accent-ink);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28), inset 0 0 0 0.5px rgb(255 255 255 / 0.18), 0 8px 22px color-mix(in srgb, var(--accent) 28%, transparent);
+/* ---------- buttons, as Glisse's Button: lit at once when pressed, fading on
+   release, with a glow under the finger; js/glass.js adds the springy press. */
+.btn:not(.ghost), .icon-btn, .stp, .chip, .tround-ic, .t-hide, .t-btns button, .t-mini {
+  -webkit-touch-callout: none; transition: background-color 200ms ease;
 }
-.btn.primary:active, .btn.done-btn:active { background: color-mix(in srgb, var(--accent) 85%, #000); }
-.btn.ghost { background: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
-.btn.danger { background: var(--g-glass); color: var(--danger); }
-.icon-btn, .icon-btn.sm { border-radius: 50%; background: var(--g-glass); box-shadow: var(--g-rim); backdrop-filter: var(--g-blur); -webkit-backdrop-filter: var(--g-blur); }
-.icon-btn:active { background: var(--g-glass-hi); }
+.btn:not(.ghost)::after, .icon-btn::after, .stp::after, .chip::after, .tround-ic::after, .t-hide::after, .t-btns button::after, .t-mini::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(circle 240px at var(--lg-x, 50%) var(--lg-y, 50%), rgb(255 255 255 / 0.035), rgb(255 255 255 / 0.025) 50%, transparent);
+  opacity: 0; transition: opacity 220ms ease-in-out;
+}
+.btn[data-pressed]::after, .icon-btn[data-pressed]::after, .stp[data-pressed]::after, .chip[data-pressed]::after, .tround-ic[data-pressed]::after,
+.t-hide[data-pressed]::after, .t-btns button[data-pressed]::after, .t-mini[data-pressed]::after { opacity: 1; transition-duration: 0s; }
+@media (hover: hover) and (pointer: fine) {
+  .btn:not(.ghost):hover, .icon-btn:hover, .stp:hover, .chip:hover, .tround:hover .tround-ic, .t-hide:hover, .t-btns button:hover, .t-mini:hover { background-color: var(--g-hover); }
+}
+.btn:not(.ghost):is(:active, [data-pressed]), .icon-btn:is(:active, [data-pressed]), .stp:is(:active, [data-pressed]), .chip:is(:active, [data-pressed]),
+.tround:active .tround-ic, .tround-ic[data-pressed], .t-hide:is(:active, [data-pressed]), .t-btns button:is(:active, [data-pressed]), .t-mini:is(:active, [data-pressed]) {
+  background-color: var(--g-lit); transition-duration: 0s;
+}
+.btn:not(.ghost):disabled, .icon-btn:disabled, .stp:disabled, .chip:disabled { background-color: var(--g-fill); opacity: 0.35; }
+.btn:focus-visible, .icon-btn:focus-visible, .stp:focus-visible, .chip:focus-visible, .tround:focus-visible, .t-hide:focus-visible, .t-btns button:focus-visible, .t-mini:focus-visible {
+  outline: 2px solid var(--lg-ring); outline-offset: 2px;
+}
+/* labels in Glisse's foreground */
+.btn:not(.ghost), .icon-btn, .stp, .t-hide, .t-btns button { color: var(--lg-foreground); }
+/* filled: the main action, in the accent colour */
+.btn.primary, .btn.done-btn, .t-btns .t-skip, .xrow.next .tround-ic, .ssgroup.next .ss-head .tround-ic, #timer.mini.over .t-mini {
+  --g-fill: var(--lg-fill); --g-lit: color-mix(in srgb, var(--lg-fill) 85%, #000); --g-hover: color-mix(in srgb, var(--lg-fill) 88%, #fff);
+  color: var(--accent-ink);
+}
+/* destructive, and capsule chips */
+.btn.danger { color: var(--lg-destructive); }
 .chip, .xc, .xchips .xmeta span, .dchip { border-radius: 999px; }
-.chip { box-shadow: inset 0 0 0 0.5px color-mix(in srgb, var(--accent) 35%, transparent); }
 
-/* ---------- segmented controls: a glass track, a light thumb */
-.seg { border-radius: 999px; padding: 3px; background: var(--g-glass); box-shadow: var(--g-rim); }
-.seg button { border-radius: 999px; color: var(--text); font-weight: 500; transition: background-color 0.25s, color 0.25s; }
-.seg button.on { background: var(--g-thumb); color: #fff; font-weight: 600; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18); }
+/* ---------- inputs, as Glisse's Input: lighter glass while typing */
+.in:focus, select:focus { background-color: var(--lg-glass-active); outline: 0; }
+.in, select { color: var(--lg-foreground); transition: background-color 200ms ease; }
 
-/* ---------- inputs, steppers, timer buttons: capsules */
-.in, select { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
-.in:focus { background: var(--g-glass-hi); border-color: var(--accent); }
-.stepper .stp, .stepper.sm .stp, .sd-ctl .stp { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
-.stepper .stp:active { background: var(--g-glass-hi); }
-.tround-ic { box-shadow: var(--g-rim); }
-.xrow.next .tround-ic, .ssgroup.next .ss-head .tround-ic { box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 6px 18px var(--accent-fill); }
-.bgopt { border-radius: 20px; }
+/* ---------- tab bar: Glisse's, floating above the home indicator */
+#tabbar { position: fixed; z-index: 20; left: 0; right: 0; bottom: var(--tb-gap); width: max-content; margin: 0 auto; }
+/* a workout is in progress: a dot by the Today icon */
+#tabbar .lg-tab.live::after {
+  content: ''; position: absolute; top: 6px; left: calc(50% + 9px); width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent); animation: live 1.6s ease-in-out infinite;
+}
 
-/* ---------- cards: a hairline of light at the edge */
-.card { border-radius: 22px; box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.06); }
+/* ---------- segmented controls: Glisse's, as wide as the card. Its segments
+   share the width (js/glass.js sets --lg-tab-width to the exact share). */
+.seg { display: flex; width: 100%; margin-bottom: 12px; --lg-tab-width: calc(100% / var(--lg-tabs)); }
+.seg > .lg-tab-labels:not(.lg-tab-lensed) { flex: 1; min-width: 0; }
+.seg .lg-tab { flex: 1 1 0; width: auto; min-width: 0; }
 
-/* ---------- sheets: a floating glass panel, rounded on every corner */
+/* ---------- surfaces: sheets and the rest timer, as Glisse's menu surface */
+.sheet, .t-card {
+  background: var(--lg-surface);
+  -webkit-backdrop-filter: blur(22px) saturate(1.9); backdrop-filter: blur(22px) saturate(1.9);
+  box-shadow: inset 0 0 0 0.5px var(--lg-surface-edge), 0 12px 40px var(--lg-shadow);
+}
+/* a floating panel, rounded on every corner */
 .sheet {
   left: 8px; right: 8px; bottom: max(8px, calc(var(--safe-b) - 20px)); max-width: 544px;
   border-radius: 34px; padding-bottom: 22px; max-height: calc(100% - var(--safe-t) - 40px);
-  background: var(--g-surface); backdrop-filter: blur(30px) saturate(1.9); -webkit-backdrop-filter: blur(30px) saturate(1.9);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), inset 0 0 0 0.5px rgb(255 255 255 / 0.12), 0 18px 50px rgb(0 0 0 / 0.5);
   transform: translateY(calc(100% + 40px));
 }
 .sheet-bg { background: rgb(0 0 0 / 0.42); }
-.stat { border-radius: 18px; background: color-mix(in srgb, var(--card2) 70%, transparent); }
+.t-card { border-radius: 34px; }
 
-/* ---------- rest timer: a glass card; capsule buttons */
-#timer { background: rgb(0 0 0 / 0.45); backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4); }
-.t-card { position: relative; border: 0; border-radius: 38px; background: var(--g-surface); backdrop-filter: blur(30px) saturate(1.9); -webkit-backdrop-filter: blur(30px) saturate(1.9); box-shadow: 0 24px 60px rgb(0 0 0 / 0.55); }
-.t-hide, .t-btns button { border-radius: 999px; background: var(--g-glass); box-shadow: var(--g-rim); }
-.t-btns .t-skip { background: var(--accent); color: var(--accent-ink); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.28); }
-#timer.mini .t-mini { border: 0; background: color-mix(in srgb, var(--card2) 72%, transparent); box-shadow: var(--g-rim), 0 10px 28px rgb(0 0 0 / 0.5);
-  backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8); }
-
-/* ---------- toast: a glass capsule */
-#toast { border: 0; border-radius: 999px; padding: 12px 18px; background: color-mix(in srgb, var(--card2) 74%, transparent);
-  box-shadow: var(--g-rim), 0 10px 28px rgb(0 0 0 / 0.5); backdrop-filter: blur(18px) saturate(1.8); -webkit-backdrop-filter: blur(18px) saturate(1.8); }
+/* ---------- cards: a hairline of light at the edge */
+.card { border-radius: 22px; box-shadow: inset 0 0 0 0.5px rgb(255 255 255 / 0.06); }
+.stat { border-radius: 18px; }
+.bgopt { border-radius: 20px; }

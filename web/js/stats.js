@@ -5,6 +5,7 @@ import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
   timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast,
 } from './util.js';
+import { redraw } from './glass.js';
 import { bodyMap } from './bodymap.js';
 
 const GROUPS = {
@@ -148,14 +149,15 @@ export function openWorkout(id) {
 // Each card renders on its own, so tapping a toggle, arrow, bar or heatmap
 // square only redraws that card and the page never jumps.
 const CARDS = {
+  // Muscle balance (radar and muscle map) comes first.
+  muscles: (list) => `${seg('tab', [['balance', 'Balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
+    ${ui.tab === 'balance' ? balance(list) : ui.tab === 'fatigue' ? fatigue(list) : strength(list)}`,
   totals: totalsCard,
   week: weekCard,
   activity: (list) => `<div class="card-title">Activity</div>${heatmap(list)}`,
   bars: (list) => `<div class="card-title">Last 12 weeks</div>
     ${seg('metric', [['n', 'Workouts'], ['dur', 'Duration'], ['vol', 'Volume'], ['reps', 'Reps']], ui.metric)}
     ${weekBars(list, ui.metric)}`,
-  muscles: (list) => `${seg('tab', [['balance', 'Balance'], ['fatigue', 'Fatigue'], ['strength', 'Strength']], ui.tab)}
-    ${ui.tab === 'balance' ? balance(list) : ui.tab === 'fatigue' ? fatigue(list) : strength(list)}`,
   planned: (list) => `<div class="card-title">Weekly muscle volume</div>${plannedVolume(list)}`,
 };
 
@@ -197,7 +199,7 @@ export function renderStats(root) {
     // page keeps its height so a shorter card can't yank you upward.
     root.style.minHeight = `${root.offsetHeight}px`;
     const top = cardEl.getBoundingClientRect().top;
-    cardEl.innerHTML = CARDS[cardEl.dataset.card](workouts());
+    redraw(cardEl, CARDS[cardEl.dataset.card](workouts()));
     const shift = cardEl.getBoundingClientRect().top - top;
     if (shift) window.scrollBy(0, shift);
   };

@@ -147,10 +147,8 @@ export function sheet(html) {
   return { el: wrap.querySelector('.sheet-body'), panel, close };
 }
 
-export const seg = (name, opts, val) =>
-  `<div class="seg" role="tablist">${opts
-    .map(([v, l]) => `<button role="tab" data-seg="${name}" data-val="${v}" class="${v === val ? 'on' : ''}">${l}</button>`)
-    .join('')}</div>`;
+// A segmented control (Glisse's, see glass.js). The buttons carry data-seg / data-val.
+export { segmentedHTML as seg } from './glass.js';
 
 // ---- sound: iOS only plays audio after a user gesture has unlocked the context
 let actx;
