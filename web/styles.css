@@ -629,9 +629,10 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 
 
 /* =====================================================================
-   Liquid Glass. The glass is Glisse's own (glisse.css and js/glisse.js,
-   github.com/0kzh/glisse, MIT): its tokens, material, rim light, press and
-   tab bar. These rules put it on the app's controls and place the tab bar.
+   Liquid Glass. The glass is the Liquid Glass kit (liquid-glass/, Glisse's
+   own code, github.com/0kzh/glisse, MIT): its tokens, material, rim light,
+   press and tab bar. These rules put it on the app's controls and place the
+   tab bar.
    ===================================================================== */
 :root {
   --lg-fill: var(--accent); /* Glisse's accent is the theme's */
@@ -643,7 +644,7 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 }
 
 /* ---------- glass controls: the same declarations as Glisse's .lg-glass.
-   Keep this list in step with GLASS_SEL in js/glass.js, which paints each
+   Keep this list in step with GLASS in js/glass.js; the kit paints each
    one's rim light (--lg-rim) to its exact size. --g-fill is what the glass
    is filled with at rest, and --g-lit while pressed or under a mouse. */
 :where(.btn:not(.ghost), .icon-btn, .stp, .chip, .tround-ic, .in, select, .t-hide, .t-btns button, .t-mini, #toast) { position: relative; }
@@ -705,11 +706,8 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
   background: var(--accent); animation: live 1.6s ease-in-out infinite;
 }
 
-/* ---------- segmented controls: Glisse's, as wide as the card. Its segments
-   share the width (js/glass.js sets --lg-tab-width to the exact share). */
-.seg { display: flex; width: 100%; margin-bottom: 12px; --lg-tab-width: calc(100% / var(--lg-tabs)); }
-.seg > .lg-tab-labels:not(.lg-tab-lensed) { flex: 1; min-width: 0; }
-.seg .lg-tab { flex: 1 1 0; width: auto; min-width: 0; }
+/* ---------- segmented controls: Glisse's, as wide as the card (the kit's data-stretch) */
+.seg { margin-bottom: 12px; }
 
 /* ---------- surfaces: sheets and the rest timer, as Glisse's menu surface */
 .sheet, .t-card {

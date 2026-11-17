@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>My app</title>
+  <!-- A starting point for a new app: copy this file next to the liquid-glass folder
+       and change the paths below to "liquid-glass/…". -->
+  <link rel="stylesheet" href="glisse.css">
+  <link rel="stylesheet" href="liquid-glass.css">
+  <style>
+    :root { --lg-fill: #0091ff; /* your accent colour */ }
+    * { box-sizing: border-box; }
+    html { background: #000; }
+    body { margin: 0; color: #fff; font: 16px/1.4 -apple-system, BlinkMacSystemFont, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    main { max-width: 560px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 0px) + 28px) 16px var(--lg-dock-space); }
+    h1 { font-size: 34px; margin: 0 0 16px; }
+    .card { background: #1c1c1e; border-radius: 22px; padding: 16px; margin-bottom: 12px; }
+    .card p { margin: 4px 0 14px; color: rgb(235 235 245 / 0.6); }
+    .sheet-wrap { position: fixed; inset: 0; z-index: 40; display: grid; align-items: end; padding: 8px; background: rgb(0 0 0 / 0.4); }
+    .sheet-wrap[hidden] { display: none; }
+    .sheet { max-width: 544px; width: 100%; margin: 0 auto; padding: 22px; border-radius: 34px; }
+    .sheet h2 { margin: 0 0 16px; font-size: 20px; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- One section per tab; the script below shows the one the address names. -->
+    <section id="home" data-page>
+      <h1>Home</h1>
+      <div class="card">
+        <b>Today</b>
+        <p>Your content goes here.</p>
+        <button class="lg-glass lg-button" data-variant="filled" data-size="large" data-block id="open">Start</button>
+      </div>
+    </section>
+    <section id="list" data-page hidden>
+      <h1>List</h1>
+      <div data-lg-segmented data-stretch id="range">
+        <button data-value="week" data-selected>Week</button><button data-value="month">Month</button><button data-value="all">All</button>
+      </div>
+      <div class="card" style="margin-top: 12px"><b id="shown">Showing: week</b></div>
+    </section>
+    <section id="settings" data-page hidden>
+      <h1>Settings</h1>
+      <div class="card">
+        <label class="row">Sound <input type="checkbox" data-lg-switch checked></label>
+        <input type="range" data-lg-slider value="60" aria-label="Volume">
+      </div>
+    </section>
+  </main>
+
+  <div class="sheet-wrap" id="sheet" hidden>
+    <div class="sheet lg-surface" role="dialog" aria-label="Start">
+      <h2>Ready?</h2>
+      <button class="lg-glass lg-button" data-variant="filled" data-size="large" data-block id="close">Done</button>
+    </div>
+  </div>
+
+  <nav class="lg-dock" data-lg-tabs="route" aria-label="Main">
+    <a href="#/home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg>Home</a>
+    <a href="#/list"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01"/></svg>List</a>
+    <a href="#/settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Settings</a>
+  </nav>
+
+  <script type="module">
+    import { liquidGlass } from './liquid-glass.js';
+    if (!location.hash) history.replaceState(null, '', '#/home');
+    liquidGlass();
+
+    // Show the section the address names. The tab bar follows the address by itself.
+    const show = () => { for (const page of document.querySelectorAll('[data-page]')) page.hidden = page.id !== location.hash.slice(2); };
+    addEventListener('hashchange', show);
+    show();
+
+    // Ordinary events are all there is to listen for.
+    document.getElementById('range').addEventListener('lg-change', (ev) => { document.getElementById('shown').textContent = `Showing: ${ev.detail.value}`; });
+    const sheet = document.getElementById('sheet');
+    document.getElementById('open').onclick = () => { sheet.hidden = false; };
+    sheet.onclick = (ev) => { if (ev.target === sheet || ev.target.closest('#close')) sheet.hidden = true; };
+  </script>
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark light">
+  <title>Liquid Glass kit</title>
+  <!-- 1. Glisse's stylesheet, then the kit's, then your own. -->
+  <link rel="stylesheet" href="glisse.css">
+  <link rel="stylesheet" href="liquid-glass.css">
+  <style>
+    /* The page's own styles: nothing here is needed for the glass. */
+    :root { --page: #000; --ink: #fff; --soft: rgb(235 235 245 / 0.6); --card: #1c1c1e; --code: rgb(255 255 255 / 0.06); }
+    [data-theme="light"] { --page: #f2f2f7; --ink: #000; --soft: rgb(60 60 67 / 0.6); --card: #fff; --code: rgb(0 0 0 / 0.05); }
+    * { box-sizing: border-box; }
+    html { background: var(--page); -webkit-text-size-adjust: 100%; }
+    body { margin: 0; color: var(--ink); font: 16px/1.4 -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, 'Segoe UI', Roboto, sans-serif; -webkit-font-smoothing: antialiased; }
+    main { max-width: 560px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 0px) + 28px) 16px var(--lg-dock-space); }
+    h1 { font-size: 34px; line-height: 1.15; margin: 0 0 4px; }
+    h2 { font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--soft); margin: 26px 2px 10px; }
+    p { margin: 0 0 12px; color: var(--soft); }
+    /* Something colourful for the glass to sit on. */
+    .wall { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 14px; border-radius: 26px; background: var(--card); }
+    .wall i { height: 46px; border-radius: 14px; }
+    .wall i:nth-child(4n+1) { background: linear-gradient(135deg, #0a84ff, #5e5ce6); } .wall i:nth-child(4n+2) { background: linear-gradient(135deg, #ff9f0a, #ff375f); }
+    .wall i:nth-child(4n+3) { background: linear-gradient(135deg, #30d158, #64d2ff); } .wall i:nth-child(4n) { background: linear-gradient(135deg, #bf5af2, #ff375f); }
+    .ex { position: relative; }
+    .ex > .on-wall { position: absolute; inset: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; align-content: center; justify-content: center; padding: 14px; }
+    .row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .stack { display: grid; gap: 12px; }
+    .ex > .on-wall.stack { display: grid; align-content: center; justify-content: stretch; }
+    pre { margin: 8px 0 0; padding: 12px 14px; border-radius: 16px; background: var(--code); font: 12px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; overflow-x: auto; white-space: pre; color: var(--soft); }
+    .head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+    .swatches { display: flex; gap: 8px; }
+    .swatches button { width: 26px; height: 26px; border-radius: 50%; border: 0; padding: 0; cursor: pointer; background: var(--c); }
+    .swatches button[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--page), 0 0 0 4px var(--ink); }
+    .log { min-height: 22px; font-size: 13px; color: var(--soft); }
+    .sheet-wrap { position: fixed; inset: 0; z-index: 40; display: grid; align-items: end; padding: 8px; background: rgb(0 0 0 / 0.4); }
+    .sheet-wrap[hidden] { display: none; }
+    .sheet { max-width: 544px; width: 100%; margin: 0 auto; padding: 22px; border-radius: 34px; }
+    .sheet h3 { margin: 0 0 6px; font-size: 20px; } .sheet .row { margin-top: 16px; }
+    /* "Your own markup": an app's old controls, before the kit dresses them. */
+    .old-btn { height: 44px; padding: 0 18px; border: 1px solid #555; border-radius: 8px; background: #333; color: var(--ink); font: inherit; font-weight: 600; }
+    .old-field { height: 44px; padding: 0 14px; border: 1px solid #555; border-radius: 8px; background: #222; color: var(--ink); font: inherit; width: 100%; }
+    .old-panel { padding: 16px; border: 1px solid #555; border-radius: 22px; background: #222; }
+    [data-theme="light"] :is(.old-btn, .old-field, .old-panel) { background: #e5e5ea; border-color: #c7c7cc; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Liquid Glass kit</h1>
+    <p>iOS 26's glass for any web page. The glass is <a href="https://github.com/0kzh/glisse" style="color:var(--lg-fill)">Glisse</a>'s own code; this page is written in plain HTML.</p>
+    <div class="head">
+      <!-- A segmented control from markup alone. -->
+      <div data-lg-segmented id="theme" aria-label="Theme">
+        <button data-value="dark" data-selected>Dark</button><button data-value="light">Light</button><button data-value="auto">Auto</button>
+      </div>
+      <div class="swatches" aria-label="Accent colour">
+        <button style="--c:#0091ff" aria-label="Blue" aria-pressed="true"></button><button style="--c:#ff9f0a" aria-label="Orange"></button><button style="--c:#30d158" aria-label="Green"></button><button style="--c:#bf5af2" aria-label="Purple"></button><button style="--c:#ff375f" aria-label="Pink"></button>
+      </div>
+    </div>
+
+    <section id="buttons" data-page>
+      <h2>Buttons</h2>
+      <div class="ex">
+        <div class="wall"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="on-wall" data-code>
+<button class="lg-glass lg-button">Glass</button>
+<button class="lg-glass lg-button" data-variant="filled">Filled</button>
+<button class="lg-glass lg-button" data-destructive>Delete</button>
+<button class="lg-glass lg-button" data-icon="only" aria-label="Add">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+<button class="lg-glass lg-button" data-icon>
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+  With icon
+</button>
+<button class="lg-glass lg-button" data-tint style="--lg-tint: #ff9f0a">Tinted</button>
+<button class="lg-glass lg-button" disabled>Disabled</button>
+        </div>
+      </div>
+      <h2>A screen's main action</h2>
+      <div data-code>
+<button class="lg-glass lg-button" data-variant="filled" data-size="large" data-block>Start workout</button>
+      </div>
+      <h2>Glass</h2>
+      <div class="ex">
+        <div class="wall"><i></i><i></i><i></i><i></i></div>
+        <div class="on-wall" data-code>
+<div class="lg-glass" style="padding: 10px 18px; border-radius: 22px">Any element can be glass</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="controls" data-page hidden>
+      <h2>Segmented control</h2>
+      <div data-code>
+<div data-lg-segmented>
+  <button data-value="week" data-selected>Week</button>
+  <button data-value="30">30d</button>
+  <button data-value="90">90d</button>
+  <button data-value="all">All</button>
+</div>
+      </div>
+      <h2>As wide as its container</h2>
+      <div data-code>
+<div data-lg-segmented data-stretch>
+  <button data-value="balance" data-selected>Balance</button>
+  <button data-value="fatigue">Fatigue</button>
+  <button data-value="strength">Strength</button>
+</div>
+      </div>
+      <h2>Switch</h2>
+      <div data-code>
+<label class="row">
+  <input type="checkbox" data-lg-switch checked>
+  Rest timer sound
+</label>
+      </div>
+      <h2>Slider</h2>
+      <div data-code>
+<input type="range" data-lg-slider min="0" max="100" value="40" aria-label="Volume">
+      </div>
+      <h2>Text field</h2>
+      <div class="stack" data-code>
+<input data-lg-input placeholder="Weight (kg)" inputmode="decimal">
+<input type="search" data-lg-input>
+      </div>
+      <h2>Menu</h2>
+      <div data-code>
+<div data-lg-menu data-align="start" aria-label="More">
+  <button data-value="rename">Rename</button>
+  <button data-value="share">Share</button>
+  <hr>
+  <button data-value="delete" data-destructive>Delete</button>
+</div>
+      </div>
+      <h2>What the page hears</h2>
+      <div class="log" id="log">Use a control above.</div>
+    </section>
+
+    <section id="surfaces" data-page hidden>
+      <h2>Surface</h2>
+      <p>For sheets, dialogs and popovers: more frost than a control, an edge line and a soft shadow.</p>
+      <div class="ex">
+        <div class="wall"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="on-wall" data-code>
+<div class="lg-surface" style="padding: 16px 20px">
+  <b>Rest</b> · 1:30 left
+</div>
+        </div>
+      </div>
+      <h2>A sheet</h2>
+      <div class="row"><button class="lg-glass lg-button" id="open-sheet">Open a sheet</button></div>
+      <h2>Tab bar</h2>
+      <p>The bar at the bottom of this page. With <code>data-lg-tabs="route"</code> it selects the link that matches the address.</p>
+      <pre id="dock-code"></pre>
+      <h2>Tabs without icons</h2>
+      <div data-code>
+<div data-lg-tabs>
+  <button data-value="day">Day</button>
+  <button data-value="week" data-selected>Week</button>
+  <button data-value="month">Month</button>
+</div>
+      </div>
+    </section>
+
+    <section id="yours" data-page hidden>
+      <h2>Your own markup</h2>
+      <p>An app's existing controls, left exactly as they were. One call dresses them:</p>
+      <pre>liquidGlass({
+  adopt: {
+    filled:  '.old-btn.main',
+    button:  '.old-btn',
+    input:   '.old-field',
+    surface: '.old-panel',
+  },
+});</pre>
+      <h2>Before</h2>
+      <div class="stack" data-plain>
+        <div class="row"><button class="old-btn">Cancel</button><button class="old-btn main">Save</button></div>
+        <input class="old-field" placeholder="Name">
+        <div class="old-panel">A panel</div>
+      </div>
+      <h2>After</h2>
+      <div class="ex">
+        <div class="wall"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="on-wall stack">
+          <div class="row"><button class="old-btn adopt">Cancel</button><button class="old-btn main adopt">Save</button></div>
+          <input class="old-field adopt" placeholder="Name">
+          <div class="old-panel adopt">A panel</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="sheet-wrap" id="sheet" hidden>
+    <div class="sheet lg-surface" role="dialog" aria-label="Example sheet">
+      <h3>Finish workout?</h3>
+      <p>A sheet is an element with the class <code>lg-surface</code>.</p>
+      <div class="row"><button class="lg-glass lg-button" data-variant="filled" data-size="large" data-block id="close-sheet">Done</button></div>
+    </div>
+  </div>
+
+  <!-- A docked tab bar from links alone. "route" keeps the selection on the link that matches the address. -->
+  <nav class="lg-dock" data-lg-tabs="route" aria-label="Sections">
+    <a href="#/buttons"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="8" width="17" height="8" rx="4"/></svg>Buttons</a>
+    <a href="#/controls"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h10M18 8h2M4 16h2M10 16h10"/><circle cx="16" cy="8" r="2"/><circle cx="8" cy="16" r="2"/></svg>Controls</a>
+    <a href="#/surfaces"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M4 14h16"/></svg>Surfaces</a>
+    <a href="#/yours"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-3.5 3.5-6 8-6s8 2.5 8 6"/></svg>Yours</a>
+  </nav>
+
+  <script type="module">
+    // 2. Start the kit. Everything above is picked up from its markup.
+    import { liquidGlass } from './liquid-glass.js';
+
+    // (This page shows each example's own markup under it: copy it before the kit builds on it.)
+    const dedent = (text) => { const lines = text.replace(/^\n+|\s+$/g, '').split('\n'); const cut = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^ */)[0].length)); return lines.map((l) => l.slice(cut)).join('\n'); };
+    for (const example of document.querySelectorAll('[data-code]')) {
+      const pre = document.createElement('pre');
+      pre.textContent = dedent(example.innerHTML);
+      (example.closest('.ex') || example).after(pre);
+    }
+    document.getElementById('dock-code').textContent = '<nav class="lg-dock" data-lg-tabs="route">\n  <a href="#/buttons"><svg>…</svg>Buttons</a>\n  <a href="#/controls"><svg>…</svg>Controls</a>\n  …\n</nav>';
+
+    if (!location.hash) history.replaceState(null, '', '#/buttons');
+    liquidGlass({
+      // The "Yours" tab: an app's own elements, dressed with no CSS of theirs.
+      adopt: { filled: '.old-btn.main.adopt', button: '.old-btn.adopt', input: '.old-field.adopt', surface: '.old-panel.adopt' },
+    });
+
+    // 3. The page's own behaviour, listening to ordinary events.
+    const pages = () => { const id = location.hash.slice(2); for (const page of document.querySelectorAll('[data-page]')) page.hidden = page.id !== id; window.scrollTo(0, 0); };
+    addEventListener('hashchange', pages); pages();
+
+    document.getElementById('theme').addEventListener('lg-change', (ev) => {
+      if (ev.detail.value === 'auto') delete document.documentElement.dataset.theme; else document.documentElement.dataset.theme = ev.detail.value;
+    });
+    document.querySelector('.swatches').addEventListener('click', (ev) => {
+      const swatch = ev.target.closest('button'); if (!swatch) return;
+      document.documentElement.style.setProperty('--lg-fill', swatch.style.getPropertyValue('--c'));
+      for (const each of swatch.parentNode.children) each.setAttribute('aria-pressed', each === swatch);
+    });
+    const log = (text) => { document.getElementById('log').textContent = text; };
+    const controls = document.getElementById('controls');
+    controls.addEventListener('lg-change', (ev) => log(`lg-change: ${JSON.stringify(ev.detail)}`));
+    controls.addEventListener('lg-select', (ev) => log(`lg-select: ${JSON.stringify(ev.detail)}`));
+    controls.addEventListener('change', (ev) => { if (ev.target.type === 'checkbox') log(`change: checkbox is ${ev.target.checked ? 'on' : 'off'}`); });
+    controls.addEventListener('input', (ev) => { if (ev.target.matches('input[type=range], .lg-input input')) log(`input: ${ev.target.value}`); });
+    const sheet = document.getElementById('sheet');
+    document.getElementById('open-sheet').onclick = () => { sheet.hidden = false; };
+    sheet.onclick = (ev) => { if (ev.target === sheet || ev.target.closest('#close-sheet')) sheet.hidden = true; };
+  </script>
+</body>
+</html>

@@ -42,6 +42,10 @@ The plan also runs as a web app (in [`web/`](web/)) that you install on your iPh
 
 The app has no build step, and Vercel serves the `web/` folder as-is (see [`vercel.json`](vercel.json)). To change the plan, edit [`scripts/generate.py`](scripts/generate.py), then run `python3 scripts/generate.py`. That rewrites this README, the month files, the tracker and `web/plan.json` together.
 
+### Liquid Glass kit: the same look for any web app
+
+The glass is a self-contained kit in [`web/liquid-glass/`](web/liquid-glass/): copy that folder into any web project to give it the same Liquid Glass (buttons, tab bar, segmented control, switch, slider, text field, menu, sheets), with no framework and no build step. Its [README](web/liquid-glass/README.md) has the three-step setup, every component's markup, and a checklist for converting an app that already exists. The live [demo](https://gymbruh-orcin.vercel.app/liquid-glass/demo.html) shows every component, and [`starter.html`](web/liquid-glass/starter.html) is a small app shell to start a new project from. GymBruh itself runs on the kit.
+
 ## Weekly schedule
 
 | Mon | Tue | Wed | Thu | Fri | Sat | Sun |
@@ -347,7 +351,7 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 
 ## Credits
 
-- Liquid Glass: [Glisse](https://github.com/0kzh/glisse) 0.6.0 by Kelvin Zhang, MIT License. Its glass (rim light, press, lens, tab bar and segmented control) is bundled in [`web/js/glisse.js`](web/js/glisse.js) and [`web/glisse.css`](web/glisse.css), each with the license notice, and [`web/js/glass.js`](web/js/glass.js) puts it on the app's controls. [`scripts/vendor_glisse.py`](scripts/vendor_glisse.py) rebuilds both files from the Glisse package.
+- Liquid Glass: [Glisse](https://github.com/0kzh/glisse) 0.6.0 by Kelvin Zhang, MIT License. Its glass (rim light, press, lens, and the behaviour of its tab bar, segmented control, switch, slider and menu) is bundled in the kit at [`web/liquid-glass/`](web/liquid-glass/), with the license notice in each file and in [`GLISSE-LICENSE`](web/liquid-glass/GLISSE-LICENSE). [`scripts/vendor_glisse.py`](scripts/vendor_glisse.py) rebuilds it from the Glisse package.
 - Muscle map artwork: [react-native-body-highlighter](https://github.com/HichamELBSI/react-native-body-highlighter) by ELABBASSI Hicham, MIT License (notice in [`web/js/bodymap.js`](web/js/bodymap.js)).
 
 ## Safety

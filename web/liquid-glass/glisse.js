@@ -3,14 +3,16 @@
  *
  * This file is Glisse's own code, copied from its published build
  * (dist/index.js) by scripts/vendor_glisse.py: the springs, the press feel,
- * the lens maps and SVG filters, the rim light, and the tab bar / segmented
- * control behaviour. Don't edit it by hand; rerun the script.
+ * the lens maps and SVG filters, the rim light, and the behaviour of the tab
+ * bar, segmented control, switch, slider and menu. Don't edit it by hand;
+ * rerun the script.
  *
- * Left out: Glisse's React components (web/js/glass.js does their job for
- * this plain-JS app) and its WebGL lens for content marked
- * data-glisse-backdrop (drawn.ts), which the app doesn't use.
+ * Left out: Glisse's React components (liquid-glass.js does their job) and
+ * its WebGL lens for content marked data-glisse-backdrop (drawn.ts).
  * Changed: usePress is a plain function (presser) that hands back its
- * handlers; nothing else.
+ * handlers, and the effects of Menu, Slider and Switch are functions
+ * (attachMenu, attachSlider, attachSwitch) of the refs they read. Nothing
+ * else.
  *
  * MIT License
  *
@@ -1227,6 +1229,32 @@ function paintRim(element) {
 	element.style.setProperty("--lg-rim", url);
 	element.setAttribute("data-rim", "");
 }
+const repaints = /* @__PURE__ */ new Set();
+let unwatch;
+function onThemeChange(repaint) {
+	repaints.add(repaint);
+	if (!unwatch) {
+		const run = () => repaints.forEach((each) => each());
+		const observer = new MutationObserver(run);
+		observer.observe(document.documentElement, {
+			attributes: true,
+			attributeFilter: ["data-theme"],
+			subtree: true
+		});
+		const scheme = matchMedia("(prefers-color-scheme: dark)");
+		scheme.addEventListener?.("change", run);
+		unwatch = () => {
+			observer.disconnect();
+			scheme.removeEventListener?.("change", run);
+		};
+	}
+	return () => {
+		repaints.delete(repaint);
+		if (repaints.size) return;
+		unwatch?.();
+		unwatch = void 0;
+	};
+}
 function whenIdle(callback) {
 	if ("requestIdleCallback" in window) {
 		const handle = requestIdleCallback(callback, { timeout: 500 });
@@ -1442,6 +1470,224 @@ function fitSelection(element, filtered) {
 	if (filtered) element.style.setProperty("--lg-filter", filter);
 	element.style.setProperty("--lg-rim", rim);
 	element.style.setProperty("--lg-rim-bright", brightRim);
+}
+// src/menu.tsx (its effect)
+const clamp$1 = (value) => Math.min(1, Math.max(0, value));
+const resistance = (value) => Math.sign(value) * 7 * (1 - Math.exp(-Math.abs(value) * .12 / 7));
+function attachMenu({ triggerRef, cardRef, surfaceRef, glyphRef, contentRef, plateRef, morphRef, latest, setPhase }) {
+		const trigger = triggerRef.current;
+		const card = cardRef.current;
+		const surface = surfaceRef.current;
+		const glyph = glyphRef.current;
+		const content = contentRef.current;
+		const plate = plateRef.current;
+		const from = {
+			width: trigger.offsetWidth,
+			height: trigger.offsetHeight
+		};
+		const to = {
+			width: card.offsetWidth,
+			height: card.offsetHeight
+		};
+		const radius = parseFloat(getComputedStyle(surface).borderTopLeftRadius);
+		const trailing = card.dataset.align !== "start";
+		const origin = {
+			x: trailing ? to.width - from.width / 2 : from.width / 2,
+			y: from.height / 2
+		};
+		content.style.transformOrigin = `${origin.x}px ${origin.y}px`;
+		glyph.style.width = `${from.width}px`;
+		glyph.style.height = `${from.height}px`;
+		let leaving = false;
+		const shape = createSpring(0, 600, 46, (value) => {
+			const t = clamp$1(value);
+			const settled = t === 1;
+			const width = from.width + (to.width - from.width) * t;
+			const height = from.height + (to.height - from.height) * t;
+			const scale = .5 + .5 * t;
+			const local = (edge, centre) => centre + (edge - centre) / scale;
+			const left = local(trailing ? to.width - width : 0, origin.x);
+			const right = local(trailing ? to.width : width, origin.x);
+			const bottom = local(height, origin.y);
+			const top = local(0, origin.y);
+			surface.style.width = settled ? "" : `${width}px`;
+			surface.style.height = settled ? "" : `${height}px`;
+			surface.style.opacity = String(clamp$1(t / .2));
+			trigger.style.opacity = t === 0 ? "" : String(1 - clamp$1(t / .2));
+			const drift = .3 * t;
+			const dx = ((trailing ? to.width - width / 2 : width / 2) - origin.x) * drift;
+			const dy = (height / 2 - origin.y) * drift;
+			glyph.style.opacity = String(1 - clamp$1(t / .45));
+			glyph.style.transform = `translate(${dx}px, ${dy}px) scale(${1 + .6 * t})`;
+			glyph.style.filter = `blur(${8 * t}px)`;
+			content.style.opacity = String(leaving ? clamp$1((t - .55) / .45) : clamp$1((t - .15) / .6));
+			content.style.transform = settled ? "" : `scale(${scale})`;
+			content.style.filter = settled ? "" : `blur(${6 * (1 - t)}px)`;
+			content.style.clipPath = settled ? "" : `inset(${top}px ${to.width - right}px ${to.height - bottom}px ${left}px round ${radius / scale}px)`;
+			if (leaving && value === 0) setPhase("closed");
+		});
+		const morph = {
+			...shape,
+			set(target, instant) {
+				leaving = target === 0;
+				if (leaving) shape.tune(900, 57);
+				else shape.tune(600, 46);
+				shape.set(target, instant);
+			}
+		};
+		morphRef.current = morph;
+		shape.paint();
+		morph.set(1);
+		const rows = () => [...card.querySelectorAll(".lg-menu-item:not(:disabled)")];
+		rows()[0]?.focus({ preventScroll: true });
+		const offset = {
+			scale: 1,
+			x: 0,
+			y: 0
+		};
+		const paint = () => {
+			card.style.scale = String(offset.scale);
+			card.style.translate = `${offset.x}px ${offset.y}px`;
+		};
+		const scale = createSpring(1, 650, 36, (value) => {
+			offset.scale = value;
+			paint();
+		});
+		const x = createSpring(0, 600, 30, (value) => {
+			offset.x = value;
+			paint();
+		});
+		const y = createSpring(0, 600, 30, (value) => {
+			offset.y = value;
+			paint();
+		});
+		let gesture = null;
+		let current = null;
+		let suppressClickUntil = 0;
+		const close = (restoreFocus = true) => {
+			setPhase("leaving");
+			if (restoreFocus) triggerRef.current?.focus({ preventScroll: true });
+		};
+		const highlight = (row) => {
+			if (current === row) return;
+			const first = !current;
+			current = row;
+			if (!row) {
+				delete card.dataset.scrubbing;
+				plate.style.opacity = "0";
+				return;
+			}
+			card.dataset.scrubbing = "";
+			plate.style.width = `${row.offsetWidth}px`;
+			plate.style.height = `${row.offsetHeight}px`;
+			if (first) plate.style.transition = "none";
+			plate.style.transform = `translate(${row.offsetLeft}px, ${row.offsetTop}px)`;
+			plate.style.opacity = "1";
+			if (first) {
+				plate.offsetWidth;
+				plate.style.transition = "";
+			}
+		};
+		const rowAt = (clientX, clientY) => {
+			const row = document.elementFromPoint(clientX, clientY)?.closest(".lg-menu-item");
+			return row && !row.disabled && card.contains(row) ? row : null;
+		};
+		const down = (event) => {
+			if (!event.isPrimary || event.button !== 0) return;
+			gesture = {
+				id: event.pointerId,
+				x: event.clientX,
+				y: event.clientY
+			};
+			card.setPointerCapture(event.pointerId);
+			card.dataset.pressed = "";
+			scale.set(1 + 5 / Math.max(card.offsetWidth, card.offsetHeight, 200));
+			highlight(rowAt(event.clientX, event.clientY));
+		};
+		const move = (event) => {
+			if (!gesture) {
+				const row = event.pointerType === "mouse" ? rowAt(event.clientX, event.clientY) : null;
+				if (row) highlight(row);
+				return;
+			}
+			if (event.pointerId !== gesture.id) return;
+			highlight(rowAt(event.clientX, event.clientY));
+			x.set(resistance(event.clientX - gesture.x), true);
+			y.set(resistance(event.clientY - gesture.y), true);
+		};
+		const end = (event) => {
+			if (event.pointerId !== gesture?.id) return;
+			const chosen = event.type === "pointerup" ? rowAt(event.clientX, event.clientY) : null;
+			highlight(null);
+			gesture = null;
+			delete card.dataset.pressed;
+			scale.set(1);
+			x.set(0);
+			y.set(0);
+			suppressClickUntil = performance.now() + 500;
+			chosen?.click();
+		};
+		const leave = (event) => {
+			if (!gesture && event.pointerType === "mouse") highlight(null);
+		};
+		const click = (event) => {
+			const row = event.target.closest(".lg-menu-item");
+			if (!row || event.detail !== 0 && performance.now() < suppressClickUntil) return;
+			const item = latest.current[Number(row.dataset.index)];
+			if (!item || item === "separator") return;
+			close();
+			item.onSelect?.();
+		};
+		const key = (event) => {
+			if (event.key === "Escape") {
+				event.preventDefault();
+				close();
+			} else if (event.key === "Tab") close(false);
+			else if ([
+				"ArrowDown",
+				"ArrowUp",
+				"Home",
+				"End"
+			].includes(event.key)) {
+				event.preventDefault();
+				if (!gesture) highlight(null);
+				const list = rows();
+				const index = list.indexOf(document.activeElement);
+				list[event.key === "Home" ? 0 : event.key === "End" ? list.length - 1 : (index + (event.key === "ArrowDown" ? 1 : -1) + list.length) % list.length]?.focus();
+			}
+		};
+		const outside = (event) => {
+			const target = event.target;
+			if (!card.contains(target) && !triggerRef.current?.contains(target)) close(false);
+		};
+		card.addEventListener("pointerdown", down);
+		card.addEventListener("pointermove", move);
+		card.addEventListener("pointerleave", leave);
+		card.addEventListener("pointerup", end);
+		card.addEventListener("pointercancel", end);
+		card.addEventListener("lostpointercapture", end);
+		card.addEventListener("click", click);
+		card.addEventListener("keydown", key);
+		document.addEventListener("pointerdown", outside, true);
+		return () => {
+			[
+				shape,
+				scale,
+				x,
+				y
+			].forEach((spring) => spring.stop());
+			morphRef.current = null;
+			trigger.style.opacity = "";
+			card.removeEventListener("pointerdown", down);
+			card.removeEventListener("pointermove", move);
+			card.removeEventListener("pointerleave", leave);
+			card.removeEventListener("pointerup", end);
+			card.removeEventListener("pointercancel", end);
+			card.removeEventListener("lostpointercapture", end);
+			card.removeEventListener("click", click);
+			card.removeEventListener("keydown", key);
+			document.removeEventListener("pointerdown", outside, true);
+		};
 }
 const held = (at, moved) => moved || performance.now() - at >= 150;
 // src/internal/segments.tsx
@@ -1722,15 +1968,201 @@ function attach({ bar, glass, thumb, labels, lensed, lens, tint, row }, options,
 		}
 	};
 }
+// src/slider.tsx (its effect)
+const LENS$1 = {
+	strength: .75,
+	strengthProperty: "--lg-slider-bend",
+	dispersion: .65,
+	depth: 2,
+	dome: 5,
+	splay: .5
+};
+function attachSlider({ rootRef, inputRef, bedRef, magnifiedRef, thumbRef, faceRef, lensRef }) {
+		const input = inputRef.current;
+		const thumb = thumbRef.current;
+		const face = faceRef.current;
+		const root = rootRef.current;
+		const lens = createLens(thumb, magnifiedRef.current, LENS$1, bedRef.current);
+		lensRef.current = lens;
+		const lift = createSpring(0, 2e3, 80, (amount) => {
+			const lifted = Math.min(1, Math.max(0, amount));
+			thumb.style.scale = String(.6 + .4 * amount);
+			root.style.setProperty("--lg-lift", String(lifted));
+			face.style.opacity = String(1 - .85 * lifted);
+			lens.setActive(amount > .01);
+			lens.update();
+		});
+		const hold = () => {
+			if (!input.disabled) lift.set(1);
+		};
+		const release = () => lift.set(0);
+		const ends = [
+			"pointerup",
+			"pointercancel",
+			"lostpointercapture",
+			"blur"
+		];
+		input.addEventListener("pointerdown", hold);
+		ends.forEach((type) => input.addEventListener(type, release));
+		window.addEventListener("pointerup", release);
+		return () => {
+			lift.stop();
+			lens.destroy();
+			lensRef.current = null;
+			input.removeEventListener("pointerdown", hold);
+			ends.forEach((type) => input.removeEventListener(type, release));
+			window.removeEventListener("pointerup", release);
+		};
+}
+// src/switch.tsx (its effect)
+const TRAVEL = 21.7125;
+const unit = (value) => Math.min(1, Math.max(0, value));
+const LENS = {
+	strength: .45,
+	strengthProperty: "--lg-switch-bend",
+	dispersion: 1,
+	depth: 2,
+	dome: 6,
+	splay: .4
+};
+function attachSwitch({ ref, bedRef, insetRef, fillRef, insetFillRef, thumbRef, faceRef, latest, springs }) {
+		const el = ref.current;
+		const fills = [fillRef.current, insetFillRef.current];
+		const thumb = thumbRef.current;
+		const face = faceRef.current;
+		const lens = createLens(thumb, insetRef.current, LENS, bedRef.current);
+		let x = 0;
+		let scale = .65;
+		const paint = () => {
+			thumb.style.transform = `translate(${x}px, -50%) scale(${scale})`;
+			lens.update();
+		};
+		const initial = latest.current.checked ? 1 : 0;
+		const position = createSpring(initial, 1e3, 80, (value) => {
+			x = value * latest.current.travel;
+			paint();
+		});
+		const color = createSpring(initial, 1e3, 80, (value) => {
+			for (const fill of fills) fill.style.opacity = String(unit(value));
+		});
+		const lift = createSpring(0, 2e3, 80, (value) => {
+			scale = .65 + .25 * value;
+			face.style.opacity = String(1 - .85 * unit(value));
+			el.style.setProperty("--lg-lift", String(unit(value)));
+			lens.setActive(value > .01);
+			paint();
+		});
+		springs.current = {
+			position,
+			color
+		};
+		position.paint();
+		color.paint();
+		lift.paint();
+		let gesture = null;
+		let ignoreClick = false;
+		const sync = () => {
+			position.set(latest.current.checked ? 1 : 0);
+			color.set(latest.current.checked ? 1 : 0);
+		};
+		const settle = (next) => {
+			const old = gesture;
+			gesture = null;
+			lift.set(0);
+			if (old && el.hasPointerCapture(old.id)) el.releasePointerCapture(old.id);
+			if (next === void 0 || next === latest.current.checked) return sync();
+			latest.current.setChecked(next);
+			requestAnimationFrame(sync);
+		};
+		const down = (event) => {
+			if (!event.isPrimary || event.button !== 0 || el.disabled) return;
+			event.preventDefault();
+			ignoreClick = false;
+			gesture = {
+				id: event.pointerId,
+				x: event.clientX,
+				y: event.clientY,
+				from: latest.current.checked ? 1 : 0,
+				moved: false,
+				at: performance.now(),
+				box: el.getBoundingClientRect()
+			};
+			el.setPointerCapture(event.pointerId);
+			lift.set(1);
+		};
+		const move = (event) => {
+			if (event.pointerId !== gesture?.id) return;
+			const dx = event.clientX - gesture.x;
+			const dy = Math.abs(event.clientY - gesture.y);
+			if (!held(gesture.at, gesture.moved) && dy > 10 && dy > Math.abs(dx) + 4) {
+				ignoreClick = true;
+				return settle();
+			}
+			if (!gesture.moved && Math.abs(dx) < 4) return;
+			gesture.moved = true;
+			const value = gesture.from + dx / latest.current.travel;
+			const overshoot = value < 0 ? value : value > 1 ? value - 1 : 0;
+			position.set(unit(value) + overshoot / 22);
+			color.set(value > .5 ? 1 : 0);
+		};
+		const up = (event) => {
+			if (event.pointerId !== gesture?.id) return;
+			ignoreClick = true;
+			const { from, x, moved, box } = gesture;
+			const value = from + (event.clientX - x) / latest.current.travel;
+			const near = event.clientY >= box.top - 24 && event.clientY <= box.bottom + 24;
+			settle(moved ? value > .5 : near ? !latest.current.checked : void 0);
+		};
+		const keep = (event) => {
+			if (gesture && event.cancelable && held(gesture.at, gesture.moved)) event.preventDefault();
+		};
+		const cancel = () => {
+			if (!gesture) return;
+			ignoreClick = true;
+			settle();
+		};
+		const click = () => {
+			if (ignoreClick) ignoreClick = false;
+			else if (!el.disabled) latest.current.setChecked(!latest.current.checked);
+		};
+		el.addEventListener("pointerdown", down);
+		el.addEventListener("pointermove", move);
+		el.addEventListener("pointerup", up);
+		el.addEventListener("pointercancel", cancel);
+		el.addEventListener("lostpointercapture", cancel);
+		el.addEventListener("touchmove", keep, { passive: false });
+		el.addEventListener("click", click);
+		return () => {
+			springs.current = null;
+			[
+				position,
+				color,
+				lift
+			].forEach((spring) => spring.stop());
+			lens.destroy();
+			el.removeEventListener("pointerdown", down);
+			el.removeEventListener("pointermove", move);
+			el.removeEventListener("pointerup", up);
+			el.removeEventListener("pointercancel", cancel);
+			el.removeEventListener("lostpointercapture", cancel);
+			el.removeEventListener("touchmove", keep);
+			el.removeEventListener("click", click);
+		};
+}
 
 export {
 	presser,
 	paintRim,
+	onThemeChange,
 	refractsBackdrop,
 	fitBackdropLens,
 	fitSelection,
 	attach,
+	attachMenu,
+	attachSlider,
+	attachSwitch,
 	GLASS,
 	LENS$2 as TAB_LENS,
-	SEGMENT_LENS
+	SEGMENT_LENS,
+	TRAVEL
 };
