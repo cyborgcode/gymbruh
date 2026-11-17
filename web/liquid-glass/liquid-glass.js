@@ -712,8 +712,8 @@ function watchViewport() {
   window.addEventListener('resize', replace);
   window.addEventListener('pageshow', replace);
   document.addEventListener('visibilitychange', replace);
-  // A scroll can put iOS right again: notice when it does.
-  window.addEventListener('scroll', () => { if (viewport.top || viewport.bottom) replace(); }, { passive: true });
+  // A scroll (of the page or of any scroller in it) can put iOS right again: notice when it does.
+  document.addEventListener('scroll', () => { if (viewport.top || viewport.bottom) replace(); }, { passive: true, capture: true });
 }
 
 let started = false;

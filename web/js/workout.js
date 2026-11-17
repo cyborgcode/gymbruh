@@ -2,7 +2,7 @@
 import { state, save, plan, info, nextSession, monthOf, lastSet, bestE1rm, workouts } from './store.js';
 import {
   esc, ICON, clock, dur, kg, num, firstInt, isHold, roundDown, fmt1, sheet, toast, unlockAudio,
-  dateStr, sameDay, daysBetween,
+  dateStr, sameDay, daysBetween, scroller,
 } from './util.js';
 import { startTimer, clearTimer } from './timer.js';
 import { weekStrip, openWorkout } from './stats.js';
@@ -151,7 +151,7 @@ export function startSession(id) {
   unlockAudio();
   if (location.hash !== '#/today') location.hash = '#/today';
   else rerender();
-  window.scrollTo(0, 0);
+  scroller().scrollTop = 0;
 }
 
 function skipSession(id) {
@@ -407,10 +407,11 @@ function glideTo(root, key) {
   if (!row) return;
   const el = row.closest('.ssgroup') || row;
   const top = root.querySelector('.wk-head').getBoundingClientRect().bottom;
-  const bottom = innerHeight - (document.getElementById('tabbar')?.offsetHeight || 0);
+  const s = scroller();
+  const bottom = s.getBoundingClientRect().bottom - (document.getElementById('tabbar')?.offsetHeight || 0);
   const r = el.getBoundingClientRect();
   if (r.top >= top + 4 && r.bottom <= bottom - 4) return;
-  window.scrollTo({ top: Math.max(0, scrollY + r.top - top - 10), behavior: 'smooth' });
+  s.scrollTo({ top: Math.max(0, s.scrollTop + r.top - top - 10), behavior: 'smooth' });
 }
 
 const STEP = 2.5;
@@ -679,7 +680,7 @@ function saveWorkout(root, s, sum) {
   root.onclick = (ev) => { if (ev.target.closest('[data-act="home"]')) rerender(); };
   root.oninput = null;
   root.onkeydown = null;
-  window.scrollTo(0, 0);
+  scroller().scrollTop = 0;
 }
 
 // ------------------------------------------------------------------ Plan

@@ -248,6 +248,14 @@ Calling it again adds to what was set before.
 
 ## Things to know
 
+- **Hiding the scroll bar.** iOS shows the page's own scroll indicator whatever CSS says, but it hides an element's. So to hide it, don't let the page scroll: put the content in a scroller and stop the page.
+
+  ```html
+  <style>html, body { height: 100%; overflow: hidden; }</style>
+  <div class="lg-scroller" id="scroller"><main>…</main></div>
+  ```
+
+  Then scroll that element (`scroller.scrollTo(…)`, `scroller.scrollTop`) instead of `window`. `position: sticky` and `scrollIntoView` work inside it as they did. iOS's "tap the status bar to go to the top" only works on the page itself, so give the app another way back to the top (GymBruh: tap the tab you're on).
 - **iOS 26's keyboard bug.** After the on-screen keyboard closes, iOS 26 can leave everything pinned with `position: fixed` out of place: a bar pinned to the bottom floats in the middle of the screen until iOS puts itself right. The kit measures where pinned elements are laid out against where the screen really is, and moves `.lg-dock` back by itself. For pinned elements of your own, use the two variables it sets on `<html>` (both `0px` except in that state, and never while typing):
 
   ```css

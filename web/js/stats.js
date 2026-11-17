@@ -3,7 +3,7 @@ import { state, save, plan, workouts, nextSession } from './store.js';
 import { sampleBanner } from './settings.js';
 import {
   esc, ICON, MON, MONTH_LONG, DOW1, dur, kg, clock, sod, sow, addDays, dkey, fromKey, daysBetween,
-  timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast,
+  timeStr, dateStr, shortDate, sheet, seg, e1rm, fmt1, toast, scroller,
 } from './util.js';
 import { redraw } from './glass.js';
 import { bodyMap } from './bodymap.js';
@@ -201,7 +201,7 @@ export function renderStats(root) {
     const top = cardEl.getBoundingClientRect().top;
     redraw(cardEl, CARDS[cardEl.dataset.card](workouts()));
     const shift = cardEl.getBoundingClientRect().top - top;
-    if (shift) window.scrollBy(0, shift);
+    if (shift) scroller().scrollBy(0, shift);
   };
 }
 

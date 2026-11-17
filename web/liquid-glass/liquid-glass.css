@@ -52,6 +52,26 @@
   margin: 0 auto;
 }
 
+/* ---------- a scroller with no scroll bar, iOS included: <div class="lg-scroller">.
+   iOS shows the page's own scroll indicator whatever CSS says, but hides an
+   element's. So the page doesn't scroll: its content goes in this full-screen
+   scroller, and the page gets html, body { height: 100%; overflow: hidden }.
+   It follows the screen through iOS 26's keyboard bug, as pinned elements do. */
+.lg-scroller {
+  position: fixed;
+  inset: var(--lg-viewport-top) 0 calc(0px - var(--lg-viewport-bottom)) 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.lg-scroller::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
 /* ---------- a segmented control as wide as what holds it (data-stretch):
    its segments share the width instead of Glisse's 84px each. The kit sets
    --lg-tab-width to the exact share. */

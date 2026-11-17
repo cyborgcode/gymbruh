@@ -147,6 +147,10 @@ export function sheet(html) {
   return { el: wrap.querySelector('.sheet-body'), panel, close };
 }
 
+// The app scrolls inside #scroller, not the page: iOS shows the page's own scroll
+// indicator whatever CSS says, but hides an element's. Scroll through this.
+export const scroller = () => document.getElementById('scroller');
+
 // A segmented control (Glisse's, see glass.js). The buttons carry data-seg / data-val.
 export { segmentedHTML as seg } from './glass.js';
 

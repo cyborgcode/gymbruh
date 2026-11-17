@@ -3,7 +3,7 @@ import { state, loadPlan } from './store.js';
 import { renderToday, renderPlan, renderSession, updateElapsed } from './workout.js';
 import { renderHistory, renderStats } from './stats.js';
 import { tick } from './timer.js';
-import { ICON, dkey, toast } from './util.js';
+import { ICON, dkey, toast, scroller } from './util.js';
 import { applyTheme } from './theme.js';
 import { removeSample } from './settings.js';
 import { initGlass, tabBar } from './glass.js';
@@ -53,7 +53,7 @@ tabbar.addEventListener('click', (ev) => {
   if (!a || a.getAttribute('href') !== location.hash) return;
   ev.preventDefault();
   route();
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  scroller().scrollTo({ top: 0, behavior: 'smooth' });
 });
 
 // The sample-data banner's "Remove" button works on every screen.
@@ -67,11 +67,11 @@ document.addEventListener('click', (ev) => {
 const inToday = (hash) => !hash || hash === '#' || hash.startsWith('#/today');
 let workoutScroll = null; // { id: workout start, y }
 window.addEventListener('hashchange', (ev) => {
-  if (state.active && inToday(new URL(ev.oldURL).hash)) workoutScroll = { id: state.active.start, y: window.scrollY };
+  if (state.active && inToday(new URL(ev.oldURL).hash)) workoutScroll = { id: state.active.start, y: scroller().scrollTop };
   document.querySelectorAll('.sheet-wrap').forEach((el) => el.remove());
   route();
   const back = state.active && inToday(location.hash) && workoutScroll && workoutScroll.id === state.active.start;
-  window.scrollTo(0, back ? workoutScroll.y : 0);
+  scroller().scrollTop = back ? workoutScroll.y : 0;
 });
 window.addEventListener('rerender', route);
 // iOS only shows :active press styles when the page listens for touches.
@@ -104,7 +104,7 @@ document.addEventListener('focusout', (ev) => {
   if (!ev.target.matches('input, select')) return;
   setTimeout(() => {
     if (!document.activeElement || !document.activeElement.matches('input, select')) document.body.classList.remove('typing');
-    window.scrollTo(window.scrollX, window.scrollY);
+    window.scrollTo(0, 0); // the page itself never scrolls; iOS may have moved it for the keyboard
   }, 80);
 });
 document.addEventListener('visibilitychange', () => {
