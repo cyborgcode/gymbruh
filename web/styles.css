@@ -639,9 +639,10 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
    ===================================================================== */
 :root {
   --lg-fill: var(--accent); /* Glisse's accent is the theme's */
-  /* The tab bar is Glisse's icon bar: four 72 x 52 tabs inset 4px, so 296 x 60. */
-  --tb-h: 60px;
-  --tb-gap: max(12px, calc(var(--safe-b) - 8px));
+  /* The tab bar is Glisse's icon bar, sized as iOS 26's own (see #tabbar). */
+  --tb-h: 62px;
+  /* 21px above the bottom on an iPhone with a home indicator, as iOS's own tab bar */
+  --tb-gap: max(12px, calc(var(--safe-b) - 13px));
   /* everything that clears the tab bar uses --tab + --safe-b */
   --tab: calc(var(--tb-gap) + var(--tb-h) - var(--safe-b));
 }
@@ -703,7 +704,20 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 
 /* ---------- tab bar: Glisse's, floating above the home indicator */
 /* --lg-viewport-bottom: iOS 26 can leave pinned elements out of place after the keyboard closes; the kit measures it */
-#tabbar { position: fixed; z-index: 20; left: 0; right: 0; bottom: calc(var(--tb-gap) - var(--lg-viewport-bottom, 0px)); width: max-content; margin: 0 auto; }
+#tabbar { position: fixed; z-index: 20; left: 0; right: 0; bottom: calc(var(--tb-gap) - var(--lg-viewport-bottom, 0px)); width: max-content; margin: 0 auto;
+  /* iOS 26's own tab bar, measured: 21px from each side of the screen and 62px tall
+     (360 x 62 on an iPhone 17 Pro); the selection a 54px-tall capsule 4px inside the rim,
+     98px wide, wider than the 84.8px between tabs. In Glisse's terms: the tabs sit 10.45px
+     inside the rim and the selection reaches 6.45px past each tab. */
+  --tb-w: min(calc(100vw - 42px), 480px);
+  --lg-tab-inset: 10.45px;
+  --lg-thumb-inset: -6.45px;
+  --lg-tab-width: calc((var(--tb-w) - 2 * var(--lg-tab-inset)) / 4);
+  --lg-tab-height: calc(var(--tb-h) - 2 * var(--lg-tab-inset)); }
+/* A tap anywhere on the bar lands on a tab, up to its rim, as on iOS. */
+#tabbar .lg-tab::before { content: ''; position: absolute; top: calc(-1 * var(--lg-tab-inset)); bottom: calc(-1 * var(--lg-tab-inset)); left: 0; right: 0; }
+#tabbar .lg-tab:first-child::before { left: calc(-1 * var(--lg-tab-inset)); }
+#tabbar .lg-tab:last-child::before { right: calc(-1 * var(--lg-tab-inset)); }
 /* a workout is in progress: a dot by the Today icon */
 #tabbar .lg-tab.live::after {
   content: ''; position: absolute; top: 6px; left: calc(50% + 9px); width: 9px; height: 9px; border-radius: 50%;
