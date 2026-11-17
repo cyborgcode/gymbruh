@@ -71,7 +71,7 @@ small { display: block; color: var(--muted); font-size: 13px; }
    instead. This band is that element: always on top, never tappable, and its
    background is clipped to (non-existent) text, so it paints nothing itself. */
 #edge {
-  position: fixed; top: 0; left: 0; right: 0; height: 16px; z-index: 2147483647; pointer-events: none;
+  position: fixed; top: var(--lg-viewport-top, 0px); left: 0; right: 0; height: 16px; z-index: 2147483647; pointer-events: none;
   background: var(--bg); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 
@@ -206,7 +206,7 @@ details.note[open] summary { margin-bottom: 6px; }
 
 /* ---------- rest timer popup */
 #timer {
-  position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; padding: 24px;
+  position: fixed; inset: var(--lg-viewport-top, 0px) 0 calc(0px - var(--lg-viewport-bottom, 0px)) 0; z-index: 40; display: grid; place-items: center; padding: 24px;
   grid-template-columns: minmax(0, 340px); justify-content: center;
   background: rgb(0 0 0 / 0.5);
   animation: fade-in 0.2s ease-out;
@@ -254,7 +254,7 @@ details.note[open] summary { margin-bottom: 6px; }
 .dchip.mini { width: 14px; height: 14px; border-radius: 4px; }
 
 /* ---------- sheet & toast */
-.sheet-wrap { position: fixed; inset: 0; z-index: 50; }
+.sheet-wrap { position: fixed; inset: var(--lg-viewport-top, 0px) 0 calc(0px - var(--lg-viewport-bottom, 0px)) 0; z-index: 50; }
 .sheet-bg { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.55); opacity: 0; transition: opacity 0.25s; }
 .sheet {
   position: absolute; left: 0; right: 0; bottom: 0; max-width: 560px; margin: 0 auto; max-height: 88vh; overflow-y: auto;
@@ -273,7 +273,7 @@ details.note[open] summary { margin-bottom: 6px; }
 .field small { margin-top: 6px; }
 select { flex: 1; height: 40px; color: var(--text); border: 0; padding: 0 14px; font: inherit; font-size: 16px; }
 #toast {
-  position: fixed; left: 50%; z-index: 60; bottom: calc(var(--tab) + var(--safe-b) + 14px);
+  position: fixed; left: 50%; z-index: 60; bottom: calc(var(--tab) + var(--safe-b) + 14px - var(--lg-viewport-bottom, 0px));
   transform: translate(-50%, 24px); opacity: 0; pointer-events: none; transition: transform 0.22s, opacity 0.22s;
   display: flex; align-items: center; gap: 14px; max-width: calc(100% - 32px); width: max-content;
   color: var(--text); padding: 12px 18px; font-size: 15px; font-weight: 600;
@@ -281,7 +281,7 @@ select { flex: 1; height: 40px; color: var(--text); border: 0; padding: 0 14px; 
 #toast span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #toast button { flex: none; color: var(--accent-2); font-weight: 700; padding: 4px 2px; }
 #toast.show { transform: translate(-50%, 0); opacity: 1; pointer-events: auto; }
-body:has(#timer.mini:not([hidden])) #toast { bottom: calc(var(--tab) + var(--safe-b) + 74px); }
+body:has(#timer.mini:not([hidden])) #toast { bottom: calc(var(--tab) + var(--safe-b) + 74px - var(--lg-viewport-bottom, 0px)); }
 body.typing #toast { bottom: 16px; }
 
 /* ---------- stats & history */
@@ -447,7 +447,7 @@ body.typing .top.sticky { position: relative; }
 /* Minimised timer: a small pill above the tab bar; tap to open it again. */
 .t-mini { display: none; }
 #timer.mini {
-  inset: auto 0 calc(var(--tab) + var(--safe-b) + 12px) 0; padding: 0 12px; background: none;
+  inset: auto 0 calc(var(--tab) + var(--safe-b) + 12px - var(--lg-viewport-bottom, 0px)) 0; padding: 0 12px; background: none;
   backdrop-filter: none; -webkit-backdrop-filter: none; display: flex; justify-content: flex-end; pointer-events: none; animation: none;
 }
 #timer.mini .t-card { display: none; }
@@ -699,7 +699,8 @@ body:has(#timer.mini:not([hidden])) .xrow { scroll-margin-bottom: calc(var(--tab
 .in, select { color: var(--lg-foreground); transition: background-color 200ms ease; }
 
 /* ---------- tab bar: Glisse's, floating above the home indicator */
-#tabbar { position: fixed; z-index: 20; left: 0; right: 0; bottom: var(--tb-gap); width: max-content; margin: 0 auto; }
+/* --lg-viewport-bottom: iOS 26 can leave pinned elements out of place after the keyboard closes; the kit measures it */
+#tabbar { position: fixed; z-index: 20; left: 0; right: 0; bottom: calc(var(--tb-gap) - var(--lg-viewport-bottom, 0px)); width: max-content; margin: 0 auto; }
 /* a workout is in progress: a dot by the Today icon */
 #tabbar .lg-tab.live::after {
   content: ''; position: absolute; top: 6px; left: calc(50% + 9px); width: 9px; height: 9px; border-radius: 50%;

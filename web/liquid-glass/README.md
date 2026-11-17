@@ -214,7 +214,8 @@ A checklist for a whole app:
 4. Buttons: `adopt` them, or style them as above. Remove any `:active { transform: scale(…) }` of your own; the kit's press replaces it.
 5. Toggles, range inputs, search boxes, tab-like switches: add `data-lg-switch`, `data-lg-slider`, `data-lg-input`, `data-lg-segmented`.
 6. Sheets, dialogs, popovers: `lg-surface` (or `adopt.surface`).
-7. If the app has a service worker with a list of files to cache, add `glisse.css`, `liquid-glass.css`, `glisse.js` and `liquid-glass.js` to it.
+7. Everything else pinned with `position: fixed` (a header, a floating button, overlays): add `var(--lg-viewport-top)` / `var(--lg-viewport-bottom)` as shown under "Things to know", so iOS 26's keyboard bug can't leave it mid-screen.
+8. If the app has a service worker with a list of files to cache, add `glisse.css`, `liquid-glass.css`, `glisse.js` and `liquid-glass.js` to it.
 
 ## Handing it to an AI coding agent
 
@@ -246,6 +247,14 @@ Copy the folder into the project, then give the agent this:
 Calling it again adds to what was set before.
 
 ## Things to know
+
+- **iOS 26's keyboard bug.** After the on-screen keyboard closes, iOS 26 can leave everything pinned with `position: fixed` out of place: a bar pinned to the bottom floats in the middle of the screen until iOS puts itself right. The kit measures where pinned elements are laid out against where the screen really is, and moves `.lg-dock` back by itself. For pinned elements of your own, use the two variables it sets on `<html>` (both `0px` except in that state, and never while typing):
+
+  ```css
+  .my-bottom-bar { position: fixed; bottom: calc(16px - var(--lg-viewport-bottom)); }
+  .my-header     { position: fixed; top: var(--lg-viewport-top); }
+  .my-overlay    { position: fixed; inset: var(--lg-viewport-top) 0 calc(0px - var(--lg-viewport-bottom)) 0; }
+  ```
 
 - **Safari and Chrome differ, as they do in Glisse.** Only Chromium can bend the live page behind a piece of glass. On iPhone and in Safari the glass shows frost and its lit rim, and the lifted lens bends the tab labels under it; in Chrome and on Android the glass also bends what's behind it. That bending costs one SVG filter per size of glass; on a page with a great many glass elements, `bend: false` turns it off.
 - **Glass needs something behind it.** It is almost clear (3px of blur), so it looks best floating over content, and plain on a flat background.

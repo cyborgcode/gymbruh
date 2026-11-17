@@ -34,13 +34,20 @@
 :root {
   --lg-dock-gap: max(12px, calc(env(safe-area-inset-bottom, 0px) - 8px));
   --lg-dock-space: calc(var(--lg-dock-gap) + 60px + 28px);
+  /* iOS 26 can leave pinned elements out of place after the keyboard closes;
+     liquid-glass.js measures how far and puts it here (0px otherwise). Add
+     them to anything of yours with position: fixed:
+       bottom: calc(20px - var(--lg-viewport-bottom));
+       top: calc(20px + var(--lg-viewport-top));  */
+  --lg-viewport-top: 0px;
+  --lg-viewport-bottom: 0px;
 }
 .lg-tab-bar.lg-dock {
   position: fixed;
   z-index: 20;
   left: 0;
   right: 0;
-  bottom: var(--lg-dock-gap);
+  bottom: calc(var(--lg-dock-gap) - var(--lg-viewport-bottom));
   width: max-content;
   margin: 0 auto;
 }

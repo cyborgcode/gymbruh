@@ -643,6 +643,79 @@ function sweep() {
   for (const el of fits.keys()) if (!el.isConnected) unfit(el);
   for (const [el, control] of controls) if (!el.isConnected) control.destroy();
 }
+// ---------------------------------------------------------------- the keyboard (iOS 26)
+// iOS 26 can leave the screen out of step after the on-screen keyboard closes:
+// the area that position: fixed elements are laid out in stays the size it was
+// with the keyboard up (visualViewport too), or the visual viewport stays
+// offset. Everything pinned then shows up in the wrong place; a bar pinned to
+// the bottom floats in the middle of the screen. So, once a keyboard has been
+// used, the kit measures where pinned elements are laid out (an invisible
+// pinned element) against where the screen really is, and sets on <html>:
+//   --lg-viewport-top     how far down pinned-to-the-top elements must move
+//   --lg-viewport-bottom  how far down pinned-to-the-bottom elements must move
+// Both are 0px except in that state, and never while typing or zoomed in.
+// .lg-dock uses them; add them to your own pinned elements (see README.md).
+const ENTRY = 'input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="button"]):not([type="submit"]):not([type="reset"]):not([type="file"]):not([type="color"]):not([type="image"]):not([type="hidden"]), textarea, select, [contenteditable]:not([contenteditable="false"])';
+const viewport = { probe: null, used: false, full: 0, width: 0, top: 0, bottom: 0, timers: [], frame: 0 };
+const typing = () => { const el = document.activeElement; return !!(el && el.matches && el.matches(ENTRY)); };
+const standalone = () => !!(navigator.standalone || (window.matchMedia && matchMedia('(display-mode: standalone)').matches));
+function placeViewport() {
+  viewport.frame = 0;
+  const vv = window.visualViewport;
+  if (!vv || !viewport.probe) return;
+  if (innerWidth !== viewport.width) { viewport.width = innerWidth; viewport.full = 0; } // turned: start again
+  let top = 0;
+  let bottom = 0;
+  if (!typing()) {
+    // In a home-screen app nothing but the keyboard shortens the screen, so its
+    // height before the keyboard opened stays the truth if everything else is stuck.
+    if (innerHeight >= viewport.full - 1) viewport.full = innerHeight;
+    if (viewport.used && Math.abs(vv.scale - 1) < 0.01) {
+      const laid = viewport.probe.getBoundingClientRect(); // where pinned elements are laid out
+      const tall = Math.max(vv.height, innerHeight, standalone() ? viewport.full : 0); // the screen, keyboard gone
+      top = Math.round(vv.offsetTop - laid.top);
+      bottom = Math.round(vv.offsetTop + tall - laid.bottom);
+      if (Math.abs(top) < 2) top = 0;
+      if (Math.abs(bottom) < 2) bottom = 0;
+    }
+  }
+  if (top === viewport.top && bottom === viewport.bottom) return;
+  viewport.top = top;
+  viewport.bottom = bottom;
+  document.documentElement.style.setProperty('--lg-viewport-top', `${top}px`);
+  document.documentElement.style.setProperty('--lg-viewport-bottom', `${bottom}px`);
+}
+const replace = () => { if (!viewport.frame) viewport.frame = requestAnimationFrame(placeViewport); };
+function watchViewport() {
+  const vv = window.visualViewport;
+  if (!vv) return;
+  const probe = document.createElement('div');
+  probe.setAttribute('aria-hidden', 'true');
+  probe.style.cssText = 'position:fixed;top:0;bottom:0;left:0;width:0;visibility:hidden;pointer-events:none;contain:strict';
+  document.body.append(probe);
+  viewport.probe = probe;
+  viewport.width = innerWidth;
+  viewport.full = innerHeight;
+  document.addEventListener('focusin', (ev) => {
+    if (!ev.target.matches || !ev.target.matches(ENTRY)) return;
+    viewport.used = true;
+    viewport.timers.forEach(clearTimeout);
+    placeViewport(); // typing: leave the keyboard to iOS
+  });
+  document.addEventListener('focusout', () => {
+    // The keyboard takes a moment to go, and iOS a moment more to settle.
+    viewport.timers.forEach(clearTimeout);
+    viewport.timers = [0, 120, 350, 800, 1600].map((ms) => setTimeout(placeViewport, ms));
+  });
+  vv.addEventListener('resize', replace);
+  vv.addEventListener('scroll', replace);
+  window.addEventListener('resize', replace);
+  window.addEventListener('pageshow', replace);
+  document.addEventListener('visibilitychange', replace);
+  // A scroll can put iOS right again: notice when it does.
+  window.addEventListener('scroll', () => { if (viewport.top || viewport.bottom) replace(); }, { passive: true });
+}
+
 let started = false;
 function start() {
   if (started) return;
@@ -661,6 +734,7 @@ function start() {
       sweep();
     }).observe(document.body, { childList: true, subtree: true });
     adopt(document.body);
+    watchViewport();
   };
   if (document.body) begin(); else document.addEventListener('DOMContentLoaded', begin);
 }
