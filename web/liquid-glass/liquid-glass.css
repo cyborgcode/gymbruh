@@ -54,8 +54,7 @@
 
 /* ---------- a scroller with no scroll bar, iOS included: <div class="lg-scroller">.
    iOS shows the page's own scroll indicator whatever CSS says, but hides an
-   element's. So the page doesn't scroll: its content goes in this full-screen
-   scroller, and the page gets html, body { height: 100%; overflow: hidden }.
+   element's. So the page's content goes in this full-screen scroller instead.
    It follows the screen through iOS 26's keyboard bug, as pinned elements do. */
 .lg-scroller {
   position: fixed;
@@ -70,6 +69,22 @@
   display: none;
   width: 0;
   height: 0;
+}
+/* The page behind it stays a hair taller than the screen. An iOS home-screen
+   app whose page is no taller than the screen lays out everything pinned (this
+   scroller, a docked tab bar) for a screen shorter by the status bar, leaving a
+   gap under them. Don't give html or body a height or overflow: hidden. */
+html:has(.lg-scroller) body {
+  min-height: calc(100vh + 1px);
+  min-height: calc(100lvh + 1px);
+  overscroll-behavior-y: none;
+}
+/* That pixel would give desktop browsers a page scroll bar: hide it too. */
+html:has(.lg-scroller) {
+  scrollbar-width: none;
+}
+html:has(.lg-scroller)::-webkit-scrollbar {
+  display: none;
 }
 
 /* ---------- a segmented control as wide as what holds it (data-stretch):

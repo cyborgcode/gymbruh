@@ -32,9 +32,12 @@
 
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 html { background: var(--bg); -webkit-text-size-adjust: 100%; touch-action: manipulation; }
-/* The page itself never scrolls: the content scrolls inside #scroller (the kit's
-   lg-scroller), because iOS won't hide the page's scroll indicator but hides an element's. */
-html, body { height: 100%; overflow: hidden; }
+/* The content scrolls inside #scroller (the kit's lg-scroller), because iOS won't
+   hide the page's scroll indicator but hides an element's. The page itself stays a
+   hair taller than the screen (the kit sees to it): an iOS home-screen app whose
+   page is no taller than the screen lays out everything pinned (the scroller, the
+   tab bar) for a screen shorter by the status bar, leaving a gap under them. */
+html, body { min-height: 100%; }
 body {
   margin: 0;
   background: var(--bg);
