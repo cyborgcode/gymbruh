@@ -13,8 +13,8 @@
  * handlers, and the effects of Menu, Slider and Switch are functions
  * (attachMenu, attachSlider, attachSwitch) of the refs they read. For speed,
  * attach() paints the bar once per frame and steps its label lens's bend in
- * twentieths, and a lens's stand-in is filtered only around the lens. Nothing
- * else.
+ * twentieths. Nothing else. (Don't shrink a lens filter's region to the lens:
+ * Safari then draws the start of the label row inside the lens.)
  *
  * MIT License
  *
@@ -910,15 +910,6 @@ function render(surface) {
 	if (next === surface.placed) return;
 	surface.placed = next;
 	place$1(surface.graph, placed, across, down, box);
-	if (standIn) {
-		const pad = 12;
-		const x0 = Math.max(0, Math.min(...placed.map((p) => p.x)) - pad);
-		const y0 = Math.max(0, Math.min(...placed.map((p) => p.y)) - pad);
-		const x1 = Math.min(across, Math.max(...placed.map((p) => p.x + p.width)) + pad);
-		const y1 = Math.min(down, Math.max(...placed.map((p) => p.y + p.height)) + pad);
-		const region = box ? { x: x0 / across, y: y0 / down, width: (x1 - x0) / across, height: (y1 - y0) / down } : { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
-		for (const [key, value] of Object.entries(region)) surface.graph.filter.setAttribute(key, String(value));
-	}
 	surface.graph.filter.id = `${surface.name}-${++surface.version}`;
 	content.style.filter = `url("#${surface.graph.filter.id}")`;
 	for (const member of shown) {
