@@ -61,7 +61,9 @@
   inset: var(--lg-viewport-top) 0 calc(0px - var(--lg-viewport-bottom)) 0;
   overflow-x: hidden;
   overflow-y: auto;
-  overscroll-behavior-y: none;
+  /* contain, not none: it still bounces at the top and bottom, as iOS scrolling
+     does, but a scroll that reaches the end doesn't carry on to the page behind. */
+  overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
