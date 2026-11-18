@@ -11,7 +11,9 @@
  * its WebGL lens for content marked data-glisse-backdrop (drawn.ts).
  * Changed: usePress is a plain function (presser) that hands back its
  * handlers, and the effects of Menu, Slider and Switch are functions
- * (attachMenu, attachSlider, attachSwitch) of the refs they read. Nothing
+ * (attachMenu, attachSlider, attachSwitch) of the refs they read. For speed,
+ * attach() paints the bar once per frame and steps its label lens's bend in
+ * twentieths, and a lens's stand-in is filtered only around the lens. Nothing
  * else.
  *
  * MIT License
@@ -908,6 +910,15 @@ function render(surface) {
 	if (next === surface.placed) return;
 	surface.placed = next;
 	place$1(surface.graph, placed, across, down, box);
+	if (standIn) {
+		const pad = 12;
+		const x0 = Math.max(0, Math.min(...placed.map((p) => p.x)) - pad);
+		const y0 = Math.max(0, Math.min(...placed.map((p) => p.y)) - pad);
+		const x1 = Math.min(across, Math.max(...placed.map((p) => p.x + p.width)) + pad);
+		const y1 = Math.min(down, Math.max(...placed.map((p) => p.y + p.height)) + pad);
+		const region = box ? { x: x0 / across, y: y0 / down, width: (x1 - x0) / across, height: (y1 - y0) / down } : { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
+		for (const [key, value] of Object.entries(region)) surface.graph.filter.setAttribute(key, String(value));
+	}
 	surface.graph.filter.id = `${surface.name}-${++surface.version}`;
 	content.style.filter = `url("#${surface.graph.filter.id}")`;
 	for (const member of shown) {
@@ -1783,16 +1794,25 @@ function attach({ bar, glass, thumb, labels, lensed, lens, tint, row }, options,
 		lens.style.setProperty("--lg-rest", String(clamp(1 - lift / UNDER, 0, 1)));
 		lens.style.setProperty("--lg-under", String(under));
 		bar.toggleAttribute("data-under", lift > UNDER);
-		refraction.update(amount);
+		refraction.update(Math.round(amount * 20) / 20);
 		backdrop?.update(under);
+	};
+	let painting = false;
+	const repaint = () => {
+		if (painting) return;
+		painting = true;
+		queueMicrotask(() => {
+			painting = false;
+			paint();
+		});
 	};
 	const x = createSpring(0, REST[0], REST[1], (value) => {
 		state.x = value;
-		paint();
+		repaint();
 	});
 	const lift = createSpring(0, REST[2], REST[3], (value) => {
 		state.lift = value;
-		paint();
+		repaint();
 	});
 	const move = (target, lifted, instant = false) => {
 		const [slideStiffness, slideDamping, liftStiffness, liftDamping] = gesture ? DRAG : REST;

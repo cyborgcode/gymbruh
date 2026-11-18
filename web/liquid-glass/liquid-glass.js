@@ -36,11 +36,29 @@ const settings = { glass: GLASS_SELECTOR, press: PRESS_SELECTOR, pressTarget: nu
 // ---------------------------------------------------------------- the rim
 // Each glass is fitted when it appears and whenever its size changes: its rim
 // light is painted to its exact shape, and in Chromium (the only engine that
-// can) the glass also bends what's behind it. One observer serves them all;
-// it reports before the browser paints, so a glass never shows without its rim.
+// can) the glass also bends what's behind it. The fitting is done in slices of
+// a few milliseconds, with the browser free to draw a frame between them, so a
+// screen full of new glass never holds up an animation (the tab bar's selection
+// gliding to the tab you tapped).
 const fits = new Map(); // element -> how to fit it
+const unfitted = new Set();
+let fitting = 0;
+function fitSome() {
+  fitting = 0;
+  const until = performance.now() + 8;
+  for (const el of unfitted) {
+    unfitted.delete(el);
+    if (el.isConnected) fits.get(el)?.(el);
+    if (performance.now() >= until) break;
+  }
+  if (unfitted.size) fitLater();
+}
+function fitLater() {
+  if (!fitting) fitting = setTimeout(fitSome, 0);
+}
 const sizes = new ResizeObserver((entries) => {
-  for (const { target } of entries) fits.get(target)?.(target);
+  for (const { target } of entries) if (fits.has(target)) unfitted.add(target);
+  fitLater();
 });
 function fit(el, how) {
   if (fits.has(el)) return;
@@ -49,6 +67,7 @@ function fit(el, how) {
 }
 function unfit(el) {
   if (fits.delete(el)) sizes.unobserve(el);
+  unfitted.delete(el);
 }
 function fitGlass(el) {
   paintRim(el);

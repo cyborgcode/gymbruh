@@ -78,11 +78,63 @@ press = swap(press, """		const reset = () => end();
 }""", """		return { down, end: () => end() };
 }""")
 
+# segments.tsx: attach(), with two changes for speed, neither visible. The two
+# springs (slide and lift) move in the same frame and each painted the whole
+# bar, label filter included, so the bar is painted once per frame, after both.
+# And the label lens's bend is stepped in twentieths, as Glisse already steps
+# its backdrop lens, so its SVG filter isn't rebuilt every frame while only the
+# lift changes.
+segments = cut(2788, 3066, 'const held', '}')
+segments = swap(segments, """	const x = createSpring(0, REST[0], REST[1], (value) => {
+		state.x = value;
+		paint();
+	});
+	const lift = createSpring(0, REST[2], REST[3], (value) => {
+		state.lift = value;
+		paint();
+	});""", """	let painting = false;
+	const repaint = () => {
+		if (painting) return;
+		painting = true;
+		queueMicrotask(() => {
+			painting = false;
+			paint();
+		});
+	};
+	const x = createSpring(0, REST[0], REST[1], (value) => {
+		state.x = value;
+		repaint();
+	});
+	const lift = createSpring(0, REST[2], REST[3], (value) => {
+		state.lift = value;
+		repaint();
+	});""")
+segments = swap(segments, """		refraction.update(amount);""", """		refraction.update(Math.round(amount * 20) / 20);""")
+
+# lens.ts: a lens's stand-in (the label copy a tab bar shows through its lens)
+# is visible only inside the lens, so its filter needn't run anywhere else: its
+# region becomes the lenses' boxes, with room for the blur, instead of the whole
+# label row. Same pixels, a fraction of the work; Safari renders SVG filters on
+# the CPU, a pixel at a time.
+lens = cut(240, 1103, '// src/internal/lens.ts', '}')
+lens = swap(lens, """	place$1(surface.graph, placed, across, down, box);
+	surface.graph.filter.id = `${surface.name}-${++surface.version}`;""", """	place$1(surface.graph, placed, across, down, box);
+	if (standIn) {
+		const pad = 12;
+		const x0 = Math.max(0, Math.min(...placed.map((p) => p.x)) - pad);
+		const y0 = Math.max(0, Math.min(...placed.map((p) => p.y)) - pad);
+		const x1 = Math.min(across, Math.max(...placed.map((p) => p.x + p.width)) + pad);
+		const y1 = Math.min(down, Math.max(...placed.map((p) => p.y + p.height)) + pad);
+		const region = box ? { x: x0 / across, y: y0 / down, width: (x1 - x0) / across, height: (y1 - y0) / down } : { x: x0, y: y0, width: x1 - x0, height: y1 - y0 };
+		for (const [key, value] of Object.entries(region)) surface.graph.filter.setAttribute(key, String(value));
+	}
+	surface.graph.filter.id = `${surface.name}-${++surface.version}`;""")
+
 parts = [
     cut(23, 106, '// src/internal/spring.ts', '}'),
     press,
     cut(218, 239, '// src/internal/svg.ts', '}'),
-    cut(240, 1103, '// src/internal/lens.ts', '}'),
+    lens,
     cut(1890, 2014, '// src/internal/refraction.ts', '}'),
     cut(2015, 2040, 'const repaints', '}'),
     cut(2041, 2072, 'function whenIdle', 'const refractsBackdrop'),
@@ -91,7 +143,7 @@ parts = [
     cut(2451, 2452, 'const clamp$1', 'const resistance'),
     effect('attachMenu', ['triggerRef', 'cardRef', 'surfaceRef', 'glyphRef', 'contentRef', 'plateRef', 'morphRef', 'latest', 'setPhase'],
            2495, 2707, 'const trigger = triggerRef.current;', 'if (!mounted) return;'),
-    cut(2788, 3066, 'const held', '}'),
+    segments,
     '// src/slider.tsx (its effect)',
     cut(3233, 3240, 'const LENS$1', '};'),
     effect('attachSlider', ['rootRef', 'inputRef', 'bedRef', 'magnifiedRef', 'thumbRef', 'faceRef', 'lensRef'],
@@ -115,7 +167,9 @@ js = f"""/*
  * its WebGL lens for content marked data-glisse-backdrop (drawn.ts).
  * Changed: usePress is a plain function (presser) that hands back its
  * handlers, and the effects of Menu, Slider and Switch are functions
- * (attachMenu, attachSlider, attachSwitch) of the refs they read. Nothing
+ * (attachMenu, attachSlider, attachSwitch) of the refs they read. For speed,
+ * attach() paints the bar once per frame and steps its label lens's bend in
+ * twentieths, and a lens's stand-in is filtered only around the lens. Nothing
  * else.
  *
 {notice}

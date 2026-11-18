@@ -45,7 +45,9 @@ export const dkey = (d) => { const x = new Date(d); return `${x.getFullYear()}-$
 export const fromKey = (k) => { const [y, m, d] = k.split('-').map(Number); return new Date(y, m - 1, d); };
 export const sameDay = (a, b) => dkey(a) === dkey(b);
 export const daysBetween = (a, b) => Math.round((sod(b) - sod(a)) / 864e5);
-export const timeStr = (d) => new Date(d).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+// One formatter for every call: toLocaleTimeString builds a new one each time, which is slow.
+const TIME = new Intl.DateTimeFormat([], { hour: '2-digit', minute: '2-digit' });
+export const timeStr = (d) => TIME.format(new Date(d));
 export const dateStr = (d) => { const x = new Date(d); return `${DOW3[(x.getDay() + 6) % 7]} ${x.getDate()} ${MON[x.getMonth()]}`; };
 export const shortDate = (d) => { const x = new Date(d); return `${x.getDate()} ${MON[x.getMonth()]}`; };
 
