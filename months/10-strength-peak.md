@@ -22,7 +22,7 @@ Peak your strength: low reps at high intensity, with accessory volume cut back s
 
 ## Main lifts: week by week
 
-Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).
+Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press** (Legs).
 
 | Week | Sets × Reps | Load (% of 1RM) | Effort |
 |---|---|---|---|
@@ -60,23 +60,22 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 | 5b | EZ-Bar Curl | 2×10-12 | RIR 2 | 2 min after the superset | Elbows still, no hip swing, 2-3 s on the way down. |
 | 5c | Dumbbell Lateral Raise | 2×10-12 | RIR 2 | 2 min after the superset | Lean forward slightly, pinkies level with thumbs, slow and controlled. |
 | 6a | Abs: Ab Wheel Rollout (from feet) | 3×5 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Full range from the feet if you've earned it. Otherwise kneeling with a 3 s pause. |
-| 6b | Abs: Half-Kneeling Pallof Press + Overhead Reach | 3×10/side | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Press out, raise the arms overhead, return. Don't let the cable rotate you. |
+| 6b | Abs: Renegade Row | 3×6/side | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Push-up position on two dumbbells, feet wide. Row one to the hip without the hips twisting. |
 
 ## Day C: Legs (quads, glutes, hamstrings, calves)
 
 | # | Exercise | Sets × Reps | Effort | Rest | Coaching cues |
 |---|---|---|---|---|---|
 | 1 | **Leg Press** (main) | Main-lift table | Main-lift table | 3-4 min | Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees. |
-| 2 | **Barbell Hip Thrust** (main) | Main-lift table | Main-lift table | 3-4 min | Upper back on the bench, chin tucked, ribs down. Shins vertical at lockout, 1 s squeeze at the top. |
-| 3 | Deficit Dumbbell Reverse Lunge | 3×6-8 | RIR 2 | 2 min | Front foot on a 5-10 cm plate for a deeper stretch. |
-| 4a | Leg Extension | 2×10-12 | RIR 2 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
-| 4b | Seated Leg Curl | 2×10-12 | RIR 2 | 60 s after the superset | Lean your torso forward a little for a bigger stretch. |
-| 4c | Standing Calf Raise | 2×10-12 | RIR 2 | 60 s after the superset | 2 s pause in the full stretch at the bottom. |
-| 5a | 45° Back Extension | 3×6-8 | RIR 2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 5b | Lying Leg Curl | 2×10-12 | RIR 2 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
-| 5c | Seated Calf Raise | 2×10-12 | RIR 2 | 2 min after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
-| 6a | Abs: Dragon Flag | 3×3-5 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Full rep: lower under control, raise back up as one rigid piece. |
-| 6b | Abs: L-Sit Hold (dip bars or parallettes) | 3×10-15 s (tuck OK) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Shoulders pushed down, legs straight (tuck if needed). |
+| 2 | Deficit Dumbbell Reverse Lunge | 3×6-8 | RIR 2 | 2 min | Front foot on a 5-10 cm plate for a deeper stretch. |
+| 3a | Leg Extension | 2×10-12 | RIR 2 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
+| 3b | Seated Leg Curl | 2×10-12 | RIR 2 | 60 s after the superset | Lean your torso forward a little for a bigger stretch. |
+| 3c | Standing Calf Raise | 2×10-12 | RIR 2 | 60 s after the superset | 2 s pause in the full stretch at the bottom. |
+| 4a | 45° Back Extension | 3×6-8 | RIR 2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
+| 4b | Lying Leg Curl | 2×10-12 | RIR 2 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
+| 4c | Seated Calf Raise | 2×10-12 | RIR 2 | 2 min after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 5a | Abs: Dragon Flag | 3×3-5 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Full rep: lower under control, raise back up as one rigid piece. |
+| 5b | Abs: L-Sit Hold (dip bars or parallettes) | 3×10-15 s (tuck OK) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Shoulders pushed down, legs straight (tuck if needed). |
 
 > Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.
 
@@ -88,7 +87,7 @@ Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 |---|---|---|
 | A (Push) | Bench Press: **1RM** (spotter or safety bars) | Overhead Press: **3RM** |
 | B (Pull) | Barbell Row: **5RM** (strict, from safeties) | Weighted Pull-up: **3RM** (bodyweight + added) |
-| C (Legs) | Leg Press: **5RM** | Hip Thrust: **5RM** |
+| C (Legs) | Leg Press: **5RM** | |
 
 - **Warm-up ladder for a 1RM:** empty bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempt 1 (~95-97%) → attempt 2 (~100-102%) → optional attempt 3 (PR). Rest 3-5 min between heavy attempts.
 - **For 3RM/5RM tests:** ramp in 4-6 sets with fewer reps each time, up to a weight you can do for the target reps at RPE 9.5-10.

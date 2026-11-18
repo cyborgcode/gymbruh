@@ -22,7 +22,7 @@ Specialization month for the V-taper look: extra sets for side delts, upper ches
 
 ## Main lifts: week by week
 
-Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).
+Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press** (Legs).
 
 | Week | Sets × Reps | Load (% of 1RM) | Effort |
 |---|---|---|---|
@@ -67,16 +67,15 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 | # | Exercise | Sets × Reps | Effort | Rest | Coaching cues |
 |---|---|---|---|---|---|
 | 1 | **Leg Press** (main) | Main-lift table | Main-lift table | 2-3 min | Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees. |
-| 2 | **Barbell Hip Thrust** (main) | Main-lift table | Main-lift table | 2-3 min | Upper back on the bench, chin tucked, ribs down. Shins vertical at lockout, 1 s squeeze at the top. |
-| 3 | High-Box Dumbbell Step-up | 3×8-12 | RIR 0-1 | 90 s | Box a bit above knee height for more glute. Control the way down. |
-| 4a | Leg Extension | 3×10-15 | RIR 0-1 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
-| 4b | Lying Leg Curl | 3×10-15 | RIR 0-1 | 60 s after the superset | Press your hips into the pad, 3 s on the way down. |
-| 4c | Seated Calf Raise | 3×10-15 | RIR 0-1 | 60 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
-| 5a | 45° Back Extension | 3×8-12 | RIR 0-1 | 90 s after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 5b | Seated Leg Curl | 3×10-15 | RIR 0-1 | 90 s after the superset | Lean your torso forward a little for a bigger stretch. |
-| 5c | Standing Calf Raise | 3×10-15 | RIR 0-1 | 90 s after the superset | 2 s pause in the full stretch at the bottom. |
-| 6a | Abs: Dragon Flag Negative | 3×4 (5 s down) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Grip the bench behind your head, body rigid, lower over 5 s. |
-| 6b | Abs: Hollow Body Hold | 3×30 s | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Lower back pressed into the floor, arms and legs long. |
+| 2 | High-Box Dumbbell Step-up | 3×8-12 | RIR 0-1 | 90 s | Box a bit above knee height for more glute. Control the way down. |
+| 3a | Leg Extension | 3×10-15 | RIR 0-1 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
+| 3b | Lying Leg Curl | 3×10-15 | RIR 0-1 | 60 s after the superset | Press your hips into the pad, 3 s on the way down. |
+| 3c | Seated Calf Raise | 3×10-15 | RIR 0-1 | 60 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 4a | 45° Back Extension | 3×8-12 | RIR 0-1 | 90 s after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
+| 4b | Seated Leg Curl | 3×10-15 | RIR 0-1 | 90 s after the superset | Lean your torso forward a little for a bigger stretch. |
+| 4c | Standing Calf Raise | 3×10-15 | RIR 0-1 | 90 s after the superset | 2 s pause in the full stretch at the bottom. |
+| 5a | Abs: Dragon Flag Negative | 3×4 (5 s down) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Grip the bench behind your head, body rigid, lower over 5 s. |
+| 5b | Abs: Hollow Body Hold | 3×30 s | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Lower back pressed into the floor, arms and legs long. |
 
 > Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.
 

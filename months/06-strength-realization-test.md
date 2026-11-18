@@ -22,7 +22,7 @@ Practise heavy triples, doubles and singles, then test your new maxes in Week 4.
 
 ## Main lifts: week by week
 
-Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).
+Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press** (Legs).
 
 | Week | Sets × Reps | Load (% of 1RM) | Effort |
 |---|---|---|---|
@@ -66,16 +66,15 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 | # | Exercise | Sets × Reps | Effort | Rest | Coaching cues |
 |---|---|---|---|---|---|
 | 1 | **Leg Press** (main) | Main-lift table | Main-lift table | 3-4 min | Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees. |
-| 2 | **Barbell Hip Thrust** (main) | Main-lift table | Main-lift table | 3-4 min | Upper back on the bench, chin tucked, ribs down. Shins vertical at lockout, 1 s squeeze at the top. |
-| 3 | Dumbbell Reverse Lunge | 3×6-8 | RIR 1-2 | 2 min | Step back, keep the front shin close to vertical. Easier on the knees than forward lunges. |
-| 4a | Leg Extension | 3×10-12 | RIR 1 | 60-75 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
-| 4b | Seated Leg Curl | 3×10-12 | RIR 1 | 60-75 s after the superset | Lean your torso forward a little for a bigger stretch. |
-| 4c | Seated Calf Raise | 3×10-12 | RIR 1 | 60-75 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
-| 5a | 45° Back Extension | 3×6-8 | RIR 1-2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 5b | Lying Leg Curl | 3×10-12 | RIR 1 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
-| 5c | Standing Calf Raise | 3×10-12 | RIR 1 | 2 min after the superset | 2 s pause in the full stretch at the bottom. |
-| 6a | Abs: Incline Reverse Crunch | 3×15 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Head at the top of an incline bench, curl the hips up and over. |
-| 6b | Abs: Weighted Side Plank | 3×40 s/side + 5-10 kg | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Plate on the top hip, body in one straight line. |
+| 2 | Dumbbell Reverse Lunge | 3×6-8 | RIR 1-2 | 2 min | Step back, keep the front shin close to vertical. Easier on the knees than forward lunges. |
+| 3a | Leg Extension | 3×10-12 | RIR 1 | 60-75 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
+| 3b | Seated Leg Curl | 3×10-12 | RIR 1 | 60-75 s after the superset | Lean your torso forward a little for a bigger stretch. |
+| 3c | Seated Calf Raise | 3×10-12 | RIR 1 | 60-75 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 4a | 45° Back Extension | 3×6-8 | RIR 1-2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
+| 4b | Lying Leg Curl | 3×10-12 | RIR 1 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
+| 4c | Standing Calf Raise | 3×10-12 | RIR 1 | 2 min after the superset | 2 s pause in the full stretch at the bottom. |
+| 5a | Abs: Incline Reverse Crunch | 3×15 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Head at the top of an incline bench, curl the hips up and over. |
+| 5b | Abs: Weighted Side Plank | 3×40 s/side + 5-10 kg | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Plate on the top hip, body in one straight line. |
 
 > Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.
 
@@ -87,7 +86,7 @@ Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 |---|---|---|
 | A (Push) | Bench Press: **1RM** (spotter or safety bars) | Overhead Press: **3RM** |
 | B (Pull) | Barbell Row: **5RM** (strict, from safeties) | Weighted Pull-up: **3RM** (bodyweight + added) |
-| C (Legs) | Leg Press: **5RM** | Hip Thrust: **5RM** |
+| C (Legs) | Leg Press: **5RM** | |
 
 - **Warm-up ladder for a 1RM:** empty bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempt 1 (~95-97%) → attempt 2 (~100-102%) → optional attempt 3 (PR). Rest 3-5 min between heavy attempts.
 - **For 3RM/5RM tests:** ramp in 4-6 sets with fewer reps each time, up to a weight you can do for the target reps at RPE 9.5-10.

@@ -13,7 +13,7 @@ const GROUPS = {
   Arms: ['Biceps', 'Triceps'], Legs: ['Quads', 'Hamstrings', 'Glutes', 'Calves'],
 };
 const AXES = ['Back', 'Chest', 'Core', 'Shoulders', 'Arms', 'Legs']; // hexagon, clockwise from top-left
-const LIFTS = [['bench', 'Bench Press'], ['legpress', 'Leg Press'], ['hipthrust', 'Hip Thrust'],
+const LIFTS = [['bench', 'Bench Press'], ['legpress', 'Leg Press'],
   ['row', 'Barbell Row'], ['ohp', 'Overhead Press'], ['pullup', 'Pull-up (added kg)']];
 
 const ui = { calMonth: null, selDay: null, metric: 'dur', tab: 'balance', period: 'week', weekOff: 0, barSel: null, daySel: null, bodySel: null };

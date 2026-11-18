@@ -1,6 +1,6 @@
 # GymBruh: 12-Month Strength & Aesthetics Plan
 
-A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **no squats, no deadlifts**, **abs every session**, built for **strength and aesthetics**.
+A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **no squats, no deadlifts, no hip thrusts**, **abs every session**, built for **strength and aesthetics**.
 
 **Live app: [gymbruh-orcin.vercel.app](https://gymbruh-orcin.vercel.app)** · an offline iPhone web app that opens on today's workout, with rest timers, optional weight logging and progress stats. To install it, open the link in Safari, then tap **Share** → **Add to Home Screen**.
 
@@ -8,10 +8,11 @@ A 52-week gym program: **3 days a week** (Push / Pull / Legs), **no cardio**, **
 |---|---|
 | No cardio | Sessions start with a 10-min warm-up instead of a cardio block, so you lift fresh and sessions take about 1 h to 1 h 30. Walking 7-10k steps a day covers heart health and helps with fat loss. |
 | No squats | Quads are trained with the leg press, lunges, step-ups and leg extensions. |
-| No deadlifts | The posterior chain is trained with hip thrusts, back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
+| No deadlifts | The posterior chain is trained with back extensions and leg curls. Rows are unracked from safeties, so you never pull a bar off the floor. |
+| No hip thrusts | Glutes are trained with back extensions, the leg press and lunges or step-ups. |
 | 3 days per week | **Push / Pull / Legs**: Push (chest, shoulders, triceps), Pull (back, rear delts, biceps), Legs (quads, glutes, hamstrings, calves). Side delts get work on Push and Pull days, and abs every session. |
 | Works your abs | 2 ab exercises every session (≈ 18 hard sets a week). They progress from knee raises and planks to dragon flags, ab wheel from the feet and L-sits. |
-| Strength | Six tracked main lifts, percentage-based periodization, two test weeks and a final assessment. |
+| Strength | Five tracked main lifts, percentage-based periodization, two test weeks and a final assessment. |
 | Aesthetics | V-taper focus (upper chest, side delts, lats, arms, abs) with balanced legs, a specialization month and a definition phase. |
 
 ---
@@ -59,7 +60,7 @@ Tue/Thu/Sat or Sun/Tue/Thu work just as well. Keep at least one rest day between
 | Block | Time | What you do |
 |---|---|---|
 | 1. Warm-up | 10 min | Easy bike or rower, mobility, ramp-up sets ([details](#warm-up-10-min)) |
-| 2. Main lifts | 20-30 min | 2 heavy compound lifts |
+| 2. Main lifts | 20-30 min | 2 heavy compound lifts (1 on Legs day) |
 | 3. Accessories | 20-30 min | Supersets, to save time |
 | 4. Abs | 8-10 min | 2 exercises, done as a superset |
 
@@ -89,11 +90,11 @@ Each "month" is a **4-week training block**. Every quarter ends with a **flex we
 
 ## Exercise templates by quarter
 
-The six main lifts stay the same all year so you can track your strength. Accessories rotate every quarter so you keep progressing and stay motivated.
+The five main lifts stay the same all year so you can track your strength. Accessories rotate every quarter so you keep progressing and stay motivated.
 
 {{TEMPLATES}}
 
-## The six main lifts
+## The five main lifts
 
 | Lift | Day | Why it's in the plan |
 |---|---|---|
@@ -102,12 +103,12 @@ The six main lifts stay the same all year so you can track your strength. Access
 | Barbell Row | B · Pull | A thick upper back. The bar is unracked from safeties at knee height, never pulled off the floor. |
 | Weighted Pull-up | B · Pull | Lat width, the core of the V-taper |
 | Leg Press | C · Legs | Heavy quad and glute work with no barbell on your spine. It replaces the squat. |
-| Barbell Hip Thrust | C · Legs | The strongest glute builder. It covers the posterior chain instead of deadlifts. |
 
 ### Not in this plan (by request)
 
 - **Squats, all variations:** back, front, goblet, hack, Smith, belt, box, split / Bulgarian split, pistol, sissy.
 - **Deadlifts, all variations:** conventional, sumo, Romanian, stiff-leg, trap-bar, single-leg, rack pulls. Good mornings are out too.
+- **Hip thrusts, all variations:** barbell, machine, Smith, single-leg, glute bridge.
 
 ---
 
@@ -203,10 +204,10 @@ Every session has **2 ab exercises done as a superset**, about **6 hard sets per
 
 | Quarter | Flexion (the "six-pack") | Anti-extension | Anti-rotation / lateral |
 |---|---|---|---|
-| Q1 | Hanging knee raise, cable crunch, reverse crunch | Kneeling ab wheel (partial → full range) | Pallof press, side plank |
+| Q1 | Hanging knee raise, cable crunch, reverse crunch | Kneeling ab wheel (partial → full range) | Plank shoulder tap, side plank |
 | Q2 | Straight-leg hanging raise, weighted cable crunch, incline reverse crunch | Full-range kneeling ab wheel with a pause | Suitcase carry, weighted side plank |
 | Q3 | Toes-to-bar, weighted decline crunch | Ab wheel from the feet (shortened range), dragon flag negatives, hollow hold | Cable woodchopper |
-| Q4 | Weighted hanging leg raise, heavy cable crunch | Ab wheel from the feet, dragon flags, L-sit | Half-kneeling Pallof press + overhead reach |
+| Q4 | Weighted hanging leg raise, heavy cable crunch | Ab wheel from the feet, dragon flags, L-sit | Renegade row |
 
 **Visible abs = developed muscle + low body fat.** Abs usually show at about **10-14% body fat (men)** or **18-22% (women)**. The training builds the muscle, and the Month 11-12 calorie deficit brings body fat down so you can see it.
 
@@ -301,14 +302,13 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 - **Missed 1 session:** do it on your next training day and keep the Push → Pull → Legs order.
 - **Missed a full week:** repeat the last week you completed.
 - **Sick for 2+ weeks:** take the next flex week early, then restart from the last week you completed with loads 10% lighter.
-- **Short on time:** drop the last isolation superset (5a/5b/5c). Never drop the main lifts or the abs: those are the core of what you asked for.
+- **Short on time:** drop the last isolation superset (5a/5b/5c, or 4a/4b/4c on Legs day). Never drop the main lifts or the abs: those are the core of what you asked for.
 
 ## Substitutions (still no squats or deadlifts)
 
 | If you can't do… | Use instead |
 |---|---|
 | Leg Press | Single-leg leg press · dumbbell reverse lunge · high-box step-up |
-| Barbell Hip Thrust | Hip-thrust machine · Smith machine hip thrust · single-leg dumbbell hip thrust · glute bridge |
 | Barbell Row | Chest-supported T-bar row · seal row · machine row |
 | Standing Overhead Press | Seated dumbbell shoulder press · machine shoulder press |
 | Pull-up | Assisted pull-up · band-assisted pull-up · lat pulldown |
@@ -330,4 +330,4 @@ Example: 75 kg, 180 cm, age 20, male. $BMR = 750 + 1125 - 100 + 5 = 1780$ kcal a
 - This is a general program, not medical advice. If you have an injury, a heart condition or any other medical issue, check with a doctor or physiotherapist first.
 - Effort is fine. **Sharp or joint pain is not.** Stop and swap the exercise.
 - Use a spotter or safety bars on the bench press, and on every test day.
-- Earn the load with technique first, especially on the hip thrust, row and overhead press.
+- Earn the load with technique first, especially on the row and overhead press.

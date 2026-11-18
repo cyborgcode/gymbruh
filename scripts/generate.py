@@ -27,8 +27,6 @@ BENCH = ex("Barbell Bench Press", "M", {"Chest": 1, "Triceps": .5, "Shoulders": 
            "Shoulder blades squeezed and down, feet planted, bar to mid-chest, press up and slightly back.")
 LEGPRESS = ex("Leg Press", "M", {"Quads": 1, "Glutes": .5},
               "Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees.")
-HIPTHRUST = ex("Barbell Hip Thrust", "M", {"Glutes": 1, "Hamstrings": .5},
-               "Upper back on the bench, chin tucked, ribs down. Shins vertical at lockout, 1 s squeeze at the top.")
 ROW = ex("Barbell Row", "M", {"Back": 1, "Biceps": .5},
          "Unrack from safeties at knee height so you never pull the bar off the floor. Torso 30-45°, brace, pull to the lower ribs.")
 OHP = ex("Standing Overhead Press", "M", {"Shoulders": 1, "Triceps": .5},
@@ -90,20 +88,20 @@ Q1 = {
         ("6a", ex("Kneeling Ab Wheel Rollout", "X", {"Abs": 1},
                   "Ribs down, glutes tight. Roll out only as far as your lower back stays flat.",
                   abs_rx=["3×6-8 (partial range)", "3×8-10", "3×10-12 (full range)"])),
-        ("6b", ex("Pallof Press", "X", {"Abs": 1},
-                  "Stand side-on to the cable, press out and hold 2 s. Don't let it twist you.",
-                  abs_rx=["3×10/side", "3×12/side", "3×12/side + 3 s hold"])),
+        ("6b", ex("Plank Shoulder Tap", "X", {"Abs": 1},
+                  "High plank, feet wide. Tap the opposite shoulder slowly without letting the hips rock or twist.",
+                  abs_rx=["3×10/side", "3×12/side", "3×15/side (slow)"])),
     ],
     "C": [
-        ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
+        ("1", LEGPRESS),
+        ("2", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Long stride, slight forward lean, back knee lightly touches the floor.")),
-        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_ST),
-        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_SE),
-        ("6a", ex("Reverse Crunch", "X", {"Abs": 1},
+        ("3a", LEG_EXT), ("3b", LYING_CURL), ("3c", CALF_ST),
+        ("4a", BACK_EXT), ("4b", SEATED_CURL), ("4c", CALF_SE),
+        ("5a", ex("Reverse Crunch", "X", {"Abs": 1},
                   "Curl the hips off the bench toward your chest, lower slowly.",
                   abs_rx=["3×10", "3×12", "3×15"])),
-        ("6b", ex("Side Plank", "X", {"Abs": 1}, "Straight line from ear to hip to ankle, hips high.",
+        ("5b", ex("Side Plank", "X", {"Abs": 1}, "Straight line from ear to hip to ankle, hips high.",
                   abs_rx=["3×20 s/side", "3×30 s/side", "3×40 s/side"])),
     ],
 }
@@ -139,15 +137,15 @@ Q2 = {
                   abs_rx=["3×20 m/side", "3×30 m/side", "3×40 m/side"])),
     ],
     "C": [
-        ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
+        ("1", LEGPRESS),
+        ("2", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Step back, keep the front shin close to vertical. Easier on the knees than forward lunges.")),
-        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_SE),
-        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_ST),
-        ("6a", ex("Incline Reverse Crunch", "X", {"Abs": 1},
+        ("3a", LEG_EXT), ("3b", SEATED_CURL), ("3c", CALF_SE),
+        ("4a", BACK_EXT), ("4b", LYING_CURL), ("4c", CALF_ST),
+        ("5a", ex("Incline Reverse Crunch", "X", {"Abs": 1},
                   "Head at the top of an incline bench, curl the hips up and over.",
                   abs_rx=["3×10", "3×12", "3×15"])),
-        ("6b", ex("Weighted Side Plank", "X", {"Abs": 1}, "Plate on the top hip, body in one straight line.",
+        ("5b", ex("Weighted Side Plank", "X", {"Abs": 1}, "Plate on the top hip, body in one straight line.",
                   abs_rx=["3×30 s/side (bodyweight)", "3×30 s/side + 5 kg", "3×40 s/side + 5-10 kg"])),
     ],
 }
@@ -188,15 +186,15 @@ Q3 = {
                   abs_rx=["3×12/side", "3×12/side (heavier)", "3×15/side"])),
     ],
     "C": [
-        ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
+        ("1", LEGPRESS),
+        ("2", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
                  "Box a bit above knee height for more glute. Control the way down.")),
-        ("4a", LEG_EXT), ("4b", LYING_CURL), ("4c", CALF_SE),
-        ("5a", BACK_EXT), ("5b", SEATED_CURL), ("5c", CALF_ST),
-        ("6a", ex("Dragon Flag Negative", "X", {"Abs": 1},
+        ("3a", LEG_EXT), ("3b", LYING_CURL), ("3c", CALF_SE),
+        ("4a", BACK_EXT), ("4b", SEATED_CURL), ("4c", CALF_ST),
+        ("5a", ex("Dragon Flag Negative", "X", {"Abs": 1},
                   "Grip the bench behind your head, body rigid, lower over 5 s.",
                   abs_rx=["3×3 (5 s down)", "3×4 (5 s down)", "3×5 (5 s down)"])),
-        ("6b", ex("Hollow Body Hold", "X", {"Abs": 1}, "Lower back pressed into the floor, arms and legs long.",
+        ("5b", ex("Hollow Body Hold", "X", {"Abs": 1}, "Lower back pressed into the floor, arms and legs long.",
                   abs_rx=["3×20 s", "3×30 s", "3×40 s"])),
     ],
 }
@@ -222,19 +220,19 @@ Q4 = {
         ("6a", ex("Ab Wheel Rollout (from feet)", "X", {"Abs": 1},
                   "Full range from the feet if you've earned it. Otherwise kneeling with a 3 s pause.",
                   abs_rx=["3×5", "3×6-8", "3×8"])),
-        ("6b", ex("Half-Kneeling Pallof Press + Overhead Reach", "X", {"Abs": 1},
-                  "Press out, raise the arms overhead, return. Don't let the cable rotate you.",
-                  abs_rx=["3×10/side", "3×12/side", "3×12/side"])),
+        ("6b", ex("Renegade Row", "X", {"Abs": 1, "Back": .5},
+                  "Push-up position on two dumbbells, feet wide. Row one to the hip without the hips twisting.",
+                  abs_rx=["3×6/side", "3×8/side", "3×8/side (heavier)"])),
     ],
     "C": [
-        ("1", LEGPRESS), ("2", HIPTHRUST),
-        ("3", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
+        ("1", LEGPRESS),
+        ("2", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Front foot on a 5-10 cm plate for a deeper stretch.")),
-        ("4a", LEG_EXT), ("4b", SEATED_CURL), ("4c", CALF_ST),
-        ("5a", BACK_EXT), ("5b", LYING_CURL), ("5c", CALF_SE),
-        ("6a", ex("Dragon Flag", "X", {"Abs": 1}, "Full rep: lower under control, raise back up as one rigid piece.",
+        ("3a", LEG_EXT), ("3b", SEATED_CURL), ("3c", CALF_ST),
+        ("4a", BACK_EXT), ("4b", LYING_CURL), ("4c", CALF_SE),
+        ("5a", ex("Dragon Flag", "X", {"Abs": 1}, "Full rep: lower under control, raise back up as one rigid piece.",
                   abs_rx=["3×3-5", "3×5", "3×5-6"])),
-        ("6b", ex("L-Sit Hold (dip bars or parallettes)", "X", {"Abs": 1}, "Shoulders pushed down, legs straight (tuck if needed).",
+        ("5b", ex("L-Sit Hold (dip bars or parallettes)", "X", {"Abs": 1}, "Shoulders pushed down, legs straight (tuck if needed).",
                   abs_rx=["3×10-15 s (tuck OK)", "3×15-20 s", "3×20-30 s"])),
     ],
 }
@@ -267,7 +265,7 @@ BASE_RIR = "Months 1-3 go by effort, not percentages. Pick a weight that leaves 
 
 MONTHS = [
     dict(n=1, slug="01-foundation", title="Foundation", q=1,
-         goal="Learn and groove the technique on the six main lifts, build the habit of 3 sessions a week, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.",
+         goal="Learn and groove the technique on the five main lifts, build the habit of 3 sessions a week, and start your log. Loads are deliberately light: leave 2-4 reps in the tank on every set.",
          main=[("3×10", "≈ 60-65%", "RIR 4"), ("3×10", "≈ 65%", "RIR 3"), ("3×10", "≈ 67-70%", "RIR 3"), ("3×10", "≈ 70%", "RIR 2")],
          main_sets=3, main_rest="2 min", base=BASE_RIR,
          C=(3, "12", "RIR 3", "90 s"), I=(3, "12-15", "RIR 3", "60 s"),
@@ -431,7 +429,7 @@ Warm up as usual ([README](../README.md#warm-up-10-min)), then test:
 |---|---|---|
 | A (Push) | Bench Press: **1RM** (spotter or safety bars) | Overhead Press: **3RM** |
 | B (Pull) | Barbell Row: **5RM** (strict, from safeties) | Weighted Pull-up: **3RM** (bodyweight + added) |
-| C (Legs) | Leg Press: **5RM** | Hip Thrust: **5RM** |
+| C (Legs) | Leg Press: **5RM** | |
 
 - **Warm-up ladder for a 1RM:** empty bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempt 1 (~95-97%) → attempt 2 (~100-102%) → optional attempt 3 (PR). Rest 3-5 min between heavy attempts.
 - **For 3RM/5RM tests:** ramp in 4-6 sets with fewer reps each time, up to a weight you can do for the target reps at RPE 9.5-10.
@@ -513,7 +511,7 @@ def month_md(m):
     L.append("")
     L.append("## Main lifts: week by week")
     L.append("")
-    L.append("Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).")
+    L.append("Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press** (Legs).")
     L.append("")
     L.append("| Week | Sets × Reps | Load (% of 1RM) | Effort |")
     L.append("|---|---|---|---|")
@@ -614,7 +612,7 @@ def readme():
 # ------------------------------------------------------------------ tracker
 MAIN_BY_DAY = {"A": ["Barbell Bench Press", "Standing Overhead Press"],
                "B": ["Barbell Row", "Pull-up (total load = BW + added)"],
-               "C": ["Leg Press", "Barbell Hip Thrust"]}
+               "C": ["Leg Press"]}
 
 
 def tracker_rows():
@@ -651,10 +649,10 @@ def write_tracker(path):
 
 
 # ---------------------------------------------------------------- web app data
-LIFT_KEYS = {"Barbell Bench Press": "bench", "Leg Press": "legpress", "Barbell Hip Thrust": "hipthrust",
+LIFT_KEYS = {"Barbell Bench Press": "bench", "Leg Press": "legpress",
              "Barbell Row": "row", "Standing Overhead Press": "ohp",
              PULLUP_Q1["name"]: "pullup", PULLUP["name"]: "pullup"}
-TEST_RM = {"bench": "1RM", "legpress": "5RM", "hipthrust": "5RM", "row": "5RM", "ohp": "3RM", "pullup": "3RM"}
+TEST_RM = {"bench": "1RM", "legpress": "5RM", "row": "5RM", "ohp": "3RM", "pullup": "3RM"}
 KIND_NOTES = {
     "deload": "Deload week: main lifts as written. Everything else is cut to 2 sets, about 10-15% lighter, stopping at RIR 4+.",
     "test": "Test week: find your new maxes. Ramp up: bar ×10 → 40% ×8 → 60% ×5 → 75% ×3 → 85% ×1 → 90% ×1 → attempts. Rest 3-5 min between heavy attempts. Use a spotter or safeties.",

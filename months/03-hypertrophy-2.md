@@ -22,7 +22,7 @@ Heavier hypertrophy work: 6-8 reps on the main lifts and drop sets on isolation 
 
 ## Main lifts: week by week
 
-Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press, Hip Thrust** (Legs).
+Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbell Row, Pull-up** (Pull), **Leg Press** (Legs).
 
 | Week | Sets × Reps | Load (% of 1RM) | Effort |
 |---|---|---|---|
@@ -59,23 +59,22 @@ Applies to all six main lifts: **Bench Press, Overhead Press** (Push), **Barbell
 | 5a | Dumbbell Lateral Raise | 3×10-15 | RIR 1 | 60 s after the superset | Lean forward slightly, pinkies level with thumbs, slow and controlled. |
 | 5b | Hammer Curl | 3×10-15 | RIR 1 | 60 s after the superset | Neutral grip trains the brachialis for thicker arms. |
 | 6a | Abs: Kneeling Ab Wheel Rollout | 3×10-12 (full range) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Ribs down, glutes tight. Roll out only as far as your lower back stays flat. |
-| 6b | Abs: Pallof Press | 3×12/side + 3 s hold | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Stand side-on to the cable, press out and hold 2 s. Don't let it twist you. |
+| 6b | Abs: Plank Shoulder Tap | 3×15/side (slow) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | High plank, feet wide. Tap the opposite shoulder slowly without letting the hips rock or twist. |
 
 ## Day C: Legs (quads, glutes, hamstrings, calves)
 
 | # | Exercise | Sets × Reps | Effort | Rest | Coaching cues |
 |---|---|---|---|---|---|
 | 1 | **Leg Press** (main) | Main-lift table | Main-lift table | 2 min | Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees. |
-| 2 | **Barbell Hip Thrust** (main) | Main-lift table | Main-lift table | 2 min | Upper back on the bench, chin tucked, ribs down. Shins vertical at lockout, 1 s squeeze at the top. |
-| 3 | Dumbbell Walking Lunge | 4×8-10 | RIR 1-2 | 90 s | Long stride, slight forward lean, back knee lightly touches the floor. |
-| 4a | Leg Extension | 3×10-15 | RIR 1 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
-| 4b | Lying Leg Curl | 3×10-15 | RIR 1 | 60 s after the superset | Press your hips into the pad, 3 s on the way down. |
-| 4c | Standing Calf Raise | 3×10-15 | RIR 1 | 60 s after the superset | 2 s pause in the full stretch at the bottom. |
-| 5a | 45° Back Extension | 4×8-10 | RIR 1-2 | 90 s after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 5b | Seated Leg Curl | 3×10-15 | RIR 1 | 90 s after the superset | Lean your torso forward a little for a bigger stretch. |
-| 5c | Seated Calf Raise | 3×10-15 | RIR 1 | 90 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
-| 6a | Abs: Reverse Crunch | 3×15 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Curl the hips off the bench toward your chest, lower slowly. |
-| 6b | Abs: Side Plank | 3×40 s/side | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Straight line from ear to hip to ankle, hips high. |
+| 2 | Dumbbell Walking Lunge | 4×8-10 | RIR 1-2 | 90 s | Long stride, slight forward lean, back knee lightly touches the floor. |
+| 3a | Leg Extension | 3×10-15 | RIR 1 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
+| 3b | Lying Leg Curl | 3×10-15 | RIR 1 | 60 s after the superset | Press your hips into the pad, 3 s on the way down. |
+| 3c | Standing Calf Raise | 3×10-15 | RIR 1 | 60 s after the superset | 2 s pause in the full stretch at the bottom. |
+| 4a | 45° Back Extension | 4×8-10 | RIR 1-2 | 90 s after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
+| 4b | Seated Leg Curl | 3×10-15 | RIR 1 | 90 s after the superset | Lean your torso forward a little for a bigger stretch. |
+| 4c | Seated Calf Raise | 3×10-15 | RIR 1 | 90 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 5a | Abs: Reverse Crunch | 3×15 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Curl the hips off the bench toward your chest, lower slowly. |
+| 5b | Abs: Side Plank | 3×40 s/side | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Straight line from ear to hip to ankle, hips high. |
 
 > Exercises with the same number and a letter (4a/4b/4c, 5a/5b/5c) are a **superset**: do one set of each back to back, then rest.
 
