@@ -71,8 +71,7 @@ Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbel
 | 3b | Seated Leg Curl | 3×10-12 | RIR 2 | 60-75 s after the superset | Lean your torso forward a little for a bigger stretch. |
 | 3c | Seated Calf Raise | 3×10-12 | RIR 2 | 60-75 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
 | 4a | 45° Back Extension | 3×8-10 | RIR 2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 4b | Lying Leg Curl | 3×10-12 | RIR 2 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
-| 4c | Standing Calf Raise | 3×10-12 | RIR 2 | 2 min after the superset | 2 s pause in the full stretch at the bottom. |
+| 4b | Standing Calf Raise | 3×10-12 | RIR 2 | 2 min after the superset | 2 s pause in the full stretch at the bottom. |
 | 5a | Abs: Incline Reverse Crunch | 3×10 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Head at the top of an incline bench, curl the hips up and over. |
 | 5b | Abs: Weighted Side Plank | 3×30 s/side (bodyweight) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Plate on the top hip, body in one straight line. |
 

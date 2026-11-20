@@ -72,8 +72,7 @@ Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbel
 | 3b | Seated Leg Curl | 2×10-12 | RIR 2 | 60 s after the superset | Lean your torso forward a little for a bigger stretch. |
 | 3c | Standing Calf Raise | 2×10-12 | RIR 2 | 60 s after the superset | 2 s pause in the full stretch at the bottom. |
 | 4a | 45° Back Extension | 3×6-8 | RIR 2 | 2 min after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
-| 4b | Lying Leg Curl | 2×10-12 | RIR 2 | 2 min after the superset | Press your hips into the pad, 3 s on the way down. |
-| 4c | Seated Calf Raise | 2×10-12 | RIR 2 | 2 min after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 4b | Seated Calf Raise | 2×10-12 | RIR 2 | 2 min after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
 | 5a | Abs: Dragon Flag | 3×3-5 | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Full rep: lower under control, raise back up as one rigid piece. |
 | 5b | Abs: L-Sit Hold (dip bars or parallettes) | 3×10-15 s (tuck OK) | Strict; stop 1-2 reps (or 5-10 s) short of failure | 45-60 s after the superset | Shoulders pushed down, legs straight (tuck if needed). |
 

@@ -39,7 +39,6 @@ PULLUP = ex("Weighted Pull-up", "M", {"Back": 1, "Biceps": .5},
 LEG_EXT = ex("Leg Extension", "I", {"Quads": 1}, "1 s squeeze at the top, 3 s on the way down.")
 CALF_ST = ex("Standing Calf Raise", "I", {"Calves": 1}, "2 s pause in the full stretch at the bottom.")
 CALF_SE = ex("Seated Calf Raise", "I", {"Calves": 1}, "2 s pause at the bottom, 1 s squeeze at the top.")
-LYING_CURL = ex("Lying Leg Curl", "I", {"Hamstrings": 1}, "Press your hips into the pad, 3 s on the way down.")
 SEATED_CURL = ex("Seated Leg Curl", "I", {"Hamstrings": 1}, "Lean your torso forward a little for a bigger stretch.")
 CABLE_LAT = ex("Cable Lateral Raise", "I", {"Shoulders": 1},
                "Lead with the elbow, stop at shoulder height, no swinging.", spec=True)
@@ -96,7 +95,7 @@ Q1 = {
         ("1", LEGPRESS),
         ("2", ex("Dumbbell Walking Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Long stride, slight forward lean, back knee lightly touches the floor.")),
-        ("3a", LEG_EXT), ("3b", LYING_CURL), ("3c", CALF_ST),
+        ("3a", LEG_EXT), ("3b", CALF_ST),
         ("4a", BACK_EXT), ("4b", SEATED_CURL), ("4c", CALF_SE),
         ("5a", ex("Reverse Crunch", "X", {"Abs": 1},
                   "Curl the hips off the bench toward your chest, lower slowly.",
@@ -141,7 +140,7 @@ Q2 = {
         ("2", ex("Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Step back, keep the front shin close to vertical. Easier on the knees than forward lunges.")),
         ("3a", LEG_EXT), ("3b", SEATED_CURL), ("3c", CALF_SE),
-        ("4a", BACK_EXT), ("4b", LYING_CURL), ("4c", CALF_ST),
+        ("4a", BACK_EXT), ("4b", CALF_ST),
         ("5a", ex("Incline Reverse Crunch", "X", {"Abs": 1},
                   "Head at the top of an incline bench, curl the hips up and over.",
                   abs_rx=["3×10", "3×12", "3×15"])),
@@ -189,7 +188,7 @@ Q3 = {
         ("1", LEGPRESS),
         ("2", ex("High-Box Dumbbell Step-up", "C", {"Quads": 1, "Glutes": .5},
                  "Box a bit above knee height for more glute. Control the way down.")),
-        ("3a", LEG_EXT), ("3b", LYING_CURL), ("3c", CALF_SE),
+        ("3a", LEG_EXT), ("3b", CALF_SE),
         ("4a", BACK_EXT), ("4b", SEATED_CURL), ("4c", CALF_ST),
         ("5a", ex("Dragon Flag Negative", "X", {"Abs": 1},
                   "Grip the bench behind your head, body rigid, lower over 5 s.",
@@ -229,7 +228,7 @@ Q4 = {
         ("2", ex("Deficit Dumbbell Reverse Lunge", "C", {"Quads": 1, "Glutes": .5},
                  "Front foot on a 5-10 cm plate for a deeper stretch.")),
         ("3a", LEG_EXT), ("3b", SEATED_CURL), ("3c", CALF_ST),
-        ("4a", BACK_EXT), ("4b", LYING_CURL), ("4c", CALF_SE),
+        ("4a", BACK_EXT), ("4b", CALF_SE),
         ("5a", ex("Dragon Flag", "X", {"Abs": 1}, "Full rep: lower under control, raise back up as one rigid piece.",
                   abs_rx=["3×3-5", "3×5", "3×5-6"])),
         ("5b", ex("L-Sit Hold (dip bars or parallettes)", "X", {"Abs": 1}, "Shoulders pushed down, legs straight (tuck if needed).",

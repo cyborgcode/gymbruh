@@ -69,8 +69,7 @@ Applies to all five main lifts: **Bench Press, Overhead Press** (Push), **Barbel
 | 1 | **Leg Press** (main) | Main-lift table | Main-lift table | 2-3 min | Feet shoulder-width, mid-platform. Lower until your hips are about to lift off the pad. Never lock the knees. |
 | 2 | High-Box Dumbbell Step-up | 3×8-12 | RIR 0-1 | 90 s | Box a bit above knee height for more glute. Control the way down. |
 | 3a | Leg Extension | 3×10-15 | RIR 0-1 | 60 s after the superset | 1 s squeeze at the top, 3 s on the way down. |
-| 3b | Lying Leg Curl | 3×10-15 | RIR 0-1 | 60 s after the superset | Press your hips into the pad, 3 s on the way down. |
-| 3c | Seated Calf Raise | 3×10-15 | RIR 0-1 | 60 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
+| 3b | Seated Calf Raise | 3×10-15 | RIR 0-1 | 60 s after the superset | 2 s pause at the bottom, 1 s squeeze at the top. |
 | 4a | 45° Back Extension | 3×8-12 | RIR 0-1 | 90 s after the superset | Round slightly over the pad and squeeze the glutes to rise. Hold a plate once 3×12 is easy. |
 | 4b | Seated Leg Curl | 3×10-15 | RIR 0-1 | 90 s after the superset | Lean your torso forward a little for a bigger stretch. |
 | 4c | Standing Calf Raise | 3×10-15 | RIR 0-1 | 90 s after the superset | 2 s pause in the full stretch at the bottom. |
